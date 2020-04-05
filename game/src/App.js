@@ -1,5 +1,5 @@
 import React from "react";
-import Card from './cards/Card';
+import Hand from './Hand';
 
 function App() {
   var cardlist = [];
@@ -8,7 +8,7 @@ function App() {
   }
   return (
     <div>
-      {cardlist.map((x,i) => <Card card={x} position={i}/>)}
+      <Hand cards={cardlist}/>
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+import {render} from 'react-dom';
 
 import jr from './red_joker.svg';
 import jb from './black_joker.svg';
@@ -55,235 +56,290 @@ import d13 from './king_of_diamonds2.svg';
 import h13 from './king_of_hearts2.svg';
 import s13 from './king_of_spades2.svg';
 
+var selectShiftHeight = "30px";
 
-function Card(props){
+class Card extends Component {
 
-    let pic;
+    constructor(props){
+        super(props);
+        let pic;
 
-    var code = props.card;
+        var code = props.card;
 
-    switch(code){
-        case "c1":
-            pic = c1;
-            break;
-        case "c2":
-            pic = c2;
-            break;
-        case "c3":
-            pic = c3;
-            break;
-        case "c4":
-            pic = c4;
-            break;
-        case "c5":
-            pic = c5;
-            break;
-        case "c6":
-            pic = c6;
-            break;
-        case "c7":
-            pic = c7;
-            break;
-        case "c8":
-            pic = c8;
-            break;
-        case "c9":
-            pic = c9;
-            break;
-        case "c10":
-            pic = c10;
-            break;
-        case "c11":
-            pic = c11;
-            break;
-        case "c12":
-            pic = c12;
-            break;
-        case "c13":
-            pic = c13;
-            break;
-        case "d1":
-            pic = d1;
-            break;
-        case "d2":
-            pic = d2;
-            break;
-        case "d3":
-            pic = d3;
-            break;
-        case "d4":
-            pic = d4;
-            break;
-        case "d5":
-            pic = d5;
-            break;
-        case "d6":
-            pic = d6;
-            break;
-        case "d7":
-            pic = d7;
-            break;
-        case "d8":
-            pic = d8;
-            break;
-        case "d9":
-            pic = d9;
-            break;
-        case "d10":
-            pic = d10;
-            break;
-        case "d11":
-            pic = d11;
-            break;
-        case "d12":
-            pic = d12;
-            break;
-        case "d13":
-            pic = d13;
-            break;
-        case "d1":
-            pic = d1;
-            break;
-        case "d2":
-            pic = d2;
-            break;
-        case "d3":
-            pic = d3;
-            break;
-        case "d4":
-            pic = d4;
-            break;
-        case "d5":
-            pic = d5;
-            break;
-        case "d6":
-            pic = d6;
-            break;
-        case "d7":
-            pic = d7;
-            break;
-        case "d8":
-            pic = d8;
-            break;
-        case "d9":
-            pic = d9;
-            break;
-        case "d10":
-            pic = d10;
-            break;
-        case "d11":
-            pic = d11;
-            break;
-        case "d12":
-            pic = d12;
-            break;
-        case "d13":
-            pic = d13;
-            break;
-        case "h1":
-            pic = h1;
-            break;
-        case "h2":
-            pic = h2;
-            break;
-        case "h3":
-            pic = h3;
-            break;
-        case "h4":
-            pic = h4;
-            break;
-        case "h5":
-            pic = h5;
-            break;
-        case "h6":
-            pic = h6;
-            break;
-        case "h7":
-            pic = h7;
-            break;
-        case "h8":
-            pic = h8;
-            break;
-        case "h9":
-            pic = h9;
-            break;
-        case "h10":
-            pic = h10;
-            break;
-        case "h11":
-            pic = h11;
-            break;
-        case "h12":
-            pic = h12;
-            break;
-        case "h13":
-            pic = h13;
-            break;
-        case "s1":
-            pic = s1;
-            break;
-        case "s2":
-            pic = s2;
-            break;
-        case "s3":
-            pic = s3;
-            break;
-        case "s4":
-            pic = s4;
-            break;
-        case "s5":
-            pic = s5;
-            break;
-        case "s6":
-            pic = s6;
-            break;
-        case "s7":
-            pic = s7;
-            break;
-        case "s8":
-            pic = s8;
-            break;
-        case "s9":
-            pic = s9;
-            break;
-        case "s10":
-            pic = s10;
-            break;
-        case "s11":
-            pic = s11;
-            break;
-        case "s12":
-            pic = s12;
-            break;
-        case "s13":
-            pic = s13;
-            break;
-        case "jr":
-            pic = jr;
-            break;
-        case "jb":
-            pic = jb;
-            break;
+        switch(code){
+            case "c1":
+                pic = c1;
+                break;
+            case "c2":
+                pic = c2;
+                break;
+            case "c3":
+                pic = c3;
+                break;
+            case "c4":
+                pic = c4;
+                break;
+            case "c5":
+                pic = c5;
+                break;
+            case "c6":
+                pic = c6;
+                break;
+            case "c7":
+                pic = c7;
+                break;
+            case "c8":
+                pic = c8;
+                break;
+            case "c9":
+                pic = c9;
+                break;
+            case "c10":
+                pic = c10;
+                break;
+            case "c11":
+                pic = c11;
+                break;
+            case "c12":
+                pic = c12;
+                break;
+            case "c13":
+                pic = c13;
+                break;
+            case "d1":
+                pic = d1;
+                break;
+            case "d2":
+                pic = d2;
+                break;
+            case "d3":
+                pic = d3;
+                break;
+            case "d4":
+                pic = d4;
+                break;
+            case "d5":
+                pic = d5;
+                break;
+            case "d6":
+                pic = d6;
+                break;
+            case "d7":
+                pic = d7;
+                break;
+            case "d8":
+                pic = d8;
+                break;
+            case "d9":
+                pic = d9;
+                break;
+            case "d10":
+                pic = d10;
+                break;
+            case "d11":
+                pic = d11;
+                break;
+            case "d12":
+                pic = d12;
+                break;
+            case "d13":
+                pic = d13;
+                break;
+            case "d1":
+                pic = d1;
+                break;
+            case "d2":
+                pic = d2;
+                break;
+            case "d3":
+                pic = d3;
+                break;
+            case "d4":
+                pic = d4;
+                break;
+            case "d5":
+                pic = d5;
+                break;
+            case "d6":
+                pic = d6;
+                break;
+            case "d7":
+                pic = d7;
+                break;
+            case "d8":
+                pic = d8;
+                break;
+            case "d9":
+                pic = d9;
+                break;
+            case "d10":
+                pic = d10;
+                break;
+            case "d11":
+                pic = d11;
+                break;
+            case "d12":
+                pic = d12;
+                break;
+            case "d13":
+                pic = d13;
+                break;
+            case "h1":
+                pic = h1;
+                break;
+            case "h2":
+                pic = h2;
+                break;
+            case "h3":
+                pic = h3;
+                break;
+            case "h4":
+                pic = h4;
+                break;
+            case "h5":
+                pic = h5;
+                break;
+            case "h6":
+                pic = h6;
+                break;
+            case "h7":
+                pic = h7;
+                break;
+            case "h8":
+                pic = h8;
+                break;
+            case "h9":
+                pic = h9;
+                break;
+            case "h10":
+                pic = h10;
+                break;
+            case "h11":
+                pic = h11;
+                break;
+            case "h12":
+                pic = h12;
+                break;
+            case "h13":
+                pic = h13;
+                break;
+            case "s1":
+                pic = s1;
+                break;
+            case "s2":
+                pic = s2;
+                break;
+            case "s3":
+                pic = s3;
+                break;
+            case "s4":
+                pic = s4;
+                break;
+            case "s5":
+                pic = s5;
+                break;
+            case "s6":
+                pic = s6;
+                break;
+            case "s7":
+                pic = s7;
+                break;
+            case "s8":
+                pic = s8;
+                break;
+            case "s9":
+                pic = s9;
+                break;
+            case "s10":
+                pic = s10;
+                break;
+            case "s11":
+                pic = s11;
+                break;
+            case "s12":
+                pic = s12;
+                break;
+            case "s13":
+                pic = s13;
+                break;
+            case "jr":
+                pic = jr;
+                break;
+            case "jb":
+                pic = jb;
+                break;
+        }
+
+        var left = 0;
+
+        if (props.position){
+            left = props.position * 50;
+        }
+
+        var leftStr = left + "px";
+
+        this.normalStyle = {
+            position: 'absolute',
+            left: leftStr,
+            top: selectShiftHeight
+        };
+
+        this.selectedStyle = {
+            position: 'absolute',
+            left: leftStr,
+            top: '0'
+        };
+
+        this.state = {
+            selected: props.selected == true,
+            style: {}
+        }
+
+        this.state.style = this.state.selected ? this.selectedStyle : this.normalStyle;
+        
+
+        //enable variables to be accessed by methods
+
+        this.pic = pic;
+
+        // event binding
+
+        this.toggleSelected = this.toggleSelected.bind(this);
+        this.isSelected = this.isSelected.bind(this);
+    }
+    
+    toggleSelected() {
+
+
+        let newState = !this.isSelected();
+
+        this.setState({
+            selected: newState
+        });
+
+
+        this.setState({
+            style: newState ? this.selectedStyle : this.normalStyle
+        });
+
+    
+        this.props.onClick(this, newState);
+
+
     }
 
-    var left = 0;
-
-    if (props.position){
-        left = props.position * 50;
+    isSelected() {
+        return(this.state.selected);
     }
 
-    var leftStr = left + "px";
+    render() {
 
-    const styles = {
-        position: 'absolute',
-        left: leftStr
-      };
-
-    return(
-        <div class="card" style={styles}>
-            <img src={pic}></img>
+        return(
+        <div class="card" style={this.state.style} onClick={this.toggleSelected}>
+            <img src={this.pic}/>
         </div>
-    );
+        );
+    }
 }
 
 export default Card;
