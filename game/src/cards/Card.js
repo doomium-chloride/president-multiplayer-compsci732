@@ -306,6 +306,8 @@ class Card extends Component {
 
         this.toggleSelected = this.toggleSelected.bind(this);
         this.isSelected = this.isSelected.bind(this);
+
+        this.id = props.id;
     }
     
     toggleSelected() {
@@ -323,7 +325,9 @@ class Card extends Component {
         });
 
     
-        this.props.onClick(this, newState);
+        this.props.onClick(this.getCode(), newState);
+
+        this.forceUpdate();
 
 
     }
@@ -332,10 +336,14 @@ class Card extends Component {
         return(this.state.selected);
     }
 
+    getCode() {
+        return(this.props.card);
+    }
+
     render() {
 
         return(
-        <div class="card" style={this.state.style} onClick={this.toggleSelected}>
+        <div class="card" style={this.state.style} onClick={this.toggleSelected} id={this.id}>
             <img src={this.pic}/>
         </div>
         );
