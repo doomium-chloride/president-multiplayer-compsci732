@@ -66,209 +66,7 @@ class Card extends Component {
 
         var code = props.card;
 
-        switch(code){
-            case "c1":
-                pic = c1;
-                break;
-            case "c2":
-                pic = c2;
-                break;
-            case "c3":
-                pic = c3;
-                break;
-            case "c4":
-                pic = c4;
-                break;
-            case "c5":
-                pic = c5;
-                break;
-            case "c6":
-                pic = c6;
-                break;
-            case "c7":
-                pic = c7;
-                break;
-            case "c8":
-                pic = c8;
-                break;
-            case "c9":
-                pic = c9;
-                break;
-            case "c10":
-                pic = c10;
-                break;
-            case "c11":
-                pic = c11;
-                break;
-            case "c12":
-                pic = c12;
-                break;
-            case "c13":
-                pic = c13;
-                break;
-            case "d1":
-                pic = d1;
-                break;
-            case "d2":
-                pic = d2;
-                break;
-            case "d3":
-                pic = d3;
-                break;
-            case "d4":
-                pic = d4;
-                break;
-            case "d5":
-                pic = d5;
-                break;
-            case "d6":
-                pic = d6;
-                break;
-            case "d7":
-                pic = d7;
-                break;
-            case "d8":
-                pic = d8;
-                break;
-            case "d9":
-                pic = d9;
-                break;
-            case "d10":
-                pic = d10;
-                break;
-            case "d11":
-                pic = d11;
-                break;
-            case "d12":
-                pic = d12;
-                break;
-            case "d13":
-                pic = d13;
-                break;
-            case "d1":
-                pic = d1;
-                break;
-            case "d2":
-                pic = d2;
-                break;
-            case "d3":
-                pic = d3;
-                break;
-            case "d4":
-                pic = d4;
-                break;
-            case "d5":
-                pic = d5;
-                break;
-            case "d6":
-                pic = d6;
-                break;
-            case "d7":
-                pic = d7;
-                break;
-            case "d8":
-                pic = d8;
-                break;
-            case "d9":
-                pic = d9;
-                break;
-            case "d10":
-                pic = d10;
-                break;
-            case "d11":
-                pic = d11;
-                break;
-            case "d12":
-                pic = d12;
-                break;
-            case "d13":
-                pic = d13;
-                break;
-            case "h1":
-                pic = h1;
-                break;
-            case "h2":
-                pic = h2;
-                break;
-            case "h3":
-                pic = h3;
-                break;
-            case "h4":
-                pic = h4;
-                break;
-            case "h5":
-                pic = h5;
-                break;
-            case "h6":
-                pic = h6;
-                break;
-            case "h7":
-                pic = h7;
-                break;
-            case "h8":
-                pic = h8;
-                break;
-            case "h9":
-                pic = h9;
-                break;
-            case "h10":
-                pic = h10;
-                break;
-            case "h11":
-                pic = h11;
-                break;
-            case "h12":
-                pic = h12;
-                break;
-            case "h13":
-                pic = h13;
-                break;
-            case "s1":
-                pic = s1;
-                break;
-            case "s2":
-                pic = s2;
-                break;
-            case "s3":
-                pic = s3;
-                break;
-            case "s4":
-                pic = s4;
-                break;
-            case "s5":
-                pic = s5;
-                break;
-            case "s6":
-                pic = s6;
-                break;
-            case "s7":
-                pic = s7;
-                break;
-            case "s8":
-                pic = s8;
-                break;
-            case "s9":
-                pic = s9;
-                break;
-            case "s10":
-                pic = s10;
-                break;
-            case "s11":
-                pic = s11;
-                break;
-            case "s12":
-                pic = s12;
-                break;
-            case "s13":
-                pic = s13;
-                break;
-            case "jr":
-                pic = jr;
-                break;
-            case "jb":
-                pic = jb;
-                break;
-        }
+        pic = decider(code);
 
         var left = 0;
 
@@ -306,8 +104,11 @@ class Card extends Component {
 
         this.toggleSelected = this.toggleSelected.bind(this);
         this.isSelected = this.isSelected.bind(this);
+        this.unSelect = this.unSelect.bind(this);
 
         this.id = props.id;
+
+        this.forceUpdate();
     }
     
     toggleSelected() {
@@ -327,9 +128,20 @@ class Card extends Component {
     
         this.props.onClick(this.getCode(), newState);
 
-        this.forceUpdate();
 
+    }
 
+    checkSelected() {
+        this.setState({
+            style: this.state.selected ? this.selectedStyle : this.normalStyle
+        });
+    }
+
+    unSelect() {
+        this.setState({
+            selected: false,
+            style: this.normalStyle
+        });
     }
 
     isSelected() {
@@ -342,12 +154,222 @@ class Card extends Component {
 
     render() {
 
+        this.pic = decider(this.props.card);
+
         return(
         <div class="card" style={this.state.style} onClick={this.toggleSelected} id={this.id}>
-            <img src={this.pic}/>
+            <img class={this.props.card} src={this.pic}/>
         </div>
         );
     }
+}
+
+function decider(code){
+    var pic;
+    switch(code){
+        case "c1":
+            pic = c1;
+            break;
+        case "c2":
+            pic = c2;
+            break;
+        case "c3":
+            pic = c3;
+            break;
+        case "c4":
+            pic = c4;
+            break;
+        case "c5":
+            pic = c5;
+            break;
+        case "c6":
+            pic = c6;
+            break;
+        case "c7":
+            pic = c7;
+            break;
+        case "c8":
+            pic = c8;
+            break;
+        case "c9":
+            pic = c9;
+            break;
+        case "c10":
+            pic = c10;
+            break;
+        case "c11":
+            pic = c11;
+            break;
+        case "c12":
+            pic = c12;
+            break;
+        case "c13":
+            pic = c13;
+            break;
+        case "d1":
+            pic = d1;
+            break;
+        case "d2":
+            pic = d2;
+            break;
+        case "d3":
+            pic = d3;
+            break;
+        case "d4":
+            pic = d4;
+            break;
+        case "d5":
+            pic = d5;
+            break;
+        case "d6":
+            pic = d6;
+            break;
+        case "d7":
+            pic = d7;
+            break;
+        case "d8":
+            pic = d8;
+            break;
+        case "d9":
+            pic = d9;
+            break;
+        case "d10":
+            pic = d10;
+            break;
+        case "d11":
+            pic = d11;
+            break;
+        case "d12":
+            pic = d12;
+            break;
+        case "d13":
+            pic = d13;
+            break;
+        case "d1":
+            pic = d1;
+            break;
+        case "d2":
+            pic = d2;
+            break;
+        case "d3":
+            pic = d3;
+            break;
+        case "d4":
+            pic = d4;
+            break;
+        case "d5":
+            pic = d5;
+            break;
+        case "d6":
+            pic = d6;
+            break;
+        case "d7":
+            pic = d7;
+            break;
+        case "d8":
+            pic = d8;
+            break;
+        case "d9":
+            pic = d9;
+            break;
+        case "d10":
+            pic = d10;
+            break;
+        case "d11":
+            pic = d11;
+            break;
+        case "d12":
+            pic = d12;
+            break;
+        case "d13":
+            pic = d13;
+            break;
+        case "h1":
+            pic = h1;
+            break;
+        case "h2":
+            pic = h2;
+            break;
+        case "h3":
+            pic = h3;
+            break;
+        case "h4":
+            pic = h4;
+            break;
+        case "h5":
+            pic = h5;
+            break;
+        case "h6":
+            pic = h6;
+            break;
+        case "h7":
+            pic = h7;
+            break;
+        case "h8":
+            pic = h8;
+            break;
+        case "h9":
+            pic = h9;
+            break;
+        case "h10":
+            pic = h10;
+            break;
+        case "h11":
+            pic = h11;
+            break;
+        case "h12":
+            pic = h12;
+            break;
+        case "h13":
+            pic = h13;
+            break;
+        case "s1":
+            pic = s1;
+            break;
+        case "s2":
+            pic = s2;
+            break;
+        case "s3":
+            pic = s3;
+            break;
+        case "s4":
+            pic = s4;
+            break;
+        case "s5":
+            pic = s5;
+            break;
+        case "s6":
+            pic = s6;
+            break;
+        case "s7":
+            pic = s7;
+            break;
+        case "s8":
+            pic = s8;
+            break;
+        case "s9":
+            pic = s9;
+            break;
+        case "s10":
+            pic = s10;
+            break;
+        case "s11":
+            pic = s11;
+            break;
+        case "s12":
+            pic = s12;
+            break;
+        case "s13":
+            pic = s13;
+            break;
+        case "jr":
+            pic = jr;
+            break;
+        case "jb":
+            pic = jb;
+            break;
+    }
+    return pic;
 }
 
 export default Card;

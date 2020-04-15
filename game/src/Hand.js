@@ -17,16 +17,13 @@ class Hand extends Component {
         let selected = arrayF(props.cards.length);
 
         this.state = {
-            cards: props.cards.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i}/>),
             codes: props.cards,
+            cards: props.cards.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i}/>),
             selectedCards: selected,
-            test: [0,1,2,3,4,5,6,7]
         };
         this.updateSelected = this.updateSelected.bind(this);
         this.playSelected = this.playSelected.bind(this);
         this.addCard = this.addCard.bind(this);
-        this.pop = this.pop.bind(this);
-        this.add = this.add.bind(this);
     }
 
     updateSelected(card, selected, index) {    
@@ -67,21 +64,19 @@ class Hand extends Component {
                 newCodes.push(codes[i]);
             }
         }
-        alert("nc"+newCards.length);
-        alert("sa"+sendArray.length);
 
     
 
 
         this.setState({
-            cards: newCards,
             codes: newCodes,
+            cards: newCards,
             selectedCards: arrayF(newCodes.length)
-        }, () => alert(this.state.codes.toString(),"new state"));
+        });
 
         
 
-        alert(this.state.codes.length);
+        this.resetSelected();
 
         this.forceUpdate();
     }
@@ -94,30 +89,31 @@ class Hand extends Component {
         this.setState({
             codes: newCards
         });
+
+        this.updateCards();
+    }
+
+    updateCards() {
+        let codes = this.state.codes;
+        let newCards = codes.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i}/>);
+        this.setState({
+            cards: newCards
+        });
+    }
+
+    resetSelected() {
+        let codes = this.state.codes;
+        let newCards = codes.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} selected={false}/>);
+        this.setState({
+            cards: newCards,
+            selectedCards: arrayF(newCards.length)
+        });
+
     }
     
 
-    pop() {
-        let array = [...this.state.test];
-        array.pop();
-        this.setState({
-            test: array
-        });
-        alert(this.state.test);
-    }
-
-    add() {
-        let array = [...this.state.test];
-        array.push(array.length);
-        this.setState({
-            test: array
-        });
-        alert(this.state.test);
-    }
 
     render() {
-
-        let cards = [...this.state.codes];
 
         return (
             <div>
@@ -128,13 +124,7 @@ class Hand extends Component {
                 <div>
                     <PlayButton activate={this.playSelected}/>
                     <button onClick={this.addCard}>Add Card</button>
-                    <button onClick={this.pop}>pop</button>
-                    <button onClick={this.add}>push</button>
                     
-                </div>
-                <div>
-                    <p>x</p><p>x</p><p>x</p><p>x</p><p>x</p><p>x</p><p>x</p><p>x</p><p>x</p><p>x</p><p>x</p>
-                    {cards.map( (x) => <p>{x}</p> )}
                 </div>
             </div>
           );
