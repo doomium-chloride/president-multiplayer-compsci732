@@ -1,10 +1,11 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
 
 from django.db.models import F
 from django.shortcuts import get_object_or_404
-from .serializers import RoomSerializer
-from .models import Room
+from cards_online.room_manager.serializers import RoomSerializer
+from cards_online.room_manager.models import Room
 import string
 import random
 
@@ -14,27 +15,11 @@ class RoomConsumer(WebsocketConsumer):
         # e.g. url/room_code
         self.room_code = self.scope['url_route']['kwargs']['room_code']
 
-        # Check to see if the room exists
-        if not Room.objects.filter(code=room_code).first():
-            return
-        
-        room = Room.objects.get(code=room_code)
-
-        # Check to see if the room is full
-        if room.players == room.max_players:
-            return
-
-        # After these checks, accept the websocket
-        target_room = get_object_or_404(Room.objects.all(), pk=room_code)
-        serializer = RoomSerializer(instance=target_room, data=request.data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(players=F('players')+1)
-
-            async_to_sync(self.channel_layer.group_add)(
-                self.room_code,
-                self.channel_name
-            )
-            self.accept()
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_code,
+            self.channel_name
+        )
+        self.accept()
 
     def disconnect(self, close_code):
         # A user has disconnected from a room.
@@ -68,14 +53,15 @@ class RoomConsumer(WebsocketConsumer):
                 self.channel_name
             )
 
+            #TODO: Remove game from Objects
+
             # Remove room from Objects
             room.delete()
 
     def receive(self, text_data):
         #TODO: Receive a game-specific command from the websocket.
-        # Point to the appropriate game and do something
 
-    def room_command(self, event):
+    def room_message(self, event):
         message = event['message']
 
         self.send(text_data=json.dumps({

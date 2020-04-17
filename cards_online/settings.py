@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'room_manager.apps.RoomManagerConfig',
     'channels',
+    'cardgame_presient.apps.RoomManagerConfig',
 ]
 
 MIDDLEWARE = [

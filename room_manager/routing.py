@@ -1,7 +1,7 @@
 from django.urls import re_path
 
-from . import consumers
+from cards_online.cardgame_president import consumers as President
 
 websocket_urlpatterns = [
-    re_path(r'/(?P<room_code>\w+)/$', consumers.RoomConsumer)
+    re_path(r'/president/(?P<room_code>\w+)/$', President.GameConsumer)
 ]
