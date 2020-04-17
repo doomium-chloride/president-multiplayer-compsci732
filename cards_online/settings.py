@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'room_manager.apps.RoomManagerConfig',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -72,11 +73,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cards_online.wsgi.application'
 
-CORS_ORIGIN_ALLOW_ALL = False
-
-CORS_ORIGIN_WHITELIST = (
-       'http://localhost:3000',
-)
+ASGI_APPLICATION = 'cards_online.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
