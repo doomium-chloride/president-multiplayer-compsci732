@@ -25,8 +25,7 @@ class CreateRoomView(APIView):
 class JoinRoomView(APIView):
 
     # Join room
-    def get(self, request):
-        room_code = self.scope['url_route']['kwargs']['room_code']
+    def get(self, request, room_code):
 
         # See if the current room exists
         if not Room.objects.filter(code=room_code).first():

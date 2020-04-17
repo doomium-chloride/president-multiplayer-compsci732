@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'room_manager.apps.RoomManagerConfig',
     'channels',
-    'cardgame_presient.apps.RoomManagerConfig',
+    'room_manager.apps.RoomManagerConfig',
+    'cardgame_president.apps.CardgamePresidentConfig',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +51,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'cards_online.urls'

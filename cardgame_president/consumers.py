@@ -4,12 +4,12 @@ from asgiref.sync import async_to_sync
 
 from django.db.models import F
 from django.shortcuts import get_object_or_404
-from cards_online.room_manager.serializers import RoomSerializer
-from cards_online.room_manager.models import Room
+from room_manager.serializers import RoomSerializer
+from room_manager.models import Room
 import string
 import random
 
-class RoomConsumer(WebsocketConsumer):
+class GameConsumer(WebsocketConsumer):
     def connect(self):
         # Get room_code from url
         # e.g. url/room_code
@@ -60,6 +60,7 @@ class RoomConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         #TODO: Receive a game-specific command from the websocket.
+        pass
 
     def room_message(self, event):
         message = event['message']
