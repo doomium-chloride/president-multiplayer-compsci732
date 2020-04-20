@@ -1,6 +1,7 @@
-import React, {Component} from "react";
+import React, {Component, createRef} from "react";
 import Card from './cards/Card';
 import {render} from 'react-dom';
+import './Selection.css';
 
 function arrayF(length){
     let array = new Array(length);
@@ -10,20 +11,27 @@ function arrayF(length){
     return(array);
 }
 
+var selectShiftHeight = "30px";
+
 class Hand extends Component {
     constructor(props){
         super(props);
 
         let selected = arrayF(props.cards.length);
+        this.cards = createRef();
 
         this.state = {
             codes: props.cards,
-            cards: props.cards.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i}/>),
-            selectedCards: selected,
+            cards: props.cards.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} ref={this.cards}/>),
+            selectedCards: selected
         };
         this.updateSelected = this.updateSelected.bind(this);
         this.playSelected = this.playSelected.bind(this);
         this.addCard = this.addCard.bind(this);
+        this.updateCards = this.updateCards.bind(this);
+        this.resetSelected = this.resetSelected.bind(this);
+
+        
     }
 
     updateSelected(card, selected, index) {    
@@ -40,7 +48,10 @@ class Hand extends Component {
             selectedCards: copy
         });
 
+        this.checkSelected();
+
     }
+
 
 
     playSelected() {
@@ -55,30 +66,24 @@ class Hand extends Component {
 
         for(let i = 0; i < length; i++){
             if (selected[i]){
-                alert(codes[i]);
                 sendArray.push(codes[i]);
             } else {
                 let p =newCodes.length
-                let newCard = <Card card={codes[i]} onClick={(o,s) => this.updateSelected(o,s,p) } position={p} selected={false}/>;
+                let newCard = <Card card={codes[i]} onClick={(o,s) => this.updateSelected(o,s,p) } position={p} ref={this.cards} selected={false}/>;
                 newCards.push(newCard);
                 newCodes.push(codes[i]);
             }
         }
 
-    
-
+        alert(sendArray);
 
         this.setState({
             codes: newCodes,
             cards: newCards,
             selectedCards: arrayF(newCodes.length)
-        });
-
+        }, this.resetSelected);
         
 
-        this.resetSelected();
-
-        this.forceUpdate();
     }
 
 
@@ -88,43 +93,56 @@ class Hand extends Component {
 
         this.setState({
             codes: newCards
-        });
+        }, this.updateCards);
 
-        this.updateCards();
+        
     }
 
     updateCards() {
         let codes = this.state.codes;
-        let newCards = codes.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i}/>);
+        let newCards = codes.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} />);
         this.setState({
             cards: newCards
         });
+        
     }
 
     resetSelected() {
-        let codes = this.state.codes;
-        let newCards = codes.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} selected={false}/>);
-        this.setState({
-            cards: newCards,
-            selectedCards: arrayF(newCards.length)
-        });
+        // let codes = [...this.state.codes];
+        // let newCards = codes.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} selected={false}/>);
+        // this.setState({
+        //     cards: newCards,
+        //     selectedCards: arrayF(newCards.length)
+        // }, alert(this.state.selectedCards));
+        console.log(this.cards);
+    }
 
+    checkSelected(){
+        var list = this.state.cards.map((x) => x.props.selected);
     }
     
 
 
     render() {
 
+        let codes = this.state.codes;
+        let selected = this.state.selectedCards
+        let cards = []
+        for(let i = 0; i < codes.length; i++){
+            cards.push(<Card card={codes[i]} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} selected={selected[i]}/>)
+        }
+
         return (
-            <div>
+            <div style={{position: "absolute"}}>
                 
                 <div>
-                    {this.state.cards.map((x) => x)}
+                    {cards}
                 </div>
-                <div>
+                <div style={{position: "relative", top: "400px"}}>
                     <PlayButton activate={this.playSelected}/>
                     <button onClick={this.addCard}>Add Card</button>
-                    
+                    <button onClick={this.resetSelected}>Reset</button>
+                    <button onClick={this.forceUpdate}>Update</button>
                 </div>
             </div>
           );

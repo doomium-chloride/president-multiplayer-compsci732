@@ -1,5 +1,12 @@
 import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import Hand from './Hand';
+import Home from './Home';
 
 var cardlist = [];
   for(let i = 13; i > 0; i--){
@@ -10,9 +17,39 @@ var cardlist = [];
 function App() {
   
   return (
-    <div>
-      <Hand cards={cardlist}/>
-    </div>
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/game">Game</Link>
+          </li>
+        </ul>
+
+        <hr />
+
+        {/*
+          A <Switch> looks through all its children <Route>
+          elements and renders the first one whose path
+          matches the current URL. Use a <Switch> any time
+          you have multiple routes, but you want only one
+          of them to render at a time
+        */}
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/game">
+          <div>
+            <Hand cards={cardlist}/>
+          </div>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+    
   );
 }
 

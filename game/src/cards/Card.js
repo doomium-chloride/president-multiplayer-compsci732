@@ -58,15 +58,11 @@ import s13 from './king_of_spades2.svg';
 
 var selectShiftHeight = "30px";
 
+
 class Card extends Component {
 
     constructor(props){
         super(props);
-        let pic;
-
-        var code = props.card;
-
-        pic = decider(code);
 
         var left = 0;
 
@@ -96,9 +92,6 @@ class Card extends Component {
         this.state.style = this.state.selected ? this.selectedStyle : this.normalStyle;
         
 
-        //enable variables to be accessed by methods
-
-        this.pic = pic;
 
         // event binding
 
@@ -113,20 +106,13 @@ class Card extends Component {
     
     toggleSelected() {
 
-
         let newState = !this.isSelected();
 
         this.setState({
-            selected: newState
-        });
-
-
-        this.setState({
+            selected: newState,
             style: newState ? this.selectedStyle : this.normalStyle
-        });
+        }, this.props.onClick(this.getCode(), newState));
 
-    
-        this.props.onClick(this.getCode(), newState);
 
 
     }
@@ -154,11 +140,13 @@ class Card extends Component {
 
     render() {
 
-        this.pic = decider(this.props.card);
+        let pic = decider(this.props.card);
+
+        let style = this.props.selected ? this.selectedStyle : this.normalStyle
 
         return(
-        <div class="card" style={this.state.style} onClick={this.toggleSelected} id={this.id}>
-            <img class={this.props.card} src={this.pic}/>
+        <div class="card" style={style} onClick={this.toggleSelected} id={this.props.id}>
+            <img class={this.props.card} src={pic}/>
         </div>
         );
     }
