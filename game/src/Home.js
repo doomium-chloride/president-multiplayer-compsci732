@@ -8,7 +8,8 @@ class Home extends Component {
         this.state = {roomCode: undefined};
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.joinGame = this.joinGame.bind(this);
+        this.makeGame = this.makeGame.bind(this);
     }
 
     handleChange(event){
@@ -21,12 +22,16 @@ class Home extends Component {
         }
     }
 
-    handleSubmit(event) {
+    joinGame(event) {
         alert('A name was submitted: ' + this.state.value);
         if(this.state.roomCode){
             return <Redirect to={this.getRoomLink()} />
         }
-      }
+    }
+
+    makeGame(event){
+
+    }
 
 
     render(){
@@ -46,7 +51,7 @@ class Home extends Component {
                         Max number of players:
                         <input type="number" name="max_players"/>
                     </label>
-                    <input type="submit" value="Create Game" />
+                    <button onClick={this.makeGame}>Start Game</button>
                 </form>
             </div>
         );
