@@ -2,12 +2,8 @@ from rest_framework import serializers
 from .models import Room
 
 class RoomSerializer(serializers.Serializer):
-    code = serializers.CharField(max_length=5)
-    game = serializers.IntegerField()
-    players = serializers.IntegerField()
+    game = serializers.CharField()
     max_players = serializers.IntegerField()
-    ingame = serializers.BooleanField()
-    date_created = serializers.DateTimeField()
 
     def create(self, validated_data):
         return Room.objects.create(**validated_data)

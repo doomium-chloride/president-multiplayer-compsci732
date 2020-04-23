@@ -19,7 +19,7 @@ class CreateRoomView(APIView):
                 if not Room.objects.filter(code=room_code).first():
                     break
             serializer.save(code=room_code)
-            content = {'success': 'Room successfully created.'}
+            content = {'success': room_code}
             return Response(content)
 
 class JoinRoomView(APIView):
@@ -38,10 +38,14 @@ class JoinRoomView(APIView):
             content = {'error': 'Room is full.'}
             return Response(content)
 
+        # If the room is in session, return error
+        if room.ingame:
+            content = {'error': 'Game is in session.'}
+            return Response(content)
 
         # Successful join, increment the player count by 1
         Room.objects.filter(code=room_code).update(players=F('players')+1)
 
         # Returns the room code
-        content = {'success': (room_code, room.game)}
+        content = {'success': (room.game)}
         return Response(content)
