@@ -13,6 +13,8 @@ class Home extends Component {
         };
 
         this.handleChangeRoom = this.handleChangeRoom.bind(this);
+        this.handleChangeGame = this.handleChangeGame.bind(this);
+        this.handleChangeMaxPlayers = this.handleChangeMaxPlayers.bind(this);
         this.joinGame = this.joinGame.bind(this);
         this.makeGame = this.makeGame.bind(this);
     }
@@ -45,19 +47,22 @@ class Home extends Component {
     makeGame(event){
         if(this.state.gameCode && this.state.maxPlayers){
             let payload = {
-                max_players:4, 
-                game_type:1
+                max_players: this.state.maxPlayers, 
+                game: this.state.gameCode
             };
             let xhttp = new XMLHttpRequest(); 
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
+                    let resp = JSON.parse(this.responseText);
+                    //success is the attribute of the room code
                     this.setState({
-                        newRoomCode: this.responseText
+                        newRoomCode: resp.success
                     });
                 }
             };
             xhttp.open("POST", "/", true);
             xhttp.send(payload); 
+            alert(this.state.maxPlayers);
         }
     }
 
@@ -70,12 +75,12 @@ class Home extends Component {
                         Room Code:
                         <input type="text" name="room-code" onChange={this.handleChangeRoom}/>
                     </label>
-                    <button onClick={this.handleSubmit}>Join Game</button>
+                    <button onClick={this.joinGame}>Join Game</button>
                 </form>
-                <form  action="/" method="post">
+                <form>
                     <label>
                         Game code:
-                        <input type="number" name="game" onChange={this.handleChangeGame}/>
+                        <input type="text" name="game" onChange={this.handleChangeGame}/>
                         Max number of players:
                         <input type="number" name="max_players" onChange={this.handleChangeMaxPlayers}/>
                     </label>
