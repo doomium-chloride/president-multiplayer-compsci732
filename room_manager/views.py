@@ -4,6 +4,7 @@ from django.db.models import F
 from django.shortcuts import get_object_or_404
 from .serializers import RoomSerializer
 from .models import Room
+from cardgame_president.models import Game
 import string
 import random
 
@@ -45,6 +46,10 @@ class JoinRoomView(APIView):
 
         # Successful join, increment the player count by 1
         Room.objects.filter(code=room_code).update(players=F('players')+1)
+
+        # Create the game
+        game = Game(code=room_code, max_players=room.max_players)
+        game.save()
 
         # Returns the room code
         content = {'success': (room.game)}
