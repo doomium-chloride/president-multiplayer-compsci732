@@ -38,9 +38,9 @@ class Home extends Component {
     }
 
     joinGame(event) {
-        alert('A name was submitted: ' + this.state.value);
+        alert('A name was submitted: ' + this.getRoomLink());
         if(this.state.roomCode){
-            return <Redirect to={this.getRoomLink()} />
+            window.open(this.getRoomLink(), "_blank");
         }
     }
 

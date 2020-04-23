@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useParams
 } from "react-router-dom";
 import Hand from './Hand';
 import Home from './Home';
@@ -46,11 +47,19 @@ function App() {
             <Hand cards={cardlist}/>
           </div>
           </Route>
+          <Route path="/:room" children={room}>
+          </Route>
         </Switch>
       </div>
     </Router>
     
   );
 }
+
+const room = ({ match }) => (
+  <div>
+    <p>Welcome to room {match.params.room}</p>
+  </div>
+)
 
 export default App;
