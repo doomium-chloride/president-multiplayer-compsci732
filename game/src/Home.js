@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { render } from 'react-dom'
-import { Redirect } from 'react-router-dom'
+import { render } from 'react-dom';
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 class Home extends Component {
     constructor() {
@@ -46,22 +47,23 @@ class Home extends Component {
 
     makeGame(event){
         if(this.state.gameCode && this.state.maxPlayers){
+            var self = this;
             let payload = {
-                max_players: this.state.maxPlayers, 
+                max_players: parseInt(this.state.maxPlayers),   
                 game: this.state.gameCode
             };
-            let xhttp = new XMLHttpRequest(); 
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    let resp = JSON.parse(this.responseText);
-                    //success is the attribute of the room code
-                    this.setState({
-                        newRoomCode: resp.success
+            axios.post("http://localhost:8000/", payload)
+                .then(function (response) {
+                    // response is a JSON object. not a string
+                    let data = response.data
+                    // success is the attribute of the room code
+                    self.setState({
+                        newRoomCode: data.success
                     });
-                }
-            };
-            xhttp.open("POST", "/", true);
-            xhttp.send(payload); 
+                })
+                .catch(function (error) {
+                    alert(error);
+                });
             alert(this.state.maxPlayers);
         }
     }
