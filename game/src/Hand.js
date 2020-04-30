@@ -22,14 +22,11 @@ class Hand extends Component {
 
         this.state = {
             codes: props.cards,
-            cards: props.cards.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} ref={this.cards}/>),
             selectedCards: selected
         };
         this.updateSelected = this.updateSelected.bind(this);
         this.playSelected = this.playSelected.bind(this);
         this.addCard = this.addCard.bind(this);
-        this.updateCards = this.updateCards.bind(this);
-        this.resetSelected = this.resetSelected.bind(this);
 
         
     }
@@ -41,14 +38,12 @@ class Hand extends Component {
         }
 
         let copy = [...this.state.selectedCards];
-
-        copy[index] = selected == true;
+        //flip truth
+        copy[index] = !selected;
 
         this.setState({
             selectedCards: copy
         });
-
-        this.checkSelected();
 
     }
 
@@ -69,8 +64,6 @@ class Hand extends Component {
                 sendArray.push(codes[i]);
             } else {
                 let p =newCodes.length
-                let newCard = <Card card={codes[i]} onClick={(o,s) => this.updateSelected(o,s,p) } position={p} ref={this.cards} selected={false}/>;
-                newCards.push(newCard);
                 newCodes.push(codes[i]);
             }
         }
@@ -98,28 +91,8 @@ class Hand extends Component {
         
     }
 
-    updateCards() {
-        let codes = this.state.codes;
-        let newCards = codes.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} />);
-        this.setState({
-            cards: newCards
-        });
-        
-    }
 
-    resetSelected() {
-        // let codes = [...this.state.codes];
-        // let newCards = codes.map((x,i) => <Card card={x} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} selected={false}/>);
-        // this.setState({
-        //     cards: newCards,
-        //     selectedCards: arrayF(newCards.length)
-        // }, alert(this.state.selectedCards));
-        console.log(this.cards);
-    }
 
-    checkSelected(){
-        var list = this.state.cards.map((x) => x.props.selected);
-    }
     
 
 

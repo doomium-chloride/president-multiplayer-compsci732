@@ -59,97 +59,38 @@ import s13 from './king_of_spades2.svg';
 var selectShiftHeight = "30px";
 
 
-class Card extends Component {
-
-    constructor(props){
-        super(props);
-
-        var left = 0;
-
-        if (props.position){
-            left = props.position * 50;
-        }
-
-        var leftStr = left + "px";
-
-        this.normalStyle = {
-            position: 'absolute',
-            left: leftStr,
-            top: selectShiftHeight
-        };
-
-        this.selectedStyle = {
-            position: 'absolute',
-            left: leftStr,
-            top: '0'
-        };
-
-        this.state = {
-            selected: props.selected == true,
-            style: {}
-        }
-
-        this.state.style = this.state.selected ? this.selectedStyle : this.normalStyle;
-        
+function Card(props) {
 
 
-        // event binding
+    let left = 0;
 
-        this.toggleSelected = this.toggleSelected.bind(this);
-        this.isSelected = this.isSelected.bind(this);
-        this.unSelect = this.unSelect.bind(this);
-
-        this.id = props.id;
-
-        this.forceUpdate();
+    if (props.position){
+        left = props.position * 50;
     }
+
+    let leftStr = left + "px";
+
+    let normalStyle = {
+        position: 'absolute',
+        left: leftStr,
+        top: selectShiftHeight
+    };
     
-    toggleSelected() {
+    let selectedStyle = {
+        position: 'absolute',
+        left: leftStr,
+        top: '0'
+    };
 
-        let newState = !this.isSelected();
+    let pic = decider(props.card);
 
-        this.setState({
-            selected: newState,
-            style: newState ? this.selectedStyle : this.normalStyle
-        }, this.props.onClick(this.getCode(), newState));
+    let style = props.selected ? selectedStyle : normalStyle
 
-
-
-    }
-
-    checkSelected() {
-        this.setState({
-            style: this.state.selected ? this.selectedStyle : this.normalStyle
-        });
-    }
-
-    unSelect() {
-        this.setState({
-            selected: false,
-            style: this.normalStyle
-        });
-    }
-
-    isSelected() {
-        return(this.state.selected);
-    }
-
-    getCode() {
-        return(this.props.card);
-    }
-
-    render() {
-
-        let pic = decider(this.props.card);
-
-        let style = this.props.selected ? this.selectedStyle : this.normalStyle
-
-        return(
-        <div class="card" style={style} onClick={this.toggleSelected} id={this.props.id}>
-            <img class={this.props.card} src={pic}/>
-        </div>
-        );
-    }
+    return(
+    <div class="card" style={style} id={props.id} onClick={() => {props.onClick(0,props.selected,props.position)}}>
+        <img class={props.card} src={pic}/>
+    </div>
+    );
 }
 
 function decider(code){
