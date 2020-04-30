@@ -28,7 +28,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         # Create new Player object.
         # Get the last player's order number. The new player will have the same order number + 1.
         last_player = Player.objects.filter(code=self.room_code).order_by('play_order').last()
-        player = Player(channel_name=self.channel_name, game_code=self.room_code, player_order=(last_player.play_order + 1))
+        player = Player(channel_name=self.channel_name, game_code=self.room_code, play_order=(last_player.play_order + 1))
         player.save()
 
         # Accept the websocket.
@@ -138,6 +138,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                                 'message': '{} has finished with the position of {}!'.format(player.name, player.role)
                             }
                         )
+                    await self.next_turn()
             
         elif message_type == "name":
             # Player name registration
@@ -154,37 +155,53 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
         elif message_type == "start":
             # Check if all players have a registered name.
-            players = Player.objects.filter(game_code=player.game_code).order_by('play_order')
-            for i in players:
+            # If a player has a null name, then all players are not ready yet.
+            starting_player = 0
+            players = Player.objects.filter(code=self.room_code).order_by('play_order')
+            for k, i in enumerate(players):
+                # Reassign order numbers to be perfectly in order with no number skips.
+                i.play_order = k
+                i.save()
                 if i.name == None:
                     await self.send(text_data=json.dumps({
-                        'type': 'room_response',
-                        'response_type': 'game_message',
-                        'response': 'All players are not ready yet.'
+                        'type': 'room_message',
+                        'message': 'All players are not ready yet.'
                     }))
                     return
-            # Players are all ready, start the game
-            room = Room.objects.get(code=player.game_code)
+            # Players are all ready, set the room ingame state to true to prevent further players joining.
+            room = Room.objects.get(code=self.room_code)
             room.ingame = True
             room.save()
             # Proceed to process cards then give to each player
             handout = serve_cards(players)
-            channel_layer = get_channel_layer()
             for k, i in enumerate(players):
                 await self.channel_layer.send(i.channel_name, {
-                    'type': 'room_response',
-                    'response_type': 'handout',
-                    'response': handout[k]
+                    'type': 'handout',
+                    'handout': handout[k]
                 })
+
             # If there exists a scum, then initiate card swap stage
             #TODO: this^
 
-            # Send a message to player one to start their move
-            await self.channel_layer.send(players[0].channel_name, {
-                'type': 'room_response',
-                'response_type': 'game_action',
-                'response': "Make your move."
-            })
+            # Start the game.
+            await self.next_turn()
+
+    async def next_turn(self, *args)
+        game = Game.objects.get(code=self.room_code)
+        starter = Player.objects.get(play_order=game.play_order)
+        # Send a message to the room of who is starting the game.
+        await self.channel_layer.group_send(
+            self.room_code,
+            {
+                'type': 'room_message',
+                'message': "It is now {}'s turn.".format(starter.name)
+            }
+        )
+        # Send a message to player one to start their move
+        await self.channel_layer.send(starter.channel_name, {
+            'type': 'game_command',
+            'command': 'turn'
+        })
 
     async def room_message(self, event):
         message = event['message']
@@ -204,4 +221,21 @@ class GameConsumer(AsyncWebsocketConsumer):
             'player': player,
             'move': move,
             'special': special
+        }))
+
+    async def handout(self, event):
+        handout = event['handout']
+        await self.send(text_data=json.dumps({
+            'type': 'handout',
+            'handout': handout
+        }))
+
+    async def game_command(self, event):
+        command = event['command']
+        details = event['details']
+
+        await self.send(text_data=json.dumps({
+            'type': 'game_command',
+            'command': command,
+            'details': details
         }))
