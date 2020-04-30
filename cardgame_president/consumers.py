@@ -198,11 +198,10 @@ class GameConsumer(AsyncWebsocketConsumer):
             })
             
 
-    async def room_response(self, event):
-        response = event['response']
-        response_type = event['response_type']
+    async def room_message(self, event):
+        message = event['message']
 
         await self.send(text_data=json.dumps({
-            'response_type': response_type,
-            'response': response
+            'type': 'room_message',
+            'message': message
         }))
