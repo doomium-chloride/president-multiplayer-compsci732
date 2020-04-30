@@ -4,7 +4,7 @@ from django.db.models import F
 from django.shortcuts import get_object_or_404
 from .serializers import RoomSerializer
 from .models import Room
-from cardgame_president.models import Game
+from cardgame_president.models import Game as PRES
 import string
 import random
 
@@ -21,7 +21,14 @@ class CreateRoomView(APIView):
                 break
         room = Room(game=game, max_players=max_players, code=code)
         room.save()
-        content = {'success': room_code}
+
+        # Create the game-specific object
+        if game == "PRES":
+            # President game. Create a President-game specific object.
+            game_obj = PRES(code=room.code)
+        game_obj.save()
+
+        content = {'success': code}
         return Response(content)
 
 class JoinRoomView(APIView):
