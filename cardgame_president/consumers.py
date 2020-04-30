@@ -107,6 +107,30 @@ class GameConsumer(AsyncWebsocketConsumer):
                         'special': 'None'
                     }
                 )
+                # Check if there are more than two players left in the round. If not, that player has won and is the starter.
+                winner = skip_winner_check(game)
+                if winner:
+                    # Returns a player if they are the only one left.
+                    # There are no more than two players left. Round concluded.
+                    # Send a room message of who has won the round.
+                    await self.channel_layer.group_send(
+                        self.room_code,
+                        {
+                            'type': 'room_message',
+                            'message': '{} has won the round!'.format(winner.name)
+                        }
+                    )
+                    # Send a room command indicating the next round.
+                    await self.channel_layer.group_send(
+                        self.room_code,
+                        {
+                            'type': 'room_command',
+                            'command': 'next_round'
+                        }
+                    )
+                await self.next_turn()
+
+
             else:
                 # Card(s) have been played.
                 check = play_move(move, special, player)
@@ -138,6 +162,23 @@ class GameConsumer(AsyncWebsocketConsumer):
                                 'message': '{} has finished with the position of {}!'.format(player.name, player.role)
                             }
                         )
+
+                        # Check if there are any more players. If not, end the game.
+                        check = move_winner_check(game)
+                        if check:
+                            # check will return false if there are still players in the game.
+                            players = Player.objects.filter(code=self.room_code)
+                            results = []
+                            for p in players:
+                                results.append([player.role, player.name])
+                            await self.channel_layer.group_send(
+                                self.room_code,
+                                {
+                                    'type': 'results',
+                                    'results': results
+                                }
+                            )
+                            return
                     await self.next_turn()
             
         elif message_type == "name":
@@ -156,7 +197,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         elif message_type == "start":
             # Check if all players have a registered name.
             # If a player has a null name, then all players are not ready yet.
-            starting_player = 0
             players = Player.objects.filter(code=self.room_code).order_by('play_order')
             for k, i in enumerate(players):
                 # Reassign order numbers to be perfectly in order with no number skips.
@@ -232,10 +272,15 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def game_command(self, event):
         command = event['command']
-        details = event['details']
 
         await self.send(text_data=json.dumps({
             'type': 'game_command',
-            'command': command,
-            'details': details
+            'command': command
+        }))
+
+    async def results(self, event):
+        results = event['results']
+        await self.send(text_data=json.dumps({
+            'type': 'results',
+            'results': results
         }))

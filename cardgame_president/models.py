@@ -26,7 +26,7 @@ class Player(models.Model):
     channel_name = models.CharField(max_length=30, primary_key=True)
     play_order = models.IntegerField()
     skip_turn = models.BooleanField(default=False)
-    role = models.CharField(choices=ROLE_CHOICES, max_length=3, default=None)
+    role = models.CharField(choices=ROLE_CHOICES, max_length=3, default=None, blank=True, null=True)
     H = models.CharField(max_length=13, default="")
     D = models.CharField(max_length=13, default="")
     C = models.CharField(max_length=13, default="")
