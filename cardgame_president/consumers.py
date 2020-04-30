@@ -35,7 +35,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         room = Room.objects.get(room_code=self.room_code)
 
         # Create new Player object.
-        player = Player(channel_name=self.channel_name, game_code=self.room_code, player_order=(room.players - 1))
+        # Get the last player's order number. The new player will have the same order number + 1.
+        last_player = Player.objects.filter(code=self.room_code).order_by('play_order').last()
+        player = Player(channel_name=self.channel_name, game_code=self.room_code, player_order=(last_player.play_order + 1))
         player.save()
 
         # Accept the websocket.
@@ -49,44 +51,39 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     await def disconnect(self, close_code):
         # A user has disconnected from a room.
-        # If the room game hasn't started yet, decrement player by one and send update to other players in the group
-        room_code = Player.objects.get(channel_name=self.channel_name).game_code
-        room = Room.objects.get(code=room_code)
+        # The game state dictates what action to take.
+        room = Room.objects.get(code=self.room_group_name)
         if not room.ingame:
+            # If the room game hasn't started yet, decrement player by one and send a room message to other players in the group.
             room.update(players=F('players')-1)
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
-                    'type': 'room_response',
-                    'response_type': 'game_message',
-                    'response': 'A user has left the game lobby.'
-                }
-            )
-            Player.objects.get(channel_name=self.channel_name).delete()
-        else:
-            # User disconnected from a game in progress, end it
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'room_response',
-                    'response_type': 'game_message',
-                    'response': 'A user has disconnected from the game.'
+                    'type': 'room_message',
+                    'message': 'A user has left the game lobby.'
                 }
             )
 
+            # Remove the websocket from the group.
             await self.channel_layer.group_discard(
-                self.room_code,
+                self.room_group_name,
                 self.channel_name
             )
 
-            # Remove game from Objects
-            game = Game.objects.get(game_code=self.room_code)
-            game.delete()
+            Player.objects.get(channel_name=self.channel_name).delete()
+        else:
+            # User disconnected from a game in progress, end it.
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'room_message',
+                    'message': 'The game has ended due to a user leaving the room.'
+                }
+            )
 
-            # When a game is deleted, all Player objects associated with that game are also deleted.
-
-            # Remove room from Objects
-            room.delete()
+            # Remove the room from objects.
+            # This should cascade the relevant Game and Player objects to also be deleted.
+            room = Room.objects.get(self.room_group_name).delete()
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
