@@ -14,15 +14,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         # Get room_code from url.
         # e.g. url/room_code.
         self.room_code = self.scope['url_route']['kwargs']['room_code']
-
-        # Send a message to the room of a player joining.
-        await self.channel_layer.group_send(
-            self.room_code,
-            {
-                'type': 'room_message',
-                'message': "A Player has joined the room."
-            }
-        )
         
         # Add the incoming websocket to a group.
         # Game-wide messages will be sent to this group reference.
@@ -70,6 +61,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 self.channel_name
             )
 
+            # Delete the Player object.
             Player.objects.get(channel_name=self.channel_name).delete()
         else:
             # User disconnected from a game in progress, end it.
@@ -86,10 +78,11 @@ class GameConsumer(AsyncWebsocketConsumer):
             room = Room.objects.get(self.room_group_name).delete()
 
     async def receive(self, text_data):
+        # Get the message data recieved from the user.
         text_data_json = json.loads(text_data)
-        response_type = text_data_json['type']
+        message_type = text_data_json['type']
         player = Player.objects.get(channel_name=self.channel_name)
-        if response_type == "move":
+        if message_type == "move":
             move = text_data_json['move']
             check = play_move(move, player)
             if check == -1:
@@ -114,7 +107,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 # Consecutive was enforced.
                 # Sets was enforced.
                 # If a player has finished their hand, declare their position.
-        elif response_type == "skip":
+        elif message_type == "skip":
             player = Player.objects.get(channel_name=self.channel_name)
             check = skip_turn(player)
             if check == -1:
@@ -135,35 +128,20 @@ class GameConsumer(AsyncWebsocketConsumer):
                         'response': (self.channel_name, 'skip')
                     }
                 )
-        elif response_type == "name":
+        elif message_type == "name":
             # Player name registration
-            # Check if the room game has started yet.
-            room = Room.objects.get(code=player.game_code)
-            if room.ingame:
-                # The game has already started, invalid message
-                await self.send(text_data=json.dumps({
-                    'type': 'room_response',
-                    'response_type': 'game_error',
-                    'response': 'Invalid response.'
-                }))
-            else:
-                player.name = text_data_json['name']
-                player.save()
-                await self.send(text_data=json.dumps({
-                    'type': 'room_response',
-                    'response_type': 'game_message',
-                    'response': 'Name registered.'
-                }))
-                # Send room message
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        'type': 'room_response',
-                        'response_type': 'player_join',
-                        'response': (self.channel_name, player.name)
-                    }
-                )
-        elif response_type == "start":
+            player.name = text_data_json['name']
+            player.save()            
+
+            # Send a message to the room of a player joining.
+            await self.channel_layer.group_send(
+                self.room_code,
+                {
+                    'type': 'room_message',
+                    'message': "{} has joined the room.".format(player.name)
+                }
+            )
+        elif message_type == "start":
             # Check if all players have a registered name.
             players = Player.objects.filter(game_code=player.game_code).order_by('play_order')
             for i in players:
