@@ -6,7 +6,7 @@ from room_manager.models import Room
 class Game(models.Model):
     code = models.ForeignKey('Room', on_delete=models.CASCADE)
     current_card = models.CharField(max_length=8, default="")
-    current_turn = models.IntegerField(default=0)
+    current_turn = models.IntegerField(default=-1)
     order_up = models.BooleanField(default=False)
     consecutive = models.BooleanField(default=False)
 
