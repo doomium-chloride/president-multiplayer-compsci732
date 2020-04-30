@@ -1,14 +1,12 @@
 from django.db import models
+from room_manager.models import Room
 
 # Create your models here.
 
 class Game(models.Model):
-    code = models.CharField(max_length=5, primary_key=True)
-    max_players = models.IntegerField()
-    round_num = models.IntegerField(default=0)
-    current_card = models.IntegerField(default=-1)
-    starting_player = models.IntegerField(default=-1)
-    play_stack = models.IntegerField(default=-1)
+    code = models.ForeignKey('Room', on_delete=models.CASCADE)
+    current_card = models.CharField(max_length=8, default="")
+    current_turn = models.IntegerField(default=0)
     order_up = models.BooleanField(default=False)
     consecutive = models.BooleanField(default=False)
 
@@ -23,13 +21,14 @@ class Player(models.Model):
         (VICE_SCUM, 'Vice Scum'),
         (SCUM, 'Scum'),
     )
-    name = models.CharField(max_length=10)
-    game_code = models.ForeignKey('Game', on_delete=models.CASCADE)
+    name = models.CharField(max_length=12, default=None)
+    code = models.ForeignKey('Room', on_delete=models.CASCADE)
+    channel_name = models.CharField(max_length=30, primary_key=True)
     play_order = models.IntegerField()
     skip_turn = models.BooleanField(default=False)
-    role = models.CharField(choices=ROLE_CHOICES, max_length=3)
-    h = models.CharField(max_length=13)
-    d = models.CharField(max_length=13)
-    c = models.CharField(max_length=13)
-    s = models.CharField(max_length=13)
-    j = models.IntegerField()
+    role = models.CharField(choices=ROLE_CHOICES, max_length=3, default=None)
+    H = models.CharField(max_length=13, default="")
+    D = models.CharField(max_length=13, default="")
+    C = models.CharField(max_length=13, default="")
+    S = models.CharField(max_length=13, default="")
+    W = models.IntegerField(default=0)
