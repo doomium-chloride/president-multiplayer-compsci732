@@ -108,30 +108,22 @@ class GameConsumer(AsyncWebsocketConsumer):
                 # Sets was enforced.
                 # If a player has finished their hand, declare their position.
         elif message_type == "skip":
-            player = Player.objects.get(channel_name=self.channel_name)
-            check = skip_turn(player)
-            if check == -1:
-                # An invalid skip was made, send error message to player.
-                # This shouldn't normally be invoked as invalid skips should be unplayable client-side
-                await self.send(text_data=json.dumps({
-                    'type': 'room_response',
-                    'response_type': 'game_error',
-                    'response': 'Invalid response.'
-                }))
-            else:
-                # A valid skip was made. Send the skip messaage to all players
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        'type': 'room_response',
-                        'response_type': 'game_move',
-                        'response': (self.channel_name, 'skip')
-                    }
-                )
+            # Player has stated they will skip their turn for thisround.
+            skip_turn(player)
+            # Send a message to the group of the player skipping their turn.
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'room_move',
+                    'player': player.name,
+                    'move': 'skip',
+                    'special': 'None'
+                }
+            )
         elif message_type == "name":
             # Player name registration
             player.name = text_data_json['name']
-            player.save()            
+            player.save()
 
             # Send a message to the room of a player joining.
             await self.channel_layer.group_send(
@@ -174,7 +166,6 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'response_type': 'game_action',
                 'response': "Make your move."
             })
-            
 
     async def room_message(self, event):
         message = event['message']
@@ -182,4 +173,16 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'room_message',
             'message': message
+        }))
+
+    async def room_move(self, event):
+        player = event['player']
+        move = event['move']
+        special = event['special']
+
+        await self.send(text_data=json.dumps({
+            'type': 'room_move',
+            'player': player,
+            'move': move,
+            'special': special
         }))
