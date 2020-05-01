@@ -3,6 +3,9 @@ import Card from './cards/Card';
 import {render} from 'react-dom';
 import './Selection.css';
 
+//creates an array of false of length length
+//for example arrayF(3) = [false,false,false]
+
 function arrayF(length){
     let array = new Array(length);
     for(let i = 0; i < length; i++){
@@ -11,7 +14,8 @@ function arrayF(length){
     return(array);
 }
 
-var selectShiftHeight = "30px";
+//class for the hand of a player
+//a hand is the cards a player holds
 
 class Hand extends Component {
     constructor(props){
@@ -31,7 +35,9 @@ class Hand extends Component {
         
     }
 
-    updateSelected(card, selected, index) {    
+    //When the player selects or unselects a card, this method updates the states.
+
+    updateSelected(selected, index) {    
 
         if(index < 0){
             alert("error, index is " + index);
@@ -47,7 +53,7 @@ class Hand extends Component {
 
     }
 
-
+    //This removes the selected cards from the hand
 
     playSelected() {
         let length = this.state.codes.length;
@@ -79,6 +85,8 @@ class Hand extends Component {
 
     }
 
+    //Old testing method.
+    //Can remove it later.
 
     addCard() {
         let newCards = [...this.state.codes];
@@ -92,17 +100,13 @@ class Hand extends Component {
     }
 
 
-
-    
-
-
     render() {
 
         let codes = this.state.codes;
         let selected = this.state.selectedCards
         let cards = []
         for(let i = 0; i < codes.length; i++){
-            cards.push(<Card card={codes[i]} onClick={(o,s) => this.updateSelected(o,s,i) } position={i} selected={selected[i]}/>)
+            cards.push(<Card card={codes[i]} onClick={(o,s) => this.updateSelected(s,i) } position={i} selected={selected[i]}/>)
         }
 
         return (
@@ -121,6 +125,8 @@ class Hand extends Component {
           );
     }
 }
+
+//the button to play the selected cards
 
 class PlayButton extends Component {
     constructor(props){

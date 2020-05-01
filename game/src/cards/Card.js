@@ -81,9 +81,9 @@ function Card(props) {
         left: leftStr,
         top: '0'
     };
-
+    //get the correct image for the card
     let pic = decider(props.card);
-
+    //select CSS for the selected state or unselected state
     let style = props.selected ? selectedStyle : normalStyle
 
     return(
@@ -92,7 +92,7 @@ function Card(props) {
     </div>
     );
 }
-
+//function that returns the correct image
 function decider(code){
     var pic;
     switch(code){
