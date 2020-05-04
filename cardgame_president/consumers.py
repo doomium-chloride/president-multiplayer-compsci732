@@ -95,8 +95,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             # The message is related to a game move.
             move = text_data_json['move']
             if move == "skip":
-                # Player has stated they will skip their turn for thisround.
-                skip_turn(player)
+                # Player has stated they will skip their turn for this round.
+                winner = skip_turn(player, game)
                 # Send a message to the group of the player skipping their turn.
                 await self.channel_layer.group_send(
                     self.room_code,
@@ -107,8 +107,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                         'special': 'None'
                     }
                 )
-                # Check if there are more than two players left in the round. If not, that player has won and is the starter.
-                winner = skip_winner_check(game)
+                # Check if there are more than two players left in the round. If not, that one player has won and is the starter.
                 if winner:
                     # Returns a player if they are the only one left.
                     # There are no more than two players left. Round concluded.
@@ -128,12 +127,13 @@ class GameConsumer(AsyncWebsocketConsumer):
                             'command': 'next_round'
                         }
                     )
+                    new_round(game)
                 await self.next_turn()
 
 
             else:
                 # Card(s) have been played.
-                check = play_move(move, special, player)
+                check = play_move(move, special, player,)
                 if check == -1:
                     # An invalid move was made, send error message to player.
                     # This shouldn't normally be invoked as invalid moves should be unplayable client-side
@@ -164,9 +164,11 @@ class GameConsumer(AsyncWebsocketConsumer):
                         )
 
                         # Check if there are any more players. If not, end the game.
-                        check = move_winner_check(game)
-                        if check:
-                            # check will return false if there are still players in the game.
+                        remaining = Player.objects.filter(code=self.room_code).filter(card_num>0)
+                        if len(remaining) < 2:
+                            # Set the last player's role to Scum
+                            remaining[0].role = 'SC'
+                            remaining[0].save()
                             players = Player.objects.filter(code=self.room_code)
                             results = []
                             for p in players:
@@ -213,7 +215,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             room.ingame = True
             room.save()
             # Proceed to process cards then give to each player
-            handout = serve_cards(players)
+            handout = serve_cards(players, self.room_code)
             for k, i in enumerate(players):
                 await self.channel_layer.send(i.channel_name, {
                     'type': 'handout',
@@ -225,6 +227,16 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             # Start the game.
             await self.next_turn()
+        elif message_type == "chat":
+            message = text_data_json['message']
+            # Send a message to the room of a player joining.
+            await self.channel_layer.group_send(
+                self.room_code,
+                {
+                    'type': 'room_message',
+                    'message': message
+                }
+            )
 
     async def next_turn(self, *args)
         game = Game.objects.get(code=self.room_code)
