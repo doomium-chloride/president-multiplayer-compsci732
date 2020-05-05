@@ -4,7 +4,7 @@ from room_manager.models import Room
 # Create your models here.
 
 class Game(models.Model):
-    code = models.ForeignKey('Room', on_delete=models.CASCADE)
+    room = models.ForeignKey('room_manager.Room', on_delete=models.CASCADE)
     current_card = models.CharField(max_length=2, default="")
     current_turn = models.IntegerField(default=-1)
 
@@ -20,7 +20,7 @@ class Player(models.Model):
         (SCUM, 'Scum'),
     )
     name = models.CharField(max_length=12, default=None)
-    code = models.ForeignKey('Room', on_delete=models.CASCADE)
+    game = models.ForeignKey('Game', on_delete=models.CASCADE)
     channel_name = models.CharField(max_length=30, primary_key=True)
     play_order = models.IntegerField()
     skip_turn = models.BooleanField(default=False)

@@ -2,8 +2,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import F
 from django.shortcuts import get_object_or_404
-from .serializers import RoomSerializer
 from .models import Room
+from cardgame_president.game_logic import getRoomByCode
 from cardgame_president.models import Game as PRES
 import string
 import random
@@ -36,7 +36,7 @@ class JoinRoomView(APIView):
     # Join room
     def get(self, request, code):
         
-        room = Room.objects.get(code=code)
+        room = getRoomByCode(code)
         # See if the current room exists
         if not room:
             content = {'error': 'Room does not exist.'}
@@ -53,10 +53,10 @@ class JoinRoomView(APIView):
             return Response(content)
 
         # Successful join, increment the player count by 1
-        Room.objects.get(code=code).update(players=F('players')+1)
+        room.update(players=F('players')+1)
 
         # Create the game
-        game = Game(code=code)
+        game = Game(room=room)
         game.save()
 
         # Returns the room code

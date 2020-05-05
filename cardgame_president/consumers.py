@@ -22,13 +22,13 @@ class GameConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-        # Get the room object to get the room code.
-        room = Room.objects.get(room_code=self.room_code)
+        # Get the game object
+        game = getGameByCode(self.room_code)
 
         # Create new Player object.
         # Get the last player's order number. The new player will have the same order number + 1.
         last_player = Player.objects.filter(code=self.room_code).order_by('play_order').last()
-        player = Player(channel_name=self.channel_name, game_code=self.room_code, play_order=(last_player.play_order + 1))
+        player = Player(channel_name=self.channel_name, game=game, play_order=(last_player.play_order + 1))
         player.save()
 
         # Accept the websocket.
@@ -43,7 +43,7 @@ class GameConsumer(AsyncWebsocketConsumer):
     await def disconnect(self, close_code):
         # A user has disconnected from a room.
         # The game state dictates what action to take.
-        room = Room.objects.get(code=self.room_code)
+        room = getRoomByCode(self.room_code)
         if not room.ingame:
             # If the room game hasn't started yet, decrement player by one and send a room message to other players in the group.
             room.update(players=F('players')-1)
@@ -75,7 +75,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             # Remove the room from objects.
             # This should cascade the relevant Game and Player objects to also be deleted.
-            room = Room.objects.get(self.room_code).delete()
+            room.delete()
 
     async def receive(self, text_data):
         # Get the message data recieved from the user.
@@ -84,7 +84,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         player = Player.objects.get(channel_name=self.channel_name)
         if message_type == "game_move":
             player = text_data_json['player']
-            game = Game.objects.get(code=self.room_code)
+            game = getGameByCode(self.room_code)
             # Check if the recieved move is from the player that should be making a turn.
             if player.play_order != game.current_turn:
                 # The player isn't meant to make a move. Return an error message to that player.
@@ -127,7 +127,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                             'command': 'next_round'
                         }
                     )
-                    new_round(game)
+                    new_round(self.room_code)
                 await self.next_turn()
 
 
@@ -164,12 +164,12 @@ class GameConsumer(AsyncWebsocketConsumer):
                         )
 
                         # Check if there are any more players. If not, end the game.
-                        remaining = Player.objects.filter(code=self.room_code).filter(card_num>0)
+                        players = getPlayersByCode(self.room_code).order_by('play_order')
+                        remaining = players.filter(card_num>0)
                         if len(remaining) < 2:
                             # Set the last player's role to Scum
                             remaining[0].role = 'SC'
                             remaining[0].save()
-                            players = Player.objects.filter(code=self.room_code)
                             results = []
                             for p in players:
                                 results.append([player.role, player.name])
@@ -199,7 +199,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         elif message_type == "start":
             # Check if all players have a registered name.
             # If a player has a null name, then all players are not ready yet.
-            players = Player.objects.filter(code=self.room_code).order_by('play_order')
+            players = getPlayersByCode(self.room_code).order_by('play_order')
             for k, i in enumerate(players):
                 # Reassign order numbers to be perfectly in order with no number skips.
                 i.play_order = k
@@ -211,7 +211,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                     }))
                     return
             # Players are all ready, set the room ingame state to true to prevent further players joining.
-            room = Room.objects.get(code=self.room_code)
+            room = getRoomByCode(self.room_code)
             room.ingame = True
             room.save()
             # Proceed to process cards then give to each player
@@ -239,7 +239,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
 
     async def next_turn(self, *args)
-        game = Game.objects.get(code=self.room_code)
+        game = getGameByCode(self.room_code)
         starter = Player.objects.get(play_order=game.play_order)
         # Send a message to the room of who is starting the game.
         await self.channel_layer.group_send(

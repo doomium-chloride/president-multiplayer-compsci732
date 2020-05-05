@@ -3,12 +3,21 @@ from textwrap import wrap
 from django.db.models import F
 import random
 
+def getRoomByCode(code):
+    return Room.objects.get(code=code)
+    
+def getGameBycode(code):
+    return Game.objects.get(room=Room.objects.get(code=code))
+
+def getPlayersByCode(code):
+    return Players.objects.filter(game=Game.objects.get(room=Room.objects.get(code=code)))
+
 def skip_turn(player, game):
     # Set the player skip state to true.
     player.skip_turn = True
     player.save()
     # Sees if there are any more skippable players.
-    players = Player.objects.filter(code=game.code)
+    players = getPlayersByCode(code)
     turn = game.current_turn += 1
 
     # While loop to find the next valid player.
@@ -26,13 +35,14 @@ def skip_turn(player, game):
             return False
     return True
 
-def new_round(game):
+def new_round(code):
     # Reset player skip states.
-    players = Player.objects.filter(code=game.code)
+    players = getPlayersByCode(code)
     for player in players:
         player.skip_turn = False
         player.save()
     # Reset game special states.
+    game = getGameByCode(code)
     game.current_card = -1
     game.save()
 
@@ -72,7 +82,7 @@ def play_move(move, special, player, game):
             player.S = player.S.replace(card_num, "")
 
         
-        players = Player.objects.filter(code=game.code)
+        players = getPlayersByCode(code)
 
         # If the player has no more cards, set their skip state to True and give the required role.
         if player.card_num == 0:
@@ -133,7 +143,7 @@ def serve_cards(players, code):
         handouts += handout
 
     # Reset game state
-    game = Game.objects.get(code=code)
+    game = getGameByCode(code)
     game.current_card = ""
 
     # Set the current turn to the player who has the 3 of clubs.
