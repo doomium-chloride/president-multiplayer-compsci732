@@ -1,0 +1,10 @@
+.player{
+    border-style: solid;
+    border-width: 1px;
+    width: 100px;
+    height: 100px;
+}
+.player > div{
+    width: 50%;
+    margin: 5% auto 5% auto;
+}
