@@ -18,7 +18,7 @@ def skip_turn(player, game):
     player.save()
     # Sees if there are any more skippable players.
     players = getPlayersByCode(code)
-    turn = game.current_turn += 1
+    turn = game.current_turn + 1
 
     # While loop to find the next valid player.
     while (players.get(play_order=turn).skip_turn):
