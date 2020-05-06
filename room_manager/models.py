@@ -10,7 +10,7 @@ class Room(models.Model):
         (PRESIDENT, 'President'),
     )
     code = models.CharField(max_length=5, primary_key=True)
-    game = models.CharField(choices=GAME_CHOICES, max_length=4)
+    game_type = models.CharField(choices=GAME_CHOICES, max_length=4)
     players = models.IntegerField(default=0)
     max_players = models.IntegerField()
     ingame = models.BooleanField(default=False)
