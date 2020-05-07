@@ -32,7 +32,8 @@ class Hand extends Component {
         this.playSelected = this.playSelected.bind(this);
         this.addCard = this.addCard.bind(this);
 
-        
+        //testing
+        this.reset = this.reset.bind(this);
     }
 
     //When the player selects or unselects a card, this method updates the states.
@@ -99,6 +100,19 @@ class Hand extends Component {
         
     }
 
+    reset() {
+        //for testing
+        let cardlist = [];
+        for(let i = 13; i > 0; i--){
+            cardlist.push("c"+i);
+        }
+        cardlist.push("h4");
+        this.setState({
+            codes: cardlist,
+            selectedCards: arrayF(cardlist.length)
+        });
+    }
+
 
     render() {
 
@@ -118,8 +132,7 @@ class Hand extends Component {
                 <div style={{position: "relative", top: "400px"}}>
                     <PlayButton activate={this.playSelected}/>
                     <button onClick={this.addCard}>Add Card</button>
-                    <button onClick={this.resetSelected}>Reset</button>
-                    <button onClick={this.forceUpdate}>Update</button>
+                    <button onClick={this.reset}>Reset</button>
                 </div>
             </div>
           );

@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Hand from './Hand';
 import Home from './Home';
+import Game from './Game';
 
 var cardlist = [];
   for(let i = 13; i > 0; i--){
@@ -44,7 +45,7 @@ function App() {
           </Route>
           <Route path="/game">
           <div>
-            <Hand cards={cardlist}/>
+            <Game/>
           </div>
           </Route>
           <Route path="/:room" children={room}>

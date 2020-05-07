@@ -3,6 +3,8 @@
     border-width: 1px;
     width: 100px;
     height: 100px;
+    display: inline-block;
+    margin: 1%;
 }
 .player > div{
     width: 50%;
