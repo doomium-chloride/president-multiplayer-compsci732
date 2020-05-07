@@ -40,7 +40,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             'message': "Please enter a name."
         }))
 
-    await def disconnect(self, close_code):
+    async def disconnect(self, close_code):
         # A user has disconnected from a room.
         # The game state dictates what action to take.
         room = getRoomByCode(self.room_code)
@@ -238,7 +238,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-    async def next_turn(self, *args)
+    async def next_turn(self, *args):
         game = getGameByCode(self.room_code)
         starter = Player.objects.get(play_order=game.play_order)
         # Send a message to the room of who is starting the game.

@@ -1,0 +1,47 @@
+documentation btw: 
+
+POST request to localhost:8080
+{"game_type": "PRES", "max_players": 1-4}
+returns {"success": "gamecode"}
+
+^ From there, frontend should redirect the user to localhost:8080/gamecode
+
+GET request to localhost:8080/gamecode
+{"error": "errormessage"}
+^ Returns this if there was an error e.g. room full, room doesn't exist, etc.
+{"success": game_type}
+^ Returns this if joining the room was successful.
+^ Frontend initiates websocket connection to ws://localhost:8080/game_type/gamecode
+
+WebSocket onConnect
+accepts user websocket connection.
+returns {"type": "room_message", "message": "somemessage"}
+^ returned data of type "room_message" should be displayed like a chat message in a chatbox
+After successful connection, frontend should prompt user for a string name.
+
+WebSocket onDisconnect (inherited from WebSocket message)
+if a different connected user disconnects, action will be done.
+User leaves before game starts: recieve a "room_message" that should be displayed
+User leaves in the middle of a game: recieve a "room_message" that should be displayed, then recieve:
+    {"type": "game_command", "command": "close"}
+Upon getting this command, freeze the game (because it's no longer playable)
+
+WebSocket message
+Any other message from the backend should be done on a case-by-case basis.
+{"type": "handout", "handout": ("a", "b", "c"), "player_cardnums": ("channelid1": num, "channelid1":num, "channelid1":num)}
+^ This is a new handout of cards (only sent by backend at start of games.
+^ The frontend should take the data from handout and display them
+{"type": "game_command", "command": varies}
+^ Depends on command.
+  turn: reenable the player display so it's clickable because it's their turn
+  close: see ondisconnect
+{"type": "results" "results": ("player1": "role", "player2": "role", ...)}
+^ The 'scoreboard' to display. Only displayed at the end of a game.
+{"type": "room_message": "message": "message"}
+^ message from backend. display as though like a chat message.
+{"type": "game_move", "player": channelid, "move": card, "special": special}
+^ a valid move made by a player. special is currently doing nothing because we're sticking to basics.
+{"type": "player_join", "channelid": id, "playerstring": string}
+^ Player has joined. display them.
+{"type": "player_leave", "channelid": id, "playerstring": string}
+^ Player has left the game (in lobby). hide them.
