@@ -12,21 +12,21 @@ class CreateRoomView(APIView):
 
     # Create room
     def post(self, request):
-        game = request.data.get("game")
+        game_type = request.data.get("game_type")
         max_players = request.data.get("max_players")
         while True:
             # Generate a new random code and see if it exists already. If not, break loop
             code = ''.join(random.choice(string.ascii_uppercase) for _ in range(5))
             if not Room.objects.filter(code=code).first():
                 break
-        room = Room(game=game, max_players=max_players, code=code)
+        room = Room(game_type=game_type, max_players=max_players, code=code)
         room.save()
 
         # Create the game-specific object
-        if game == "PRES":
+        if game_type == "PRES":
             # President game. Create a President-game specific object.
-            game_obj = PRES(code=room.code)
-        game_obj.save()
+            game = PRES(room=room)
+        game.save()
 
         content = {'success': code}
         return Response(content)
@@ -55,10 +55,6 @@ class JoinRoomView(APIView):
         # Successful join, increment the player count by 1
         room.update(players=F('players')+1)
 
-        # Create the game
-        game = Game(room=room)
-        game.save()
-
         # Returns the room code
-        content = {'success': (room.game)}
+        content = {'success': room.game_type}
         return Response(content)
