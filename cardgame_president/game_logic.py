@@ -1,4 +1,5 @@
 from .models import Game, Player
+from room_manager.models import Room
 from textwrap import wrap
 from django.db.models import F
 import random
@@ -6,11 +7,11 @@ import random
 def getRoomByCode(code):
     return Room.objects.get(code=code)
     
-def getGameBycode(code):
+def getGameByCode(code):
     return Game.objects.get(room=Room.objects.get(code=code))
 
 def getPlayersByCode(code):
-    return Players.objects.filter(game=Game.objects.get(room=Room.objects.get(code=code)))
+    return Player.objects.filter(game=Game.objects.get(room=Room.objects.get(code=code)))
 
 def skip_turn(player, game):
     # Set the player skip state to true.

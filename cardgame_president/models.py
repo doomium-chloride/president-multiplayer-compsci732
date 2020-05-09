@@ -19,7 +19,7 @@ class Player(models.Model):
         (VICE_SCUM, 'Vice Scum'),
         (SCUM, 'Scum'),
     )
-    name = models.CharField(max_length=12, default=None)
+    name = models.CharField(max_length=12, default="", blank=True)
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
     channel_name = models.CharField(max_length=30, primary_key=True)
     play_order = models.IntegerField()

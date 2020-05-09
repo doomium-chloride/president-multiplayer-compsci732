@@ -1,5 +1,6 @@
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
 from django.db.models import F
 from django.shortcuts import get_object_or_404
 from room_manager.models import Room
@@ -9,15 +10,15 @@ import string
 import random
 from channels.layers import get_channel_layer
 
-class GameConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
+class GameConsumer(WebsocketConsumer):
+    def connect(self):
         # Get room_code from url.
         # e.g. url/room_code.
         self.room_code = self.scope['url_route']['kwargs']['room_code']
         
         # Add the incoming websocket to a group.
         # Game-wide messages will be sent to this group reference.
-        await self.channel_layer.group_add(
+        async_to_sync(self.channel_layer.group_add)(
             self.room_code,
             self.channel_name
         )
@@ -27,15 +28,19 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         # Create new Player object.
         # Get the last player's order number. The new player will have the same order number + 1.
-        last_player = Player.objects.filter(code=self.room_code).order_by('play_order').last()
-        player = Player(channel_name=self.channel_name, game=game, play_order=(last_player.play_order + 1))
+        players = getPlayersByCode(self.room_code)
+        if len(players) < 1:
+            play_order = 0
+        else:
+            play_order = Player.objects.filter(code=self.room_code).order_by('play_order').last().play_order
+        player = Player(channel_name=self.channel_name, game=game, play_order=(play_order + 1))
         player.save()
 
         # Accept the websocket.
-        await self.accept()
+        self.accept()
 
         # Send a message to everyone else of the player entering.
-        await self.channel_layer.group_send(
+        async_to_sync(self.channel_layer.group_send)(
             self.room_code,
             {
                 'type': 'room_message',
@@ -44,12 +49,12 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
 
         # Prompt the user to enter a display name.
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'type': 'room_message',
             'message': "Please enter a name."
         }))
 
-    async def disconnect(self, close_code):
+    def disconnect(self, close_code):
         # A user has disconnected from a room.
         # The game state dictates what action to take.
         room = getRoomByCode(self.room_code)
@@ -59,7 +64,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             # Get the Player object of the player who left.
             player = Players.objects.get(channel_name=self.channel_name)
-            await self.channel_layer.group_send(
+            async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
                     'type': 'room_message',
@@ -68,7 +73,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
             
             # Send notifciation to clients to remove player from their displays
-            await self.channel_layer.group_send(
+            async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
                     'type': 'player_leave',
@@ -78,7 +83,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
 
             # Remove the websocket from the group.
-            await self.channel_layer.group_discard(
+            async_to_sync(self.channel_layer.group_discard)(
                 self.room_code,
                 self.channel_name
             )
@@ -88,7 +93,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             player.delete()
         else:
             # User disconnected from a game in progress, end it.
-            await self.channel_layer.group_send(
+            async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
                     'type': 'room_message',
@@ -97,7 +102,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
 
             # Send command to lock the room up (no more moves to be played)
-            await self.channel_layer.group_send(
+            async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
                     'type': 'game_command',
@@ -109,7 +114,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             # This should cascade the relevant Game and Player objects to also be deleted.
             room.delete()
 
-    async def receive(self, text_data):
+    def receive(self, text_data):
         # Get the message data recieved from the user.
         text_data_json = json.loads(text_data)
         message_type = text_data_json['type']
@@ -120,7 +125,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             # Check if the recieved move is from the player that should be making a turn.
             if player.play_order != game.current_turn:
                 # The player isn't meant to make a move. Return an error message to that player.
-                await self.send(text_data=json.dumps({
+                self.send(text_data=json.dumps({
                     'type': 'room_message',
                     'message': 'It isn\'t your turn yet!'
                 }))
@@ -130,7 +135,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 # Player has stated they will skip their turn for this round.
                 winner = skip_turn(player, game)
                 # Send a message to the group of the player skipping their turn.
-                await self.channel_layer.group_send(
+                async_to_sync(self.channel_layer.group_send)(
                     self.room_code,
                     {
                         'type': 'game_move',
@@ -144,7 +149,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                     # Returns a player if they are the only one left.
                     # There are no more than two players left. Round concluded.
                     # Send a room message of who has won the round.
-                    await self.channel_layer.group_send(
+                    async_to_sync(self.channel_layer.group_send)(
                         self.room_code,
                         {
                             'type': 'room_message',
@@ -152,7 +157,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                         }
                     )
                     # Send a room command indicating the next round.
-                    await self.channel_layer.group_send(
+                    async_to_sync(self.channel_layer.group_send)(
                         self.room_code,
                         {
                             'type': 'room_command',
@@ -160,7 +165,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                         }
                     )
                     new_round(self.room_code)
-                await self.next_turn()
+                self.next_turn()
 
 
             else:
@@ -169,13 +174,13 @@ class GameConsumer(AsyncWebsocketConsumer):
                 if check == -1:
                     # An invalid move was made, send error message to player.
                     # This shouldn't normally be invoked as invalid moves should be unplayable client-side
-                    await self.send(text_data=json.dumps({
+                    self.send(text_data=json.dumps({
                         'type': 'room_message',
                         'message': 'An invalid move was made!'
                     }))
                 else:
                     # A valid move was made. Send the move made to all players
-                    await self.channel_layer.group_send(
+                    async_to_sync(self.channel_layer.group_send)(
                         self.room_code,
                         {
                             'type': 'game_move',
@@ -187,7 +192,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                     # If a player has finished their hand, declare their position.
                     # The check returns the number of cards the player has left.
                     if check == 0:
-                        await self.channel_layer.group_send(
+                        async_to_sync(self.channel_layer.group_send)(
                             self.room_code,
                             {
                                 'type': 'room_message',
@@ -205,7 +210,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                             results = []
                             for p in players:
                                 results.append([player.role, player.name])
-                            await self.channel_layer.group_send(
+                            async_to_sync(self.channel_layer.group_send)(
                                 self.room_code,
                                 {
                                     'type': 'results',
@@ -213,7 +218,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                                 }
                             )
                             return
-                    await self.next_turn()
+                    self.next_turn()
             
         elif message_type == "name":
             # Player name registration
@@ -221,7 +226,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             player.save()
 
             # Send a message to the room of a player joining.
-            await self.channel_layer.group_send(
+            async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
                     'type': 'room_message',
@@ -229,7 +234,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 }
             )
             
-            await self.channel_layer.group_send(
+            async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
                     'type': 'player_join',
@@ -246,7 +251,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 i.play_order = k
                 i.save()
                 if i.name == None:
-                    await self.send(text_data=json.dumps({
+                    self.send(text_data=json.dumps({
                         'type': 'room_message',
                         'message': 'All players are not ready yet.'
                     }))
@@ -262,21 +267,24 @@ class GameConsumer(AsyncWebsocketConsumer):
                 for j in players:
                     if j != i:
                         player_cardnums.append([j.channel_name, j.card_num])
-                await self.channel_layer.send(i.channel_name, {
-                    'type': 'handout',
-                    'handout': handout[k],
-                    'player_cardnums': player_cardnums
-                })
+                async_to_sync(self.channel_layer.send)(
+                    i.channel_name,
+                    {
+                        'type': 'handout',
+                        'handout': handout[k],
+                        'player_cardnums': player_cardnums
+                    }
+                )
 
             # If there exists a scum, then initiate card swap stage
             #TODO: this^
 
             # Start the game.
-            await self.next_turn()
+            self.next_turn()
         elif message_type == "chat":
             message = text_data_json['message']
             # Send a message to the room of a player joining.
-            await self.channel_layer.group_send(
+            async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
                     'type': 'room_message',
@@ -284,11 +292,11 @@ class GameConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-    async def next_turn(self, *args):
+    def next_turn(self, *args):
         game = getGameByCode(self.room_code)
         starter = Player.objects.get(play_order=game.play_order)
         # Send a message to the room of who is starting the game.
-        await self.channel_layer.group_send(
+        async_to_sync(self.channel_layer.group_send)(
             self.room_code,
             {
                 'type': 'room_message',
@@ -296,68 +304,70 @@ class GameConsumer(AsyncWebsocketConsumer):
             }
         )
         # Send a message to player one to start their move
-        await self.channel_layer.send(starter.channel_name, {
-            'type': 'game_command',
-            'command': 'turn'
-        })
+        async_to_sync(self.channel_layer.send)(
+            starter.channel_name, {
+                'type': 'game_command',
+                'command': 'turn'
+            }
+        )
 
-    async def room_message(self, event):
+    def room_message(self, event):
         message = event['message']
 
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'type': 'room_message',
             'message': message
         }))
 
-    async def game_move(self, event):
+    def game_move(self, event):
         player = event['player']
         move = event['move']
         special = event['special']
 
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'type': 'game_move',
             'player': player,
             'move': move,
             'special': special
         }))
 
-    async def handout(self, event):
+    def handout(self, event):
         handout = event['handout']
         player_cardnums = event['player_cardnums']
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'type': 'handout',
             'handout': handout,
             'player_cardnums': player_cardnums
         }))
 
-    async def game_command(self, event):
+    def game_command(self, event):
         command = event['command']
 
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'type': 'game_command',
             'command': command
         }))
 
-    async def results(self, event):
+    def results(self, event):
         results = event['results']
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'type': 'results',
             'results': results
         }))
 
-    async def player_join(self, event):
+    def player_join(self, event):
         channel_id = event['channel_id']
         name = event['name']
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'type': 'player_join',
             'channel_id': channel_id,
             'name': name
         }))
 
-    async def player_leave(self, event):
+    def player_leave(self, event):
         channel_id = event['channel_id']
         name = event['name']
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'type': 'player_leave',
             'channel_id': channel_id,
             'name': name
