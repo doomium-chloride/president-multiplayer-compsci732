@@ -60,7 +60,8 @@ class GameConsumer(WebsocketConsumer):
         room = getRoomByCode(self.room_code)
         if not room.ingame:
             # If the room game hasn't started yet, decrement player by one and send a room message to other players in the group.
-            room.update(players=F('players')-1)
+            room.players = room.players - 1
+            room.save()
 
             # Get the Player object of the player who left.
             player = Players.objects.get(channel_name=self.channel_name)
