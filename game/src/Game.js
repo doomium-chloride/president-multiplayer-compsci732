@@ -24,7 +24,8 @@ class Game extends Component {
         this.state = {
             gameType: type,
             gameCode: code,
-            cards: []
+            cards: [],
+            otherPlayers: {}
         }
         this.wsURL = wsBase + type + "/" + code
 
@@ -73,12 +74,17 @@ class Game extends Component {
                 case "handout":
                     this.handout(data.handout, data.player_cardnums);
                     break;
+                case "game_move":
+                    this.gameMove(data.player, data.move, data.special);
+                    break;
                 case "results":
                     this.scoreBoard(data.results);
                     break;
                 case "player_join":
+                    console.log(data);
                     break;
                 case "player_leave":
+                    console.log(data);
                     break;
                 default:
                     console.log(data);
@@ -127,18 +133,24 @@ class Game extends Component {
 
     handout(playerCards, otherCards){
         this.setState({
-            cards: playerCards
+            cards: playerCards,
+            otherPlayers: otherCards
         });
+    }
+
+    gameMove(playerID, card, special){
+
     }
 
     render(){
         return(
             <div>
                 <button onClick={this.connect}>Test websocket</button>
-                <Player number={0} cards={10}/>
-                <Player number={1} cards={20}/>
-                <Player number={2} cards={30}/>
-                <Hand cards={this.state.cards}/>
+                {Object.keys(this.state.otherPlayers).forEach(
+                    key => <Player number={key} cards={this.state.otherPlayers[key]}/>
+                )}
+
+                <Hand cards={this.state.cards} ws={this.ws}/>
             </div>
         );
     }

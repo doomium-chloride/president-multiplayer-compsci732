@@ -24,6 +24,8 @@ class Hand extends Component {
         let selected = arrayF(props.cards.length);
         this.cards = createRef();
 
+        this.ws = props.ws;
+
         this.state = {
             codes: props.cards,
             selectedCards: selected
@@ -77,13 +79,26 @@ class Hand extends Component {
 
         alert(sendArray);
 
+        //this.sendMoves(sendArray);
+
         this.setState({
             codes: newCodes,
             cards: newCards,
             selectedCards: arrayF(newCodes.length)
-        }, this.resetSelected);
+        });
         
 
+    }
+
+    sendMoves(cards){
+        let msg = {
+            type: "game_move",
+            player: "channel_id",
+            move: cards,
+            special: "does nothing"
+        }
+
+        this.ws.send(JSON.stringify(msg));
     }
 
     //Old testing method.
