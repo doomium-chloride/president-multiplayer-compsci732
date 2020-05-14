@@ -87,8 +87,8 @@ function Card(props) {
     let style = props.selected ? selectedStyle : normalStyle
 
     return(
-    <div class="card" style={style} id={props.id} onClick={() => {props.onClick(0,props.selected,props.position)}}>
-        <img class={props.card} src={pic}/>
+    <div className="card" style={style} id={props.id} onClick={() => {props.onClick(0,props.selected,props.position)}}>
+        <img className={props.card} src={pic}/>
     </div>
     );
 }

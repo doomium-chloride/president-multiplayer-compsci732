@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
+let serverBase = "http://localhost:8000/";
+
 class Home extends Component {
     constructor() {
         super()
@@ -50,13 +52,14 @@ class Home extends Component {
             var self = this;
             let payload = {
                 max_players: parseInt(this.state.maxPlayers),   
-                game: this.state.gameCode
+                game_type: this.state.gameCode
             };
-            axios.post("http://localhost:8000/", payload)
+            axios.post(serverBase, payload)
                 .then(function (response) {
                     // response is a JSON object. not a string
                     let data = response.data
                     // success is the attribute of the room code
+                    alert(data.success);
                     self.setState({
                         newRoomCode: data.success
                     });
@@ -72,23 +75,23 @@ class Home extends Component {
     render(){
         return(
             <div>
-                <form>
+                <div>
                     <label>
                         Room Code:
                         <input type="text" name="room-code" onChange={this.handleChangeRoom}/>
                     </label>
                     <button onClick={this.joinGame}>Join Game</button>
-                </form>
-                <form>
+                </div>
+                <div>
                     <label>
                         Game code:
-                        <input type="text" name="game" onChange={this.handleChangeGame}/>
+                        <input type="text" name="game_type" onChange={this.handleChangeGame}/>
                         Max number of players:
                         <input type="number" name="max_players" onChange={this.handleChangeMaxPlayers}/>
                     </label>
                     <button onClick={this.makeGame}>Start Game</button>
                     <p>{this.state.newRoomCode}</p>
-                </form>
+                </div>
             </div>
         );
     }

@@ -48,7 +48,7 @@ function App() {
             <Game/>
           </div>
           </Route>
-          <Route path="/:room" children={room}>
+          <Route path="/:room" component={room}>
           </Route>
         </Switch>
       </div>
@@ -58,9 +58,9 @@ function App() {
 }
 
 const room = ({ match }) => (
-  <div>
-    <p>Welcome to room {match.params.room}</p>
-  </div>
+
+  <Game gameType="PRES" gameCode={match.params.room}/>
+
 )
 
 export default App;

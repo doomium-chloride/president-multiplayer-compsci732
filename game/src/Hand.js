@@ -120,7 +120,7 @@ class Hand extends Component {
         let selected = this.state.selectedCards
         let cards = []
         for(let i = 0; i < codes.length; i++){
-            cards.push(<Card card={codes[i]} onClick={(o,s) => this.updateSelected(s,i) } position={i} selected={selected[i]}/>)
+            cards.push(<Card key={i} card={codes[i]} onClick={(o,s) => this.updateSelected(s,i) } position={i} selected={selected[i]}/>)
         }
 
         return (
