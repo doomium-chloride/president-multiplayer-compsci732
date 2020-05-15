@@ -27,7 +27,8 @@ class Game extends Component {
             gameType: type,
             gameCode: code,
             cards: [],
-            otherPlayers: {}
+            otherPlayers: {},
+            chatLog: []
         }
         this.wsURL = wsBase + type + "/" + code
 
@@ -53,7 +54,7 @@ class Game extends Component {
         //websocket part
 
         this.ws = new WebSocket(this.wsURL);    
-
+        //cache this object into that
         let that = this;
 
         this.ws.onopen = () => {
@@ -69,7 +70,9 @@ class Game extends Component {
             const data = JSON.parse(e.data)
             switch(data.type){
                 case "room_message":
-                    alert(data.message);
+                    that.setState(prevState => ({
+                        chatLog: [...prevState.chatLog, data.message]
+                    }));
                     break;
                 case "game_command":
                     this.parseCommand(data.command);
@@ -112,7 +115,7 @@ class Game extends Component {
             this.ws.close();
         }
 
-        this.getName()
+        //this.getName()
     }
 
     connect(){
@@ -164,9 +167,11 @@ class Game extends Component {
         this.ws.send(JSON.stringify(msg));
     }
 
+
     render(){
         return(
             <div>
+
                 <button onClick={this.connect}>Test websocket</button>
                 <button onClick={this.start}>Start</button>
                 {Object.keys(this.state.otherPlayers).forEach(

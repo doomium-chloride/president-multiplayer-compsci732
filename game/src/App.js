@@ -9,6 +9,7 @@ import {
 import Hand from './Hand';
 import Home from './Home';
 import Game from './Game';
+import Chat from './Chat';
 
 var cardlist = [];
   for(let i = 13; i > 0; i--){
@@ -28,6 +29,9 @@ function App() {
           <li>
             <Link to="/game">Game</Link>
           </li>
+          <li>
+            <Link to="/chat">Chat</Link>
+          </li>
         </ul>
 
         <hr />
@@ -43,6 +47,9 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
+          <Route path="/chat">
+            <Chat log={[]}/>
+          </Route>
           <Route path="/game">
           <div>
             <Game/>
@@ -50,6 +57,7 @@ function App() {
           </Route>
           <Route path="/:room" component={room}>
           </Route>
+          
         </Switch>
       </div>
     </Router>
