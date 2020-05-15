@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import Player from './Player';
 import Hand from './Hand';
 import axios from 'axios';
+import Card from './cards/Card';
+
 
 //websockets
 
@@ -29,6 +31,7 @@ class Game extends Component {
         }
         this.wsURL = wsBase + type + "/" + code
 
+        this.start = this.start.bind(this);
         this.connect = this.connect.bind(this);
     }
 
@@ -108,6 +111,8 @@ class Game extends Component {
             console.error("WebSocket error observed:", err);
             this.ws.close();
         }
+
+        this.getName()
     }
 
     connect(){
@@ -117,6 +122,16 @@ class Game extends Component {
         this.ws = new WebSocket(this.wsURL);   
 
         
+    }
+
+    getName(){
+        const name = prompt("Please enter a name");
+        this.setState({playerName: name});
+        const msg = {
+            type: "name",
+            name: name
+        }
+        this.ws.send(JSON.stringify(msg));
     }
 
     parseCommand(command){
@@ -142,18 +157,69 @@ class Game extends Component {
 
     }
 
+    start(){
+        let msg = {
+            type: "start"
+        }
+        this.ws.send(JSON.stringify(msg));
+    }
+
     render(){
         return(
             <div>
                 <button onClick={this.connect}>Test websocket</button>
+                <button onClick={this.start}>Start</button>
                 {Object.keys(this.state.otherPlayers).forEach(
                     key => <Player number={key} cards={this.state.otherPlayers[key]}/>
                 )}
+
+                <div>
+                    <field card={this.state.fieldCard}/>
+                </div>
 
                 <Hand cards={this.state.cards} ws={this.ws}/>
             </div>
         );
     }
 }
+
+function field(card){
+    if(card){
+        return(<Card card={card}/>);
+    }else{
+        return(null);
+    }
+}
+
+/** The prompt content component */
+class Prompt extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: this.props.defaultValue
+        };
+
+        this.onChange = (e) => this._onChange(e);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.value !== this.state.value) {
+            this.props.onChange(this.state.value);
+        }
+    }
+
+    _onChange(e) {
+        let value = e.target.value;
+
+        this.setState({value: value});
+    }
+
+    render() {
+        return <input type="text" placeholder={this.props.placeholder} className="mm-popup__input" value={this.state.value} onChange={this.onChange} />;
+    }
+}
+
+
 
 export default Game;

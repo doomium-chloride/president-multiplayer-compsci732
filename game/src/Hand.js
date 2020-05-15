@@ -32,10 +32,12 @@ class Hand extends Component {
         };
         this.updateSelected = this.updateSelected.bind(this);
         this.playSelected = this.playSelected.bind(this);
-        this.addCard = this.addCard.bind(this);
-
+        this.skip = this.skip.bind(this);
+        
         //testing
         this.reset = this.reset.bind(this);
+        this.addCard = this.addCard.bind(this);
+
     }
 
     //When the player selects or unselects a card, this method updates the states.
@@ -91,7 +93,7 @@ class Hand extends Component {
     }
 
     sendMoves(cards){
-        let msg = {
+        const msg = {
             type: "game_move",
             player: "channel_id",
             move: cards,
@@ -128,6 +130,16 @@ class Hand extends Component {
         });
     }
 
+    skip(){
+        const msg = {
+            type: "game_move",
+            player: "channel_id",
+            move: "skip",
+            special: "does nothing"
+        }
+        this.ws.send(JSON.stringify(msg));
+    }
+
 
     render() {
 
@@ -146,8 +158,7 @@ class Hand extends Component {
                 </div>
                 <div style={{position: "relative", top: "400px"}}>
                     <PlayButton activate={this.playSelected}/>
-                    <button onClick={this.addCard}>Add Card</button>
-                    <button onClick={this.reset}>Reset</button>
+                    <button onClick={this.skip} type="button">Skip</button>
                 </div>
             </div>
           );
