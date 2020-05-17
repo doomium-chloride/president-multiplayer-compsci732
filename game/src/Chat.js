@@ -7,7 +7,6 @@ class Chat extends Component {
     //log will be a list of text
     constructor(props){
         super(props);
-        this.ws = props.ws;
         this.state = {
             sendText: ""
         }
@@ -33,8 +32,8 @@ class Chat extends Component {
             message: text
         }
         
-        if(this.ws){
-        this.ws.send(JSON.stringify(msg));
+        if(this.props.ws){
+        this.props.ws.send(JSON.stringify(msg));
         } else{
             alert(JSON.stringify(msg));
         }
