@@ -1,0 +1,27 @@
+.chatBox{
+    position: absolute;
+    border-style: solid;
+    border-width: 1px;
+    width: 200px;
+    height: 300px;
+    display: inline-block;
+    margin: 1%;
+}
+.chatInput{
+    position: inherit;
+    bottom: 0;
+}
+.chat{
+    position: inherit;
+    width: 200px;
+    height: 275px;
+    border-bottom: 1px black solid;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
+}
+.chatLineOdd{
+    background-color: cornsilk;
+}
+.chatLineEven{
+    background-color: whitesmoke;
+}

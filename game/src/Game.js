@@ -3,6 +3,7 @@ import Player from './Player';
 import Hand from './Hand';
 import axios from 'axios';
 import Card from './cards/Card';
+import Chat from './Chat';
 
 
 //websockets
@@ -34,6 +35,9 @@ class Game extends Component {
 
         this.start = this.start.bind(this);
         this.connect = this.connect.bind(this);
+
+        //test
+        this.testChat = this.testChat.bind(this);
     }
 
     componentDidMount(){
@@ -167,6 +171,22 @@ class Game extends Component {
         this.ws.send(JSON.stringify(msg));
     }
 
+    //test
+
+    testChat(){
+        this.newMessage(this, "bob", this.state.chatLog);
+
+    }
+    //called then child (the chat) sends a message so own message is recorded
+    //that is to cache this object to keep context
+    newMessage(that ,message, oldLog){
+        alert(oldLog);
+        that.setState({
+            chatLog: [...oldLog, message]
+        });
+        that.forceUpdate();
+    }
+
 
     render(){
         return(
@@ -174,12 +194,15 @@ class Game extends Component {
 
                 <button onClick={this.connect}>Test websocket</button>
                 <button onClick={this.start}>Start</button>
+                <button onClick={this.testChat}>test chat</button>
                 {Object.keys(this.state.otherPlayers).forEach(
                     key => <Player number={key} cards={this.state.otherPlayers[key]}/>
                 )}
 
+                <Chat log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
+
                 <div>
-                    <field card={this.state.fieldCard}/>
+                    <Field card={this.state.fieldCard}/>
                 </div>
 
                 <Hand cards={this.state.cards} ws={this.ws}/>
@@ -188,7 +211,7 @@ class Game extends Component {
     }
 }
 
-function field(card){
+function Field(card){
     if(card){
         return(<Card card={card}/>);
     }else{

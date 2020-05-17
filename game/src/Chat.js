@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import './Chat.css';
 
 class Chat extends Component {
     //Props will be
@@ -8,11 +9,14 @@ class Chat extends Component {
         super(props);
         this.ws = props.ws;
         this.state = {
-            log: props.log,
             sendText: ""
         }
+
         this.sendMessage = this.sendMessage.bind(this);
         this.handleChangeText = this.handleChangeText.bind(this);
+
+        //test
+        this.test = this.test.bind(this);
     }
 
     handleChangeText(event){
@@ -23,7 +27,7 @@ class Chat extends Component {
 
     sendMessage(){
         const text = this.state.sendText;
-        const oldLog = this.state.log;
+        const oldLog = this.props.log;
         let msg = {
             type: "game_message",
             message: text
@@ -34,21 +38,28 @@ class Chat extends Component {
         } else{
             alert(JSON.stringify(msg));
         }
+        this.props.update(text, oldLog);
         this.setState({
-            log: [...oldLog, text],
             sendText: ""
         });
+        
+    }
+
+    test(){
+        const oldLog = this.props.log;
+        this.props.update("meh", oldLog);
     }
 
     render(){
         return(
             <div className="chatBox">
                 <div className="chat">
-                    {this.state.log.map((tex, i) => <ChatLine order={i} text={tex}/>)}
+                    {this.props.log.map((tex, i) => <ChatLine order={i} text={tex}/>)}
                 </div>
                 <div className="chatInput">
                     <input type="text" value={this.state.sendText} name="chatText" onChange={this.handleChangeText}/>
                     <button onClick={this.sendMessage}>Send</button>
+                    <button onClick={this.test}>test</button>
                 </div>
             </div>
 
