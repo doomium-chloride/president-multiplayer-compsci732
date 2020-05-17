@@ -14,8 +14,6 @@ class Chat extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.handleChangeText = this.handleChangeText.bind(this);
 
-        //test
-        this.test = this.test.bind(this);
     }
 
     handleChangeText(event){
@@ -44,11 +42,6 @@ class Chat extends Component {
         
     }
 
-    test(){
-        const oldLog = this.props.log;
-        this.props.update("meh", oldLog);
-    }
-
     render(){
         return(
             <div className="chatBox">
@@ -58,7 +51,6 @@ class Chat extends Component {
                 <div className="chatInput">
                     <input type="text" value={this.state.sendText} name="chatText" onChange={this.handleChangeText}/>
                     <button onClick={this.sendMessage}>Send</button>
-                    <button onClick={this.test}>test</button>
                 </div>
             </div>
 
