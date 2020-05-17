@@ -2,9 +2,7 @@ import React, {Component} from "react";
 import './Chat.css';
 
 class Chat extends Component {
-    //Props will be
-    //log, which is what the chat displays
-    //log will be a list of text
+
     constructor(props){
         super(props);
         this.state = {
