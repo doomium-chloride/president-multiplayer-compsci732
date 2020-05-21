@@ -1,7 +1,7 @@
 import React, {Component, createRef} from "react";
 import Card from './cards/Card';
-import {render} from 'react-dom';
 import './styles/Selection.css';
+import {front2back} from './utils/card-code-translator';
 
 //creates an array of false of length length
 //for example arrayF(3) = [false,false,false]
@@ -84,8 +84,8 @@ class Hand extends Component {
         //this.sendMoves(sendArray);
 
         this.setState({
-            codes: newCodes,
-            cards: newCards,
+            //codes: newCodes,
+            //cards: newCards,
             selectedCards: arrayF(newCodes.length)
         });
         
@@ -95,11 +95,8 @@ class Hand extends Component {
     sendMoves(cards){
         const msg = {
             type: "game_move",
-            player: "channel_id",
-            move: cards,
-            special: "does nothing"
+            move: front2back(card)
         }
-
         this.ws.send(JSON.stringify(msg));
     }
 

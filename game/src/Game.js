@@ -6,7 +6,6 @@ import {FieldCard} from './cards/Card';
 import Chat from './Chat';
 import './styles/PlayerNameForm.css';
 import './styles/Game.css';
-import {front2back} from './utils/card-code-translator';
 
 
 //websockets
@@ -87,9 +86,6 @@ class Game extends Component {
                 case "handout":
                     this.handout(data.handout, data.player_cardnums);
                     break;
-                case "game_move":
-                    this.gameMove(data.player, data.move, data.special);
-                    break;
                 case "results":
                     this.scoreBoard(data.results);
                     break;
@@ -164,11 +160,7 @@ class Game extends Component {
     }
 
     gameMove(card){
-        let msg = {
-            type: "game_move",
-            move: front2back(card)
-        }
-        this.ws.send(JSON.stringify(msg));
+        
     }
 
     start(){
