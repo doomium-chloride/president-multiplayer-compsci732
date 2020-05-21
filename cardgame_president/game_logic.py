@@ -10,44 +10,62 @@ def getRoomByCode(code):
 def getGameByCode(code):
     return Game.objects.get(room=Room.objects.get(code=code))
 
-def getPlayersByCode(code):
-    return Player.objects.filter(game=Game.objects.get(room=Room.objects.get(code=code)))
+def next_player(player, game):
+    for i, p in enumerate(game.player):
+        if p.channel_name == player.channel_name:
+            index = i
+    for index in range(index + len(game.player)):
+        if game.player[(index+1)%game.player].skip_turn == False:
+            game.player[(index+1)%game.player].current_turn = True
+            break
 
 def skip_turn(player, game):
     # Set the player skip state to true.
     player.skip_turn = True
+    player.current_turn = False
     player.save()
+
+    # Find the next player
+    next_player(room)
+
     # Sees if there are any more skippable players.
-    players = getPlayersByCode(code)
-    turn = game.current_turn + 1
+    remaining = game.player.filter(skip_turn=False)
+    if len(remaining) > 1:
+        # There are still more players in the round
+        return False
 
-    # While loop to find the next valid player.
-    while (players.get(play_order=turn).skip_turn):
-        turn = (turn + 1) % len(players)
-    game.current_turn = turn
+    # Return the winner
+    return remaining[0]
+
+def new_game(game):
+    # Reset player states.
+    for p in game.player:
+        p.skip_turn = False
+        p.ready = False
+        p.current_turn = False
+        p.num_cards = -1
+        p.H = ""
+        p.D = ""
+        p.C = ""
+        p.S = ""
+        p.X = ""
+        p.save()
+
+    # Reset game state
+    game.current_card = ""
     game.save()
 
-    count = 0
-    for p in players:
-        if not p.skip_turn:
-            count += 1
-        if count > 1:
-            # More than two players still in the round.
-            return False
-    return True
+def reset_roles(game):
+    for p in game.player:
+        p.role = ""
+        p.save()
 
-def new_round(code):
-    # Reset player skip states.
-    players = getPlayersByCode(code)
-    for player in players:
-        player.skip_turn = False
-        player.save()
-    # Reset game special states.
-    game = getGameByCode(code)
-    game.current_card = -1
-    game.save()
+def reset_round(game):
+    for p in game.player:
+        if p.role == "":
+            p.skip_turn = False
 
-def play_move(move, special, player, game):
+def play_move(move, player, game):
     # returned value meaning
     # -1: Invalid Move
     # 0: Player has finished their hand.
@@ -72,7 +90,6 @@ def play_move(move, special, player, game):
     if card_order.index(card_num) > card_order.index(game.current_card[:1]):
         game.current_card = move
         # Remove the card from the player's hand
-        player.update(card_num=F('card_num')-1)
         if card_type == "H":
             player.H = player.H.replace(card_num, "")
         elif card_type == "D":
@@ -81,9 +98,8 @@ def play_move(move, special, player, game):
             player.C = player.C.replace(card_num, "")
         elif card_type == "S":
             player.S = player.S.replace(card_num, "")
-
-        
-        players = getPlayersByCode(code)
+        player.num_cards = player.num_cards - 1
+        player.save()
 
         # If the player has no more cards, set their skip state to True and give the required role.
         if player.card_num == 0:
@@ -95,20 +111,30 @@ def play_move(move, special, player, game):
             if len(players) == 4:
                 roles += ['VPR', 'VSC']
             elif len(players) == 3:
-                roles += [None]
+                roles += ['NOR']
             roles += ['SC']
 
             player.role = roles[len(players.filter(card_num<1)) - 1]
-            player.save()            
+            player.save()        
 
-        # While loop to find the next valid player.
-        while (players.get(play_order=turn).skip_turn):
-            turn = (turn + 1) % len(players)
-        game.current_turn = turn
-        game.save()
+        next_player(player, game)
+
+        remaining = game.player.filter(skip_turn=False)
+        if len(remaining) < 2:
+            # There is just one more player.
+            reset_round(game)       
 
         return player.card_num
     return -1
+
+def game_winner(game):
+    remaining = game.player.filter(card_num>0)
+    if len(remaining) < 2:
+        # Set the last player's role to Scum
+        remaining[0].role = 'SC'
+        remaining[0].save()
+        return True
+    return False
 
 def serve_cards(players, code):
     # Create a deck of cards, shuffled.
@@ -140,6 +166,7 @@ def serve_cards(players, code):
             elif card[0] == "X":
                 i.X = i.X + 1
             handout += card
+        i.num_cards = 54//len(players) + offset
         i.save()
         handouts += handout
 
@@ -147,11 +174,20 @@ def serve_cards(players, code):
     game = getGameByCode(code)
     game.current_card = ""
 
-    # Set the current turn to the player who has the 3 of clubs.
-    for p in players:
-        if "3" in p.C:
-            game.current_turn = p.play_order
-    game.save()
+    # Assign the current player.
+    player = game.player.get(role="SC")
+    if len(player) > 0:
+        # There is a scum. They are the starting player.
+        player.current_turn = True
+        player.save()
+
+    else:
+        # Find the player with the 3 of clubs.
+        for p in game.player:
+            if "3" in p.C:
+                p.current_turn = True
+                p.save()
+                break
 
     # Return the handouts as a list of lists to the Consumer.
     return handouts

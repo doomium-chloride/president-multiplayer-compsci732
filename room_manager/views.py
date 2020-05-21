@@ -36,9 +36,10 @@ class JoinRoomView(APIView):
     # Join room
     def get(self, request, room_code):
         
-        room = getRoomByCode(room_code)
-        # See if the current room exists
-        if not room:
+        try:
+            room = getRoomByCode(room_code)
+            # See if the current room exists
+        except Room.DoesNotExist:
             content = {'error': 'Room does not exist.'}
             return Response(content)
 
