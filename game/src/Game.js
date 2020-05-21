@@ -187,6 +187,21 @@ class Game extends Component {
         that.forceUpdate();
     }
 
+    onNameChangeHandler(event){
+        this.setState({playerNameTemp: event.target.value});
+    }
+
+    getPlayerName(){
+        const name = this.state.playerNameTemp;
+        alert(name);
+        this.setState({playerName: name});
+        const msg = {
+            type: "name",
+            name: name
+        }
+        this.ws.send(JSON.stringify(msg));
+    }
+
 
     render(){
         return(
@@ -201,6 +216,8 @@ class Game extends Component {
 
                 <Chat log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
 
+                {!this.state.playerName && <GetPlayerName onNameChange={this.onNameChangeHandler.bind(this)} submitName={this.getPlayerName.bind(this)}/>}
+
                 <div>
                     <Field card={this.state.fieldCard}/>
                 </div>
@@ -211,12 +228,22 @@ class Game extends Component {
     }
 }
 
-function Field(card){
+function Field({card}){
     if(card){
         return(<Card card={card}/>);
     }else{
         return(null);
     }
+}
+
+function GetPlayerName(props){
+    return(
+        <div style={{display: 'inline-block'}}>
+            Player Name: 
+            <input type="text" name="player-name" onChange={props.onNameChange}/>
+            <button onClick={props.submitName}>Enter</button>
+        </div>
+    );
 }
 
 /** The prompt content component */
