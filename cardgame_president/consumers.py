@@ -110,6 +110,8 @@ class GameConsumer(WebsocketConsumer):
             if move == "skip":
                 # Player has stated they will skip their turn for this round.
                 winner = skip_turn(player)
+                # Send a response to the player that their move has been accepted.
+                self.move_response(move)
                 # Send a message to the group of the player skipping their turn.
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_code,
@@ -149,6 +151,8 @@ class GameConsumer(WebsocketConsumer):
                         'message': 'You cannot make this move!'
                     }))
                 else:
+                    # Send a response to the player that their move has been accepted.
+                    self.move_response(move)
                     # If a player has finished their hand, declare their position.
                     # The check returns the number of cards the player has left.
                     if check == 0:
@@ -191,8 +195,13 @@ class GameConsumer(WebsocketConsumer):
             self.draw_frame()
 
         elif message_type == "ready":
-            # toggle the ready state of the player.
-            player.ready = not player.ready
+            game = getRoomByCode(self.room_code)
+            if game.ingame:
+                # the player would like to player again.
+                player.ready = True
+            else:
+                # toggle the ready state of the player. Used in pre-game
+                player.ready = not player.ready
             player.save()
 
             if len(game.players.all().filter(ready=True)) == len(game.players.all()) > 1:
@@ -207,14 +216,26 @@ class GameConsumer(WebsocketConsumer):
                         }
                     )
 
-            # Reset roles of players
-            reset_roles(game)
-
-            # Update frame
-            self.draw_frame()
+                # Reset roles of players
+                reset_roles(game)
+            
+            if game.ingame:
+                # Send a message to the chatbox that a player is ready.
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_code,
+                        {
+                            'type': 'room_message',
+                            'message': "{} would like to play again.".format(player.name)
+                        }
+                    )
+            else:
+                # Update frame
+                self.draw_frame()
 
         elif message_type == "chat":
-            message = text_data_json['message']
+            # Get the player name to append to the beginning of the message.
+            message = "{}: {}".format(player.name, text_data_json['message'])
+            
             async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
@@ -228,8 +249,8 @@ class GameConsumer(WebsocketConsumer):
         for p in getGameByCode(self.room_code).players.all():
             info = {}
             info['name'] = p.name
-            info['id'] = p.id
             info['ready'] = p.ready
+            info['role'] = p.role
             info['current_turn'] = p.current_turn
             info['skip_turn'] = p.skip_turn
             info['num_cards'] = p.num_cards
@@ -246,6 +267,12 @@ class GameConsumer(WebsocketConsumer):
                 'current_card': game.current_card,
             }
         )
+
+    def move_response(self, move):
+        self.send(text_data=json.dumps({
+            'type': 'move_response',
+            'move': move,
+        }))
 
     def frame(self, event):  
         self.send(text_data=json.dumps({
