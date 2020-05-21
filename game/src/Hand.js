@@ -156,7 +156,7 @@ class Hand extends Component {
                 <div>
                     {cards}
                 </div>
-                <div style={{position: "relative", top: "400px"}}>
+                <div className="handButtons">
                     <PlayButton activate={this.playSelected}/>
                     <button onClick={this.skip} type="button">Skip</button>
                 </div>

@@ -1,5 +1,5 @@
 .gameField > {
-
+    position: absolute;
 }
 
 .singleCard{
@@ -18,6 +18,11 @@
 
 .hand{
     position: absolute;
-    bottom: 60%;
-    left: 40%;
+    bottom: 0;
+    transform-origin: center bottom;
+    transform: translate(100%, -1500%);
+}
+
+.hand img{
+    max-width: 180px;
 }

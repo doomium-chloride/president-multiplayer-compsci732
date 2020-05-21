@@ -47,7 +47,7 @@ class Chat extends Component {
                     {this.props.log.map((tex, i) => <ChatLine order={i} text={tex}/>)}
                 </div>
                 <div className="chatInput">
-                    <input type="text" value={this.state.sendText} name="chatText" onChange={this.handleChangeText}/>
+                    <textarea value={this.state.sendText} name="chatText" onChange={this.handleChangeText}/>
                     <button onClick={this.sendMessage}>Send</button>
                 </div>
             </div>

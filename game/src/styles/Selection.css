@@ -5,3 +5,8 @@
 .unselected{
     top: 0
 }
+
+.handButtons{
+    position: relative;
+    top: 300px;
+}

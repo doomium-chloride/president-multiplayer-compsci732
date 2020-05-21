@@ -21,7 +21,7 @@ class Home extends Component {
         this.joinGame = this.joinGame.bind(this);
         this.makeGame = this.makeGame.bind(this);
     }
-
+    
     handleChangeRoom(event){
         this.setState({roomCode: event.target.value});
     }
