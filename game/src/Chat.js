@@ -24,7 +24,7 @@ class Chat extends Component {
         const text = this.state.sendText;
         const oldLog = this.props.log;
         let msg = {
-            type: "game_message",
+            type: "char",
             message: text
         }
         
@@ -33,6 +33,7 @@ class Chat extends Component {
         } else{
             alert(JSON.stringify(msg));
         }
+        //the next line is probably unnecessary
         this.props.update(text, oldLog);
         this.setState({
             sendText: ""

@@ -6,6 +6,7 @@ import {FieldCard} from './cards/Card';
 import Chat from './Chat';
 import './styles/PlayerNameForm.css';
 import './styles/Game.css';
+import {front2back} from './utils/card-code-translator';
 
 
 //websockets
@@ -162,8 +163,12 @@ class Game extends Component {
         });
     }
 
-    gameMove(playerID, card, special){
-
+    gameMove(card){
+        let msg = {
+            type: "game_move",
+            move: front2back(card)
+        }
+        this.ws.send(JSON.stringify(msg));
     }
 
     start(){
@@ -261,35 +266,6 @@ function GetPlayerName(props){
             <button onClick={props.submitName}>Enter</button>
         </div>
     );
-}
-
-/** The prompt content component */
-class Prompt extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            value: this.props.defaultValue
-        };
-
-        this.onChange = (e) => this._onChange(e);
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.value !== this.state.value) {
-            this.props.onChange(this.state.value);
-        }
-    }
-
-    _onChange(e) {
-        let value = e.target.value;
-
-        this.setState({value: value});
-    }
-
-    render() {
-        return <input type="text" placeholder={this.props.placeholder} className="mm-popup__input" value={this.state.value} onChange={this.onChange} />;
-    }
 }
 
 
