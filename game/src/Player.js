@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import './Player.css';
+import './styles/Player.css';
 
 function Player(props){
     let player = "Player:" + props.number;

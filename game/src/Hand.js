@@ -1,7 +1,7 @@
 import React, {Component, createRef} from "react";
 import Card from './cards/Card';
 import {render} from 'react-dom';
-import './Selection.css';
+import './styles/Selection.css';
 
 //creates an array of false of length length
 //for example arrayF(3) = [false,false,false]
