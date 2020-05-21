@@ -2,8 +2,10 @@ import React, {Component} from "react";
 import Player from './Player';
 import Hand from './Hand';
 import axios from 'axios';
-import Card from './cards/Card';
+import {FieldCard} from './cards/Card';
 import Chat from './Chat';
+import './styles/PlayerNameForm.css';
+import './styles/Game.css';
 
 
 //websockets
@@ -28,7 +30,7 @@ class Game extends Component {
             gameType: type,
             gameCode: code,
             cards: [],
-            otherPlayers: {},
+            otherPlayers: {a1: 1,a2: 2, a3:3},
             chatLog: []
         }
         this.wsURL = wsBase + type + "/" + code
@@ -200,29 +202,40 @@ class Game extends Component {
             name: name
         }
         this.ws.send(JSON.stringify(msg));
+        this.start();
     }
 
 
     render(){
-        return(
-            <div>
 
-                <button onClick={this.connect}>Test websocket</button>
-                <button onClick={this.start}>Start</button>
-                <button onClick={this.testChat}>test chat</button>
+        //<button onClick={this.connect}>Test websocket</button>
+        //<button onClick={this.start}>Start</button>
+        //<button onClick={this.testChat}>test chat</button>
+
+        //<Hand cards={this.state.cards} ws={this.ws}/>
+        let testCards = ["c1","c2","jb","jr","h12"];
+
+        return(
+            <div className="gameField">
+
+                
                 {Object.keys(this.state.otherPlayers).forEach(
                     key => <Player number={key} cards={this.state.otherPlayers[key]}/>
                 )}
+                <Player number={1} cards={20}/>
+                <Player number={2} cards={10}/>
+                <Player number={3} cards={30}/>
+
+                <Field card={"c4"}/>
 
                 <Chat log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
 
                 {!this.state.playerName && <GetPlayerName onNameChange={this.onNameChangeHandler.bind(this)} submitName={this.getPlayerName.bind(this)}/>}
 
-                <div>
-                    <Field card={this.state.fieldCard}/>
-                </div>
+                
+                
 
-                <Hand cards={this.state.cards} ws={this.ws}/>
+                <Hand cards={testCards} ws={this.ws}/>
             </div>
         );
     }
@@ -230,7 +243,11 @@ class Game extends Component {
 
 function Field({card}){
     if(card){
-        return(<Card card={card}/>);
+        return(
+            <div className="singleCard">
+                    <FieldCard card={card}/>
+            </div>
+        );
     }else{
         return(null);
     }
@@ -238,7 +255,7 @@ function Field({card}){
 
 function GetPlayerName(props){
     return(
-        <div style={{display: 'inline-block'}}>
+        <div className="singleForm">
             Player Name: 
             <input type="text" name="player-name" onChange={props.onNameChange}/>
             <button onClick={props.submitName}>Enter</button>

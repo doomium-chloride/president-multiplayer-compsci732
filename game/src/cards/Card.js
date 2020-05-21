@@ -92,6 +92,18 @@ function Card(props) {
     </div>
     );
 }
+
+//unclickable card
+
+export function FieldCard({card}){
+    let pic = decider(card);
+    return(
+        <div className="card">
+            <img className={card} src={pic}/>
+        </div>
+    );
+}
+
 //function that returns the correct image
 function decider(code){
     var pic;

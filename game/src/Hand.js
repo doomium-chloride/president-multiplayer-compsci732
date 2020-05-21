@@ -151,7 +151,7 @@ class Hand extends Component {
         }
 
         return (
-            <div style={{position: "absolute"}}>
+            <div className="hand">
                 
                 <div>
                     {cards}

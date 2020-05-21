@@ -1,0 +1,23 @@
+.gameField > {
+
+}
+
+.singleCard{
+    position: relative;
+    display: inline-block;
+    width: 10%;
+}
+.singleCard > div{
+    position: absolute;
+    max-width: 100%;
+}
+.singleCard img{
+    max-width: 100%;
+}
+
+
+.hand{
+    position: absolute;
+    bottom: 60%;
+    left: 40%;
+}

@@ -17,12 +17,8 @@ var cardlist = [];
   }
   cardlist.push("h4");
 
-function App() {
-  
-  return (
-    <Router>
-      <div>
-        <ul>
+
+{/* <ul>
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -34,7 +30,14 @@ function App() {
           </li>
         </ul>
 
-        <hr />
+        <hr /> */}
+
+function App() {
+  
+  return (
+    <Router>
+      <div>
+        
 
         {/*
           A <Switch> looks through all its children <Route>
