@@ -64,6 +64,9 @@ def reset_round(game):
     for p in game.player:
         if p.role == "":
             p.skip_turn = False
+            p.save()
+    game.current_card = ""
+    game.save()
 
 def play_move(move, player, game):
     # returned value meaning
