@@ -122,7 +122,7 @@ def play_move(move, player, game):
         skip_state = True
 
         # If the player has no more cards, set their skip state to True and give the required role.
-        if player.card_num == 0:
+        if player.num_cards == 0:
             player.skip_turn = True
 
             # Game only allows a maximum of 4 players.
