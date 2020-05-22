@@ -11,12 +11,15 @@ def getGameByCode(code):
     return Game.objects.get(room=Room.objects.get(code=code))
 
 def next_player(player, game):
+    player.current_turn = False
+    player.save()
     for i, p in enumerate(game.players.all()):
         if p.channel_name == player.channel_name:
             index = i
     for index in range(index + len(game.players.all())):
         if game.players.all()[(index+1)%len(game.players.all())].skip_turn == False:
             game.players.all()[(index+1)%len(game.players.all())].current_turn = True
+            game.players.all()[(index+1)%len(game.players.all())].save()
             break
 
 def skip_turn(player, game):
@@ -53,6 +56,7 @@ def new_game(game):
 
     # Reset game state
     game.current_card = ""
+    game.jokers_remaining = 2
     game.save()
 
 def reset_roles(game):
@@ -101,8 +105,14 @@ def play_move(move, player, game):
             player.C = player.C.replace(card_num, "")
         elif card_type == "S":
             player.S = player.S.replace(card_num, "")
+        elif card_type == "X":
+            player.X = player.X - 1
+            game.jokers_remaining = game.jokers_remaining - 1
+            game.save()
         player.num_cards = player.num_cards - 1
         player.save()
+
+        skip_state = True
 
         # If the player has no more cards, set their skip state to True and give the required role.
         if player.card_num == 0:
@@ -118,14 +128,14 @@ def play_move(move, player, game):
             roles += ['SC']
 
             player.role = roles[len(players.filter(card_num<1)) - 1]
-            player.save()        
-
-        next_player(player, game)
+            player.save()
 
         remaining = game.players.all().filter(skip_turn=False)
-        if len(remaining) < 2:
-            # There is just one more player.
-            reset_round(game)       
+        if len(remaining) < 2 or (card_type == "X" or (card_num == 2 and game.jokers_remaining == 0)):
+            # There is just one more player. OR the highest card was played.
+            reset_round(game)
+            if player.card_num == 0:
+                next_player(player,game) 
 
         return player.card_num
     return -1

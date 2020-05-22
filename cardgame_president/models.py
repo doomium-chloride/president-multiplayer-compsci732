@@ -6,6 +6,7 @@ from room_manager.models import Room
 class Game(models.Model):
     room = models.OneToOneField(Room, on_delete=models.CASCADE, related_name="room")
     current_card = models.CharField(max_length=2, default="")
+    jokers_remaining = models.CharField()
 
 class Player(models.Model):
     PRESIDENT = 'PR'
