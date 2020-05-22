@@ -175,7 +175,8 @@ class GameConsumer(WebsocketConsumer):
                                     'type': 'results',
                                     'results': results
                                 }
-                            )                            
+                            )
+                    self.draw_frame()
             
         elif message_type == "name":
             # Player name registration
@@ -281,7 +282,7 @@ class GameConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_send)(
             self.room_code,
             {
-                'type': 'frame',
+                'type': 'game_frame',
                 'players': players,
                 'current_card': game.current_card,
             }
@@ -293,7 +294,7 @@ class GameConsumer(WebsocketConsumer):
             'move': move,
         }))
 
-    def frame(self, event):  
+    def game_frame(self, event):  
         self.send(text_data=json.dumps({
             'type': 'game_frame',
             'players': event['players'],
