@@ -6,7 +6,7 @@ import {FieldCard} from './cards/Card';
 import Chat from './Chat';
 import './styles/PlayerNameForm.css';
 import './styles/Game.css';
-
+import {back2front} from './utils/card-code-translator';
 
 //websockets
 
@@ -30,12 +30,11 @@ class Game extends Component {
             gameType: type,
             gameCode: code,
             cards: [],
-            otherPlayers: {a1: 1,a2: 2, a3:3},
+            otherPlayers: [],
             chatLog: []
         }
         this.wsURL = wsBase + type + "/" + code
 
-        this.start = this.start.bind(this);
         this.connect = this.connect.bind(this);
 
         //test
@@ -84,10 +83,13 @@ class Game extends Component {
                     this.parseCommand(data.command);
                     break;
                 case "handout":
-                    this.handout(data.handout, data.player_cardnums);
+                    this.handout(data.handout);
                     break;
                 case "results":
                     this.scoreBoard(data.results);
+                    break;
+                case "game_frame":
+                    this.gameFrame(data.players, data.current_card);
                     break;
                 case "player_join":
                     console.log(data);
@@ -152,10 +154,18 @@ class Game extends Component {
         
     }
 
-    handout(playerCards, otherCards){
+    gameFrame(players, currentCard){
+        const playerArray = parsePlayers(players);
         this.setState({
-            cards: playerCards,
-            otherPlayers: otherCards
+            otherPlayers: playerArray,
+            currentCard: currentCard
+        });
+    }
+
+    handout(playerCards){
+        const translatedCards = playerCards.map((x) => back2front(x));
+        this.setState({
+            cards: translatedCards
         });
     }
 
@@ -163,10 +173,11 @@ class Game extends Component {
         
     }
 
-    start(){
+    ready(){
         let msg = {
-            type: "start"
+            type: "ready"
         }
+        this.setState({ready: true});
         this.ws.send(JSON.stringify(msg));
     }
 
@@ -199,31 +210,36 @@ class Game extends Component {
             name: name
         }
         this.ws.send(JSON.stringify(msg));
-        this.start();
     }
 
 
     render(){
 
         //<button onClick={this.connect}>Test websocket</button>
-        //<button onClick={this.start}>Start</button>
+        //
         //<button onClick={this.testChat}>test chat</button>
 
         //<Hand cards={this.state.cards} ws={this.ws}/>
-        let testCards = ["c1","c2","jb","jr","h12"];
+        //let testCards = ["c1","c2","jb","jr","h12"];
+
+        /*
+        <Player number={1} cards={20}/>
+        <Player number={2} cards={10}/>
+        <Player number={3} cards={30}/>
+        */
 
         return(
             <div className="gameField">
 
-                
-                {Object.keys(this.state.otherPlayers).forEach(
-                    key => <Player number={key} cards={this.state.otherPlayers[key]}/>
-                )}
-                <Player number={1} cards={20}/>
-                <Player number={2} cards={10}/>
-                <Player number={3} cards={30}/>
+                <button onClick={this.ready.bind(this)}>Start</button>
 
-                <Field card={"c4"}/>
+                
+                {this.state.otherPlayers.forEach(
+                    obj => <Player name={obj.name} cards={obj.num_cards}/>
+                )}
+                
+
+                <Field card={this.state.currentCard}/>
 
                 <Chat log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
 
@@ -232,7 +248,7 @@ class Game extends Component {
                 
                 
 
-                <Hand cards={testCards} ws={this.ws}/>
+                <Hand cards={this.state.cards} ws={this.ws}/>
             </div>
         );
     }
@@ -258,6 +274,28 @@ function GetPlayerName(props){
             <button onClick={props.submitName}>Enter</button>
         </div>
     );
+}
+/*
+{player1: {
+    name: name,  
+    ready: bool, 
+    current_turn: bool, 
+    skip_turn: bool, 
+    role: role, 
+    num_cards: int} *howmanymoreplayersthereare}
+*/
+function parsePlayers(players){
+    let outArray = [];
+    for(let i =1; i <= 4; i++){
+        const playerKey = "player" + i;
+        const exists = playerKey in players;
+        if(!exists){
+            break;
+        }
+        const data = players.playerKey;
+        outArray.push(data);
+    }
+    return outArray;
 }
 
 

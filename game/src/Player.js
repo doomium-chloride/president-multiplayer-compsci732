@@ -3,7 +3,7 @@ import './styles/Player.css';
 import cardBack from './cards/card-back-star.png';
 
 function Player(props){
-    let player = "Player:" + props.number;
+    let player = props.name ? props.name : "no name";
     let cards = props.cards;
     return(
         <div className="player">

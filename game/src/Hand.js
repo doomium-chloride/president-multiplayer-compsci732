@@ -67,7 +67,6 @@ class Hand extends Component {
         let selected = [...this.state.selectedCards];
 
         let newCodes = [];
-        let newCards = [];
         let sendArray = [];
 
         for(let i = 0; i < length; i++){
@@ -81,11 +80,10 @@ class Hand extends Component {
 
         alert(sendArray);
 
-        //this.sendMoves(sendArray);
+        this.sendMoves(sendArray);
 
         this.setState({
             //codes: newCodes,
-            //cards: newCards,
             selectedCards: arrayF(newCodes.length)
         });
         
@@ -93,6 +91,7 @@ class Hand extends Component {
     }
 
     sendMoves(cards){
+        const card = cards[0]
         const msg = {
             type: "game_move",
             move: front2back(card)

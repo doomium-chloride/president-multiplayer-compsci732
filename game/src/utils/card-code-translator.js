@@ -1,4 +1,14 @@
+/**
+ * This translate frontend card notation to backend's notation
+ *
+ * @param {string}   card           frontend card code
+ *
+ * @return {string} code for card that is compatible with backend
+ */
 export function front2back(card){
+    if(!card){
+        return "skip";
+    }
     if(card == "skip"){
         return "skip";
     }
@@ -13,26 +23,33 @@ export function front2back(card){
     const number = card.slice(1);
     let rank = number + "";
     switch(number){
-        case 10:
+        case "10":
             rank = "0";
             break;
-        case 11:
+        case "11":
             rank = "J";
             break;
-        case 12:
+        case "12":
             rank = "Q";
             break;
-        case 13:
+        case "13":
             rank = "K";
             break;
-        case 1:
+        case "1":
             rank = "A";
     }
     return house + rank;
 }
 
+/**
+ * This translate backend card notation to  frontend's notation
+ *
+ * @param {string}   card           backend card code
+ *
+ * @return {string} code for card that is compatible with frontend
+ */
 export function back2front(card){
-    let card = card.toLowerCase();
+    card = card.toLowerCase();
     const house = card.charAt(0);
     const number = card.slice(1);
     let rank = number;
@@ -57,4 +74,5 @@ export function back2front(card){
             rank = "13";
             break;
     }
+    return house + rank;
 }
