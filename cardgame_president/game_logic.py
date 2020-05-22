@@ -140,6 +140,9 @@ def play_move(move, player, game):
             reset_round(game)
             if player.num_cards == 0:
                 next_player(player.game)
+            else:
+                player.current_turn = True
+                player.save()
         else:
             next_player(player,game)
 
