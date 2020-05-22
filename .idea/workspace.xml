@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="033d1123-a0e4-4f0e-b834-507a8b4b649d" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1awAKk4KXbUhyuPTd6OHOyHzxN2" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.backend_logic">
+    <configuration name="Game" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Group-25-Raspberry-Rhinoceros" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Game.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="President-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop/COMPSCI732/workspace/President-master (python)" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Desktop/COMPSCI732/workspace/President-master (python)/Main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Group-25-Raspberry-Rhinoceros" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="View" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Group-25-Raspberry-Rhinoceros" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/View.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="backend_logic" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Group-25-Raspberry-Rhinoceros" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/backend_logic.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.backend_logic" />
+        <item itemvalue="Python.Game" />
+        <item itemvalue="Python.View" />
+        <item itemvalue="Python.Main" />
+        <item itemvalue="Python.Main (1)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="033d1123-a0e4-4f0e-b834-507a8b4b649d" name="Default Changelist" comment="" />
+      <created>1587636220422</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1587636220422</updated>
+      <workItem from="1587636223672" duration="257000" />
+      <workItem from="1587636561473" duration="948000" />
+      <workItem from="1587687829981" duration="1306000" />
+      <workItem from="1587768178371" duration="12966000" />
+      <workItem from="1587863240757" duration="4010000" />
+      <workItem from="1587951526312" duration="17523000" />
+      <workItem from="1588024574495" duration="2355000" />
+      <workItem from="1588210638681" duration="3090000" />
+      <workItem from="1588215897129" duration="308000" />
+      <workItem from="1588241177693" duration="2496000" />
+      <workItem from="1588285993001" duration="2951000" />
+      <workItem from="1588301362165" duration="1066000" />
+      <workItem from="1588302938381" duration="80000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="300" y="87" key="#Notifications" timestamp="1587773901628">
+      <screen x="0" y="23" width="1440" height="797" />
+    </state>
+    <state x="300" y="87" key="#Notifications/0.23.1440.797@0.23.1440.797" timestamp="1587773901628" />
+    <state x="429" y="231" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1587688978618">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state x="429" y="231" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.798@0.23.1440.798" timestamp="1587688978618" />
+    <state x="438" y="176" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1588218784460">
+      <screen x="0" y="23" width="1440" height="801" />
+    </state>
+    <state x="438" y="175" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.798@0.23.1440.798" timestamp="1587806844375" />
+    <state x="438" y="176" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.801@0.23.1440.801" timestamp="1588218784460" />
+    <state width="1358" height="646" key="GridCell.Tab.0.bottom" timestamp="1588302463491">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state width="1358" height="646" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1588301782793" />
+    <state width="1358" height="646" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1588302463491" />
+    <state width="1358" height="646" key="GridCell.Tab.0.bottom/0.23.1440.801@0.23.1440.801" timestamp="1588294672016" />
+    <state width="1358" height="646" key="GridCell.Tab.0.center" timestamp="1588302463490">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state width="1358" height="646" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1588301782792" />
+    <state width="1358" height="646" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1588302463490" />
+    <state width="1358" height="646" key="GridCell.Tab.0.center/0.23.1440.801@0.23.1440.801" timestamp="1588294672015" />
+    <state width="1358" height="646" key="GridCell.Tab.0.left" timestamp="1588302463489">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state width="1358" height="646" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1588301782791" />
+    <state width="1358" height="646" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1588302463489" />
+    <state width="1358" height="646" key="GridCell.Tab.0.left/0.23.1440.801@0.23.1440.801" timestamp="1588294672015" />
+    <state width="1358" height="646" key="GridCell.Tab.0.right" timestamp="1588302463491">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state width="1358" height="646" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1588301782793" />
+    <state width="1358" height="646" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1588302463491" />
+    <state width="1358" height="646" key="GridCell.Tab.0.right/0.23.1440.801@0.23.1440.801" timestamp="1588294672016" />
+    <state width="1358" height="140" key="GridCell.Tab.1.bottom" timestamp="1587986230609">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state width="1358" height="140" key="GridCell.Tab.1.bottom/0.23.1440.798@0.23.1440.798" timestamp="1587986230609" />
+    <state width="1358" height="140" key="GridCell.Tab.1.center" timestamp="1587986230609">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state width="1358" height="140" key="GridCell.Tab.1.center/0.23.1440.798@0.23.1440.798" timestamp="1587986230609" />
+    <state width="1358" height="140" key="GridCell.Tab.1.left" timestamp="1587986230608">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state width="1358" height="140" key="GridCell.Tab.1.left/0.23.1440.798@0.23.1440.798" timestamp="1587986230608" />
+    <state width="1358" height="140" key="GridCell.Tab.1.right" timestamp="1587986230609">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state width="1358" height="140" key="GridCell.Tab.1.right/0.23.1440.798@0.23.1440.798" timestamp="1587986230609" />
+    <state x="249" y="164" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1587963927724">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state x="249" y="164" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.23.1440.798@0.23.1440.798" timestamp="1587963927724" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Group_25_Raspberry_Rhinoceros$Main.coverage" NAME="Main Coverage Results" MODIFIED="1588218792202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Group_25_Raspberry_Rhinoceros$View.coverage" NAME="View Coverage Results" MODIFIED="1588243339186" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Group_25_Raspberry_Rhinoceros$backend_logic.coverage" NAME="backend_logic Coverage Results" MODIFIED="1588301769096" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Group_25_Raspberry_Rhinoceros$main.coverage" NAME="main Coverage Results" MODIFIED="1587637350471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../thatcardgame" />
+    <SUITE FILE_PATH="coverage/Group_25_Raspberry_Rhinoceros$uimain.coverage" NAME="uimain Coverage Results" MODIFIED="1587637661557" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../thatcardgame" />
+    <SUITE FILE_PATH="coverage/Group_25_Raspberry_Rhinoceros$Game.coverage" NAME="Game Coverage Results" MODIFIED="1588294616898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Group_25_Raspberry_Rhinoceros$Player.coverage" NAME="Player Coverage Results" MODIFIED="1587771486198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Group_25_Raspberry_Rhinoceros$Main__1_.coverage" NAME="Main (1) Coverage Results" MODIFIED="1587960218235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop/COMPSCI732/workspace/President-master (python)" />
+  </component>
+</project>

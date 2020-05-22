@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Group-25-Raspberry-Rhinoceros.iml" filepath="$PROJECT_DIR$/.idea/Group-25-Raspberry-Rhinoceros.iml" />
+      <module fileurl="file://$USER_HOME$/Desktop/COMPSCI732/workspace/President-master (python)/.idea/President-master.iml" filepath="$USER_HOME$/Desktop/COMPSCI732/workspace/President-master (python)/.idea/President-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../thatcardgame/.idea/thatcardgame.iml" filepath="$PROJECT_DIR$/../thatcardgame/.idea/thatcardgame.iml" />
+    </modules>
+  </component>
+</project>

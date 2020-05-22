@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { render } from 'react-dom';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import './styles/Home.css';
 
 let serverBase = "http://localhost:8000/";
 
@@ -82,14 +83,14 @@ class Home extends Component {
                         Room Code:
                         <input type="text" value={this.state.roomCode} name="room-code" onChange={this.handleChangeRoom}/>
                     </label>
-                    <button onClick={this.joinGame}>Join Game</button>
+                    <button  className="joinGameBtn" onClick={this.joinGame}>Join Game</button>
                 </div>
                 <div className="startGame">
                     <label>                        
                         Number of players:
-                        <input type="number" min={2} max={4} name="max_players" onChange={this.handleChangeMaxPlayers}/>
+                        <input className="playerNum" type="number" min={2} max={4} name="max_players" onChange={this.handleChangeMaxPlayers}/>
                     </label>
-                    <button onClick={this.makeGame}>Start President Game</button>
+                    <button className="startGameBtn" onClick={this.makeGame}>Start Game</button>
                     <p>{this.state.newRoomCode}</p>
                 </div>
             </div>
