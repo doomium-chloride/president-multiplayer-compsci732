@@ -31,7 +31,8 @@ class Game extends Component {
             gameCode: code,
             cards: [],
             otherPlayers: [],
-            chatLog: []
+            chatLog: [],
+            freeze: false
         }
         this.wsURL = wsBase + type + "/" + code
 
@@ -101,6 +102,9 @@ class Game extends Component {
                     break;
                 case "player_leave":
                     console.log(data);
+                    break;
+                case "freeze_game":
+                    that.setState({freeze: true});
                     break;
                 default:
                     console.log(data);
@@ -272,7 +276,7 @@ class Game extends Component {
                 
                 
 
-                <Hand cards={this.state.cards} ws={this.ws}/>
+                <Hand cards={this.state.cards} freeze={this.state.freeze} ws={this.ws}/>
             </div>
         );
     }

@@ -69,6 +69,9 @@ class Hand extends Component {
     //This removes the selected cards from the hand
 
     playSelected() {
+        if(this.props.freeze){
+            return
+        }
         let length = this.props.cards.length;
 
         let codes = [...this.props.cards];
@@ -109,6 +112,9 @@ class Hand extends Component {
 
 
     skip(){
+        if(this.props.freeze){
+            return
+        }
         const msg = {
             type: "game_move",
             move: "skip"
