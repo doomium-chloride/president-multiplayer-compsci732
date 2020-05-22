@@ -35,8 +35,6 @@ class Game extends Component {
         }
         this.wsURL = wsBase + type + "/" + code
 
-        this.connect = this.connect.bind(this);
-
         //test
         this.testChat = this.testChat.bind(this);
     }
@@ -50,7 +48,7 @@ class Game extends Component {
                 let message = response.data;
                 console.log(message);
                 if(message.success){
-                    alert(message.success);
+                    console.log("everything seems fine");
                 }else{
                     alert(message.error);
                 }
@@ -75,7 +73,6 @@ class Game extends Component {
             const data = JSON.parse(e.data)
             switch(data.type){
                 case "room_message":
-                    alert(data.message);
                     that.setState(prevState => ({
                         chatLog: [...prevState.chatLog, data.message]
                     }));
@@ -127,14 +124,6 @@ class Game extends Component {
         //this.getName()
     }
 
-    connect(){
-
-        alert(this.wsURL);
-        
-        this.ws = new WebSocket(this.wsURL);   
-
-        
-    }
 
     getName(){
         const name = prompt("Please enter a name");
@@ -213,11 +202,9 @@ class Game extends Component {
     //called then child (the chat) sends a message so own message is recorded
     //that is to cache this object to keep context
     newMessage(that ,message, oldLog){
-        alert(oldLog);
         that.setState({
             chatLog: [...oldLog, message]
         });
-        that.forceUpdate();
     }
 
     onNameChangeHandler(event){
@@ -226,7 +213,6 @@ class Game extends Component {
 
     getPlayerName(){
         const name = this.state.playerNameTemp;
-        alert(name);
         this.setState({playerName: name});
         const msg = {
             type: "name",
@@ -243,7 +229,7 @@ class Game extends Component {
         //<button onClick={this.testChat}>test chat</button>
 
         //<Hand cards={this.state.cards} ws={this.ws}/>
-        //let testCards = ["c1","c2","jb","jr","h12"];
+        let testCards = ["c1","c2","jb","jr","h12"];
 
         /*
         <Player number={1} cards={20}/>

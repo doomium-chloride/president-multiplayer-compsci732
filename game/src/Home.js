@@ -9,8 +9,9 @@ class Home extends Component {
     constructor() {
         super()
         this.state = {
-            roomCode: undefined,
-            gameCode: undefined,
+            roomCode: "",
+            //gameCode: undefined,
+            gameCode: "PRES",
             maxPlayers: undefined,
             newRoomCode: undefined
         };
@@ -41,7 +42,6 @@ class Home extends Component {
     }
 
     joinGame(event) {
-        alert('A name was submitted: ' + this.getRoomLink());
         if(this.state.roomCode){
             window.open(this.getRoomLink(), "_blank");
         }
@@ -59,37 +59,37 @@ class Home extends Component {
                     // response is a JSON object. not a string
                     let data = response.data
                     // success is the attribute of the room code
-                    alert(data.success);
                     self.setState({
-                        newRoomCode: data.success
+                        newRoomCode: data.success,
+                        roomCode: data.success
                     });
                 })
                 .catch(function (error) {
                     alert(error);
                 });
-            alert(this.state.maxPlayers);
         }
     }
+
+    //old code
+    //<input type="text" name="game_type" onChange={this.handleChangeGame}/>
 
 
     render(){
         return(
-            <div>
-                <div>
+            <div className="homePage">
+                <div className="joinGame">
                     <label>
                         Room Code:
-                        <input type="text" name="room-code" onChange={this.handleChangeRoom}/>
+                        <input type="text" value={this.state.roomCode} name="room-code" onChange={this.handleChangeRoom}/>
                     </label>
                     <button onClick={this.joinGame}>Join Game</button>
                 </div>
-                <div>
-                    <label>
-                        Game code:
-                        <input type="text" name="game_type" onChange={this.handleChangeGame}/>
-                        Max number of players:
-                        <input type="number" name="max_players" onChange={this.handleChangeMaxPlayers}/>
+                <div className="startGame">
+                    <label>                        
+                        Number of players:
+                        <input type="number" min={2} max={4} name="max_players" onChange={this.handleChangeMaxPlayers}/>
                     </label>
-                    <button onClick={this.makeGame}>Start Game</button>
+                    <button onClick={this.makeGame}>Start President Game</button>
                     <p>{this.state.newRoomCode}</p>
                 </div>
             </div>

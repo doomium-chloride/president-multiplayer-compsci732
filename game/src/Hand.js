@@ -105,7 +105,7 @@ class Hand extends Component {
             type: "game_move",
             move: front2back(card)
         }
-        this.ws.send(JSON.stringify(msg));
+        this.props.ws.send(JSON.stringify(msg));
     }
 
 

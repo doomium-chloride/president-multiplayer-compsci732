@@ -29,12 +29,11 @@ class Chat extends Component {
         }
         
         if(this.props.ws){
-        this.props.ws.send(JSON.stringify(msg));
+            this.props.ws.send(JSON.stringify(msg));
         } else{
             alert(JSON.stringify(msg));
+            this.props.update(text, oldLog);
         }
-        //the next line is probably unnecessary
-        this.props.update(text, oldLog);
         this.setState({
             sendText: ""
         });
