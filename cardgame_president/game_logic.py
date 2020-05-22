@@ -11,12 +11,12 @@ def getGameByCode(code):
     return Game.objects.get(room=Room.objects.get(code=code))
 
 def next_player(player, game):
-    for i, p in enumerate(game.player):
+    for i, p in enumerate(game.players):
         if p.channel_name == player.channel_name:
             index = i
-    for index in range(index + len(game.player)):
-        if game.player[(index+1)%game.player].skip_turn == False:
-            game.player[(index+1)%game.player].current_turn = True
+    for index in range(index + len(game.players)):
+        if game.players[(index+1)%game.players].skip_turn == False:
+            game.players[(index+1)%game.players].current_turn = True
             break
 
 def skip_turn(player, game):
@@ -29,7 +29,7 @@ def skip_turn(player, game):
     next_player(room)
 
     # Sees if there are any more skippable players.
-    remaining = game.player.filter(skip_turn=False)
+    remaining = game.players.filter(skip_turn=False)
     if len(remaining) > 1:
         # There are still more players in the round
         return False
@@ -39,7 +39,7 @@ def skip_turn(player, game):
 
 def new_game(game):
     # Reset player states.
-    for p in game.player:
+    for p in game.players:
         p.skip_turn = False
         p.ready = False
         p.current_turn = False
@@ -56,12 +56,12 @@ def new_game(game):
     game.save()
 
 def reset_roles(game):
-    for p in game.player:
+    for p in game.players:
         p.role = ""
         p.save()
 
 def reset_round(game):
-    for p in game.player:
+    for p in game.players:
         if p.role == "":
             p.skip_turn = False
             p.save()
@@ -122,7 +122,7 @@ def play_move(move, player, game):
 
         next_player(player, game)
 
-        remaining = game.player.filter(skip_turn=False)
+        remaining = game.players.filter(skip_turn=False)
         if len(remaining) < 2:
             # There is just one more player.
             reset_round(game)       
@@ -131,7 +131,7 @@ def play_move(move, player, game):
     return -1
 
 def game_winner(game):
-    remaining = game.player.filter(card_num>0)
+    remaining = game.players.filter(card_num>0)
     if len(remaining) < 2:
         # Set the last player's role to Scum
         remaining[0].role = 'SC'
@@ -178,7 +178,7 @@ def serve_cards(players, code):
     game.current_card = ""
 
     # Assign the current player.
-    player = game.player.get(role="SC")
+    player = game.players.get(role="SC")
     if len(player) > 0:
         # There is a scum. They are the starting player.
         player.current_turn = True
@@ -186,7 +186,7 @@ def serve_cards(players, code):
 
     else:
         # Find the player with the 3 of clubs.
-        for p in game.player:
+        for p in game.players:
             if "3" in p.C:
                 p.current_turn = True
                 p.save()
