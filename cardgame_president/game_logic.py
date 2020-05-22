@@ -141,10 +141,10 @@ def play_move(move, player, game):
         if len(remaining) < 2 or (card_type == "X" or (card_num == 2 and game.jokers_remaining == 0)):
             # There is just one more player. OR the highest card was played.
             reset_round(game)
-            if player.card_num == 0:
+            if player. num_cards == 0:
                 next_player(player,game) 
 
-        return player.card_num
+        return player.num_cards
     return -1
 
 def game_winner(game):
