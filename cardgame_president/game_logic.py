@@ -57,7 +57,7 @@ def new_game(game):
     # Reset game state
     game.current_card = ""
     game.jokers_remaining = 2
-    game.round = game.round + 1
+    game.round_num = game.round_num + 1
     game.save()
 
 def reset_roles(game):
