@@ -81,7 +81,7 @@ def play_move(move, player, game):
     # 0: Player has finished their hand.
     # positive int: number of cards left in player hand.
     # Order of card values is 34567890JKQA2X
-    card_order = "34567890JKQA2X"
+    card_order = "34567890JQKA2X"
     # Check if the player actually does have the card.
     # Also acts as a cheat guard.
     card_type = move[0].upper()
