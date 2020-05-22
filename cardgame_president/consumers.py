@@ -109,7 +109,7 @@ class GameConsumer(WebsocketConsumer):
             game = getGameByCode(self.room_code)
             if move == "skip":
                 # Player has stated they will skip their turn for this round.
-                winner = skip_turn(player)
+                winner = skip_turn(player, game)
                 # Send a response to the player that their move has been accepted.
                 self.move_response(move)
                 # Send a message to the group of the player skipping their turn.
