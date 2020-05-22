@@ -88,10 +88,13 @@ class Game extends Component {
                     this.scoreBoard(data.results);
                     break;
                 case "move_response":
-                    this.gameMove(data.card);
+                    this.gameMove(data.move);
                     break;
                 case "game_frame":
                     this.gameFrame(data.players, data.current_card);
+                    break;
+                case "name_response":
+                    this.nameAccepted();
                     break;
                 case "player_join":
                     console.log(data);
@@ -149,10 +152,11 @@ class Game extends Component {
     }
 
     gameFrame(players, currentCard){
-        const playerArray = parsePlayers(players);
+        const playerArray = parsePlayers(players, this.state.playerName);
+        const current = currentCard ? back2front(currentCard) : "";
         this.setState({
             otherPlayers: playerArray,
-            currentCard: currentCard
+            currentCard: current
         });
     }
 
@@ -167,6 +171,7 @@ class Game extends Component {
         if("skip" == card){
             return //dunno what to do yet
         }
+        alert(card);
         const cardCode = back2front(card);
         let newCards = [...this.state.cards];
         //search for index
@@ -214,12 +219,21 @@ class Game extends Component {
 
     getPlayerName(){
         const name = this.state.playerNameTemp;
-        this.setState({playerName: name});
+        this.nameCache = name;
         const msg = {
             type: "name",
             name: name
         }
         this.ws.send(JSON.stringify(msg));
+    }
+
+    nameAccepted(){
+        this.setState({playerName: this.nameCache});
+    }
+
+    setCurrentCard(){
+        alert(this.state.currentCard);
+        this.setState({currentCard: "jr"});
     }
 
 
@@ -237,19 +251,21 @@ class Game extends Component {
         <Player number={2} cards={10}/>
         <Player number={3} cards={30}/>
         */
-
+        //<Player name={obj.name} cards={obj.num_cards}/>
         return(
             <div className="gameField">
+
+                <button onClick={this.setCurrentCard.bind(this)}>Joker</button>
 
                 {this.state.playerName && !this.state.ready && <button onClick={this.ready.bind(this)}>Ready</button>}
 
                 
-                {this.state.otherPlayers.forEach(
-                    obj => <Player name={obj.name} cards={obj.num_cards}/>
+                {this.state.playerName && this.state.otherPlayers.map(
+                    (obj,i) => <Player key={"player" + i} name={obj.name} cards={obj.num_cards}/>
                 )}
                 
 
-                <Field card={this.state.currentCard}/>
+                {this.state.currentCard && <Field card={this.state.currentCard}/>}
 
                 <Chat log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
 
@@ -294,16 +310,14 @@ function GetPlayerName(props){
     role: role, 
     num_cards: int} *howmanymoreplayersthereare}
 */
-function parsePlayers(players){
+function parsePlayers(players, myName){
     let outArray = [];
-    for(let i =1; i <= 4; i++){
-        const playerKey = "player" + i;
-        const exists = playerKey in players;
-        if(!exists){
-            break;
+    for(let key in players){
+        const data = players[key];
+        if(data.name != myName){
+            outArray.push(data);
         }
-        const data = players.playerKey;
-        outArray.push(data);
+            
     }
     return outArray;
 }

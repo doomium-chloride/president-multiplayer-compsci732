@@ -20,7 +20,7 @@
     position: absolute;
     bottom: 0;
     transform-origin: center bottom;
-    transform: translate(100%, -1500%);
+    transform: translate(0, -1200%);
 }
 
 .hand img{
