@@ -62,6 +62,7 @@ def new_game(game):
 def reset_roles(game):
     for p in game.players.all():
         p.role = ""
+        p.ready = False
         p.save()
 
 def reset_round(game):
