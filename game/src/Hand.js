@@ -27,7 +27,6 @@ class Hand extends Component {
         this.ws = props.ws;
 
         this.state = {
-            codes: props.cards,
             selectedCards: selected
         };
         this.updateSelected = this.updateSelected.bind(this);
@@ -70,9 +69,9 @@ class Hand extends Component {
     //This removes the selected cards from the hand
 
     playSelected() {
-        let length = this.state.codes.length;
+        let length = this.props.cards.length;
 
-        let codes = [...this.state.codes];
+        let codes = [...this.props.cards];
         let selected = [...this.state.selectedCards];
 
         let newCodes = [];
@@ -82,7 +81,6 @@ class Hand extends Component {
             if (selected[i]){
                 sendArray.push(codes[i]);
             } else {
-                let p =newCodes.length
                 newCodes.push(codes[i]);
             }
         }
@@ -112,21 +110,19 @@ class Hand extends Component {
     skip(){
         const msg = {
             type: "game_move",
-            player: "channel_id",
-            move: "skip",
-            special: "does nothing"
+            move: "skip"
         }
-        this.ws.send(JSON.stringify(msg));
+        this.props.ws.send(JSON.stringify(msg));
     }
 
 
     render() {
 
-        let codes = this.state.codes;
+        let codes = this.props.cards;
         let selected = this.state.selectedCards
         let cards = []
         for(let i = 0; i < codes.length; i++){
-            cards.push(<Card key={i} card={codes[i]} onClick={(o,s) => this.updateSelected(s,i) } position={i} selected={selected[i]}/>)
+            cards.push(<Card key={"card"+i} card={codes[i]} onClick={(o,s) => this.updateSelected(s,i) } position={i} selected={selected[i]}/>)
         }
 
         return (

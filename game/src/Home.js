@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { render } from 'react-dom';
-import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import './styles/Home.css';
 
@@ -12,7 +10,7 @@ class Home extends Component {
         this.state = {
             roomCode: "",
             //gameCode: undefined,
-            gameCode: "PRES",
+            gameCode: 0,//0 = president(scum)
             maxPlayers: undefined,
             newRoomCode: undefined
         };
@@ -49,7 +47,7 @@ class Home extends Component {
     }
 
     makeGame(event){
-        if(this.state.gameCode && this.state.maxPlayers){
+        if(this.state.maxPlayers){
             var self = this;
             let payload = {
                 max_players: parseInt(this.state.maxPlayers),   

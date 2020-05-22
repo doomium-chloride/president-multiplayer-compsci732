@@ -44,11 +44,11 @@ class Chat extends Component {
         return(
             <div className="chatBox">
                 <div className="chat">
-                    {this.props.log.map((tex, i) => <ChatLine order={i} text={tex}/>)}
+                    {this.props.log.map((tex, i) => <ChatLine order={i} key={i} text={tex}/>)}
                 </div>
                 <div className="chatInput">
-                    <textarea value={this.state.sendText} name="chatText" onChange={this.handleChangeText}/>
-                    <button onClick={this.sendMessage}>Send</button>
+                    <textarea key="chatinputtext" value={this.state.sendText} name="chatText" onChange={this.handleChangeText}/>
+                    <button key="sentchatbutton" onClick={this.sendMessage}>Send</button>
                 </div>
             </div>
 
@@ -58,9 +58,10 @@ class Chat extends Component {
 
 function ChatLine(props){
     const odd = props.order & 1;
+    const key = props.id ? "cl" + props.key : "cl" + Math.random();
     const lineClass = odd ? "chatLineOdd" : "chatLineEven";
     return(
-        <div className={lineClass}>
+        <div className={lineClass} key={key}  >
             {props.text}
         </div>
     );
