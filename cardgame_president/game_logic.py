@@ -57,6 +57,7 @@ def new_game(game):
     # Reset game state
     game.current_card = ""
     game.jokers_remaining = 2
+    game.round = game.round + 1
     game.save()
 
 def reset_roles(game):
@@ -82,8 +83,8 @@ def play_move(move, player, game):
     card_order = "34567890JKQA2X"
     # Check if the player actually does have the card.
     # Also acts as a cheat guard.
-    card_type = move[0]
-    card_num = move[1]
+    card_type = move[0].upper()
+    card_num = move[1].upper()
     if card_type == "H":
         if card_num not in player.H: return -1
     elif card_type == "D":
@@ -94,8 +95,13 @@ def play_move(move, player, game):
         if card_num not in player.S: return -1
     elif card_type == "X":
         if player.X < 1: return -1
+
+    # Check if this is the very first card of the very first round.
+    # This should always be the 3 of clubs
+    if game.round_num == 1 and "3" in player.C and move.upper() != "C3":
+        return -1
     # Check if the card played is higher than the current card.
-    if card_order.index(card_num) > card_order.index(game.current_card[:1]):
+    if card_order.index(card_num) > card_order.index(game.current_card[:1]) or game.current_card == "":
         game.current_card = move
         # Remove the card from the player's hand
         if card_type == "H":

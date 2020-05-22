@@ -7,6 +7,7 @@ class Game(models.Model):
     room = models.OneToOneField(Room, on_delete=models.CASCADE, related_name="room")
     current_card = models.CharField(max_length=2, default="")
     jokers_remaining = models.IntegerField(default=-1)
+    round_num = models.IntegerField(default=0)
 
 class Player(models.Model):
     PRESIDENT = 'PR'
