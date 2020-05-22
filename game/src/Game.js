@@ -171,20 +171,18 @@ class Game extends Component {
         if("skip" == card){
             return //dunno what to do yet
         }
-        alert(card);
         const cardCode = back2front(card);
         let newCards = [...this.state.cards];
         //search for index
         let index;
         for(let i = 0; i < newCards.length; i++){
-            if(cardCode == newCards[0]){
+            if(cardCode == newCards[i]){
                 index = i;
                 break;
             }
         }
         if(index){
             newCards.splice(index,1);
-            alert(newCards);
             this.setState({
                 cards: newCards
             });
