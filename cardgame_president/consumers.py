@@ -47,7 +47,7 @@ class GameConsumer(WebsocketConsumer):
             room.save()
 
             # Get the Player object of the player who left.
-            player = Players.objects.get(channel_name=self.channel_name)
+            player = Player.objects.get(channel_name=self.channel_name)
             async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
@@ -195,8 +195,8 @@ class GameConsumer(WebsocketConsumer):
             self.draw_frame()
 
         elif message_type == "ready":
-            game = getRoomByCode(self.room_code)
-            if game.ingame:
+            game = getGameByCode(self.room_code)
+            if game.room.ingame:
                 # the player would like to player again.
                 player.ready = True
             else:
@@ -204,7 +204,7 @@ class GameConsumer(WebsocketConsumer):
                 player.ready = not player.ready
             player.save()
 
-            if len(game.players.all().filter(ready=True)) == len(game.players.all()) > 1:
+            if len(game.players.filter(ready=True)) == len(game.players.all()) > 1:
                 new_game(player.game)
                 handout = serve_cards(players, self.room_code)
                 for k, i in enumerate(players):
@@ -219,7 +219,7 @@ class GameConsumer(WebsocketConsumer):
                 # Reset roles of players
                 reset_roles(game)
             
-            if game.ingame:
+            if game.room.ingame:
                 # Send a message to the chatbox that a player is ready.
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_code,
