@@ -154,7 +154,7 @@ def play_move(move, player, game):
                 if len(remaining) < 2:
                     reset_round(game)
                 reset_round(game)
-            next_player(player.game)
+            next_player(player, game)
 
             if len(remaining) < 2 or (card_type == "X" or (card_num == 2 and game.jokers_remaining == 0)):
                 # There is just one more non-skipped player. OR the highest card was played.
