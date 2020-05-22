@@ -48,7 +48,7 @@ def new_game(game):
         p.D = ""
         p.C = ""
         p.S = ""
-        p.X = ""
+        p.X = 0
         p.save()
 
     # Reset game state
