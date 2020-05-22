@@ -29,7 +29,7 @@ def skip_turn(player, game):
     player.save()
 
     # Find the next player
-    next_player(room)
+    next_player(player.game)
 
     # Sees if there are any more skippable players.
     remaining = game.players.all().filter(skip_turn=False)
@@ -118,6 +118,7 @@ def play_move(move, player, game):
             game.save()
         player.num_cards = player.num_cards - 1
         player.save()
+        game.save()
 
         skip_state = True
 
