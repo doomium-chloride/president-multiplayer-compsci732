@@ -178,13 +178,12 @@ def serve_cards(players, code):
     game.current_card = ""
 
     # Assign the current player.
-    player = game.players.all().get(role="SC")
-    if len(player) > 0:
+    try:
+        player = game.players.all().get(role="SC")
         # There is a scum. They are the starting player.
         player.current_turn = True
         player.save()
-
-    else:
+    except Player.DoesNotExist:
         # Find the player with the 3 of clubs.
         for p in game.players.all():
             if "3" in p.C:
