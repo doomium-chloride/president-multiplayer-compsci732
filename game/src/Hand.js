@@ -88,7 +88,6 @@ class Hand extends Component {
             }
         }
 
-        alert(sendArray);
 
         this.sendMoves(sendArray);
 
@@ -106,7 +105,6 @@ class Hand extends Component {
             type: "game_move",
             move: front2back(card)
         }
-        alert(front2back(card));
         this.props.ws.send(JSON.stringify(msg));
     }
 

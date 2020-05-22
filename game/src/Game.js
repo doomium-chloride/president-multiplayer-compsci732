@@ -4,9 +4,14 @@ import Hand from './Hand';
 import axios from 'axios';
 import {FieldCard} from './cards/Card';
 import Chat from './Chat';
+import {back2front} from './utils/card-code-translator';
+import Results from './Results';
+import Rodal from 'rodal';
+
 import './styles/PlayerNameForm.css';
 import './styles/Game.css';
-import {back2front} from './utils/card-code-translator';
+import './styles/Popup.css';
+import 'rodal/lib/rodal.css';
 
 //websockets
 
@@ -32,8 +37,11 @@ class Game extends Component {
             cards: [],
             otherPlayers: [],
             chatLog: [],
-            freeze: false
-        }
+            freeze: false,
+            wsOpen: false,
+            showResults: false,
+            results: ""
+        };
         this.wsURL = wsBase + type + "/" + code
 
         //test
@@ -64,6 +72,9 @@ class Game extends Component {
 
         this.ws.onopen = () => {
             //test line
+            that.setState({
+                wsOpen: true
+            })
         }
 
         this.ws.onConnect = e => {
@@ -120,6 +131,9 @@ class Game extends Component {
         this.ws.onclose = e => {
             //test line
             alert("Websocket closed");
+            that.setState({
+                wsOpen: false
+            });
         }
 
         this.ws.onerror = err => {
@@ -132,17 +146,6 @@ class Game extends Component {
         //this.getName()
     }
 
-
-    getName(){
-        const name = prompt("Please enter a name");
-        this.setState({playerName: name});
-        const msg = {
-            type: "name",
-            name: name
-        }
-        this.ws.send(JSON.stringify(msg));
-    }
-
     parseCommand(command){
         switch(command){
             case "close":
@@ -152,7 +155,16 @@ class Game extends Component {
     }
 
     scoreBoard(results){
-        
+        const content = Results(results);
+        this.setState({
+            showResults: true,
+            results: content
+        });
+    }
+    hideScoreBoard(){
+        this.setState({
+            showResults: false
+        });
     }
 
     gameFrame(players, currentCard){
@@ -176,6 +188,7 @@ class Game extends Component {
             return //dunno what to do yet
         }
         const cardCode = back2front(card);
+        console.log("move response: " + cardCode);
         let newCards = [...this.state.cards];
         //search for index
         let index;
@@ -220,6 +233,9 @@ class Game extends Component {
     }
 
     getPlayerName(){
+        if(!this.state.wsOpen){
+            return
+        }
         const name = this.state.playerNameTemp;
         this.nameCache = name;
         const msg = {
@@ -233,10 +249,6 @@ class Game extends Component {
         this.setState({playerName: this.nameCache});
     }
 
-    setCurrentCard(){
-        alert(this.state.currentCard);
-        this.setState({currentCard: "jr"});
-    }
 
 
     render(){
@@ -257,8 +269,6 @@ class Game extends Component {
         return(
             <div className="gameField">
 
-                <button onClick={this.setCurrentCard.bind(this)}>Joker</button>
-
                 {this.state.playerName && !this.state.ready && <button onClick={this.ready.bind(this)}>Ready</button>}
 
                 
@@ -273,10 +283,12 @@ class Game extends Component {
 
                 {!this.state.playerName && <GetPlayerName onNameChange={this.onNameChangeHandler.bind(this)} submitName={this.getPlayerName.bind(this)}/>}
 
-                
-                
-
                 <Hand cards={this.state.cards} freeze={this.state.freeze} ws={this.ws}/>
+
+                <Rodal visible={this.state.showResults} onClose={this.hideScoreBoard.bind(this)}>
+                    {this.state.results}
+                </Rodal>
+
             </div>
         );
     }
