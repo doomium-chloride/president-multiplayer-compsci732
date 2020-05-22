@@ -3,14 +3,16 @@ import './styles/Player.css';
 import cardBack from './cards/card-back-star.png';
 
 function Player(props){
-    let player = props.name ? props.name : "no name";
-    let cards = props.cards;
+    const player = props.name ? props.name : "no name";
+    const cards = props.cards;
+    const currentTurn = props.currentTurn ? "thisTurn" : "notThisTurn";
+    const classes = ["cardback", currentTurn].join(' ');
     return(
         <div className="player">
             <div className="number">
                 {player}
             </div>
-            <div className="cardback">
+            <div className={classes}>
                 <img src={cardBack}/>
                 <div>{cards}</div>
             </div>

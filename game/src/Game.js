@@ -273,7 +273,7 @@ class Game extends Component {
 
                 
                 {this.state.playerName && this.state.otherPlayers.map(
-                    (obj,i) => <Player key={"player" + i} name={obj.name} cards={obj.num_cards}/>
+                    (obj,i) => <Player key={"player" + i} currentTurn={obj.current_turn} name={obj.name} cards={obj.num_cards}/>
                 )}
                 
 

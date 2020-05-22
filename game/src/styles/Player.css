@@ -28,8 +28,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: whitesmoke;
     transform-origin: center;
     margin: 1% auto 1% auto;
     font-size: 50px;
+}
+.notThisTurn > div{
+    color: whitesmoke;
+}
+.thisTurn > div{
+    color: crimson;
 }
