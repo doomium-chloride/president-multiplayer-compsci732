@@ -168,10 +168,10 @@ def serve_cards(players, code):
                 i.S = i.S + card[1]
             elif card[0] == "X":
                 i.X = i.X + 1
-            handout += card
+            handout.append(card)
         i.num_cards = 54//len(players) + offset
         i.save()
-        handouts += handout
+        handouts.append(handout)
 
     # Reset game state
     game = getGameByCode(code)
