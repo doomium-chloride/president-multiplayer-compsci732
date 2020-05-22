@@ -101,7 +101,7 @@ def play_move(move, player, game):
     if game.round_num == 1 and "3" in player.C and move.upper() != "C3":
         return -1
     # Check if the card played is higher than the current card.
-    if card_order.index(card_num) > card_order.index(game.current_card[:1]) or game.current_card == "":
+    if game.current_card == "" or card_order.index(card_num) > card_order.index(game.current_card[:1]):
         game.current_card = move
         # Remove the card from the player's hand
         if card_type == "H":
@@ -120,12 +120,8 @@ def play_move(move, player, game):
         player.save()
         game.save()
 
-        skip_state = True
-
         # If the player has no more cards, set their skip state to True and give the required role.
         if player.num_cards == 0:
-            player.skip_turn = True
-
             # Game only allows a maximum of 4 players.
             # Roles depend on the number of players.
             roles = ['PR']
@@ -134,16 +130,39 @@ def play_move(move, player, game):
             elif len(players) == 3:
                 roles += ['NOR']
             roles += ['SC']
-
+            player.skip_turn = True
             player.role = roles[len(players.filter(card_num<1)) - 1]
             player.save()
 
         remaining = game.players.all().filter(skip_turn=False)
         if len(remaining) < 2 or (card_type == "X" or (card_num == 2 and game.jokers_remaining == 0)):
-            # There is just one more player. OR the highest card was played.
+            # There is just one more non-skipped player. OR the highest card was played.
             reset_round(game)
-            if player. num_cards == 0:
-                next_player(player,game) 
+            if player.num_cards == 0:
+                next_player(player.game)
+        else:
+            next_player(player,game)
+
+
+        if card_type == "X" or (card_num == 2 and game.jokers_remaining == 0):
+            # The highest possible card was played. 
+            reset_round(game)
+            if player.num_cards == 0:
+                next_player(player.game)
+        else:
+            if player.num_cards == 0:
+                if len(remaining) < 2:
+                    reset_round(game)
+                reset_round(game)
+            next_player(player.game)
+
+            if len(remaining) < 2 or (card_type == "X" or (card_num == 2 and game.jokers_remaining == 0)):
+                # There is just one more non-skipped player. OR the highest card was played.
+                reset_round(game)
+                if player.num_cards == 0:
+                    next_player(player,game)
+        
+
 
         return player.num_cards
     return -1
