@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import './styles/Player.css';
 import cardBack from './cards/card-back-star.png';
 

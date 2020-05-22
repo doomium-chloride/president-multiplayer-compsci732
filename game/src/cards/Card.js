@@ -56,7 +56,9 @@ import d13 from './king_of_diamonds2.svg';
 import h13 from './king_of_hearts2.svg';
 import s13 from './king_of_spades2.svg';
 
-var selectShiftHeight = "30px";
+const selectShiftHeight = "30px";
+
+const shiftRightLength = 30
 
 
 function Card(props) {
@@ -65,7 +67,7 @@ function Card(props) {
     let left = 0;
 
     if (props.position){
-        left = props.position * 50;
+        left = props.position * shiftRightLength;
     }
 
     let leftStr = left + "px";
@@ -146,45 +148,6 @@ function decider(code){
             break;
         case "c13":
             pic = c13;
-            break;
-        case "d1":
-            pic = d1;
-            break;
-        case "d2":
-            pic = d2;
-            break;
-        case "d3":
-            pic = d3;
-            break;
-        case "d4":
-            pic = d4;
-            break;
-        case "d5":
-            pic = d5;
-            break;
-        case "d6":
-            pic = d6;
-            break;
-        case "d7":
-            pic = d7;
-            break;
-        case "d8":
-            pic = d8;
-            break;
-        case "d9":
-            pic = d9;
-            break;
-        case "d10":
-            pic = d10;
-            break;
-        case "d11":
-            pic = d11;
-            break;
-        case "d12":
-            pic = d12;
-            break;
-        case "d13":
-            pic = d13;
             break;
         case "d1":
             pic = d1;

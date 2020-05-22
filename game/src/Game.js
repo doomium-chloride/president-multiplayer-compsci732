@@ -49,6 +49,7 @@ class Game extends Component {
                 console.log(message);
                 if(message.success){
                     console.log("everything seems fine");
+                    //expect president
                 }else{
                     alert(message.error);
                 }
@@ -229,7 +230,7 @@ class Game extends Component {
         //<button onClick={this.testChat}>test chat</button>
 
         //<Hand cards={this.state.cards} ws={this.ws}/>
-        let testCards = ["c1","c2","jb","jr","h12"];
+        //let testCards = ["c1","c2","jb","jr","h12"];
 
         /*
         <Player number={1} cards={20}/>
@@ -240,7 +241,7 @@ class Game extends Component {
         return(
             <div className="gameField">
 
-                {!this.state.ready && <button onClick={this.ready.bind(this)}>Ready</button>}
+                {this.state.playerName && !this.state.ready && <button onClick={this.ready.bind(this)}>Ready</button>}
 
                 
                 {this.state.otherPlayers.forEach(
