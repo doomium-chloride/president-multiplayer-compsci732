@@ -183,6 +183,7 @@ class Game extends Component {
         });
     }
 
+    //move_response
     gameMove(card){
         if("skip" == card){
             return //dunno what to do yet
