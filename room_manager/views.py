@@ -23,7 +23,7 @@ class CreateRoomView(APIView):
         room.save()
 
         # Create the game-specific object
-        if game_type == "PRES":
+        if game_type == 0:
             # President game. Create a President-game specific object.
             game = PRES(room=room)
         game.save()
@@ -58,5 +58,5 @@ class JoinRoomView(APIView):
         room.save()
 
         # Returns the room code
-        content = {'success': room.game_type}
+        content = {'success': room.get_game_type()}
         return Response(content)

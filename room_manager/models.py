@@ -1,17 +1,15 @@
 from django.db import models
 
-GAMES = [
-    ('Pres', 'President')
-]
-
 class Room(models.Model):
-    PRESIDENT = 'PRES'
-    GAME_CHOICES = (
-        (PRESIDENT, 'President'),
-    )
+    GAMECHOICES = [
+        (0, 'President'),
+    ]
     code = models.CharField(max_length=5, primary_key=True)
-    game_type = models.CharField(choices=GAME_CHOICES, max_length=4)
+    game_type = models.IntegerField(choices=GAMECHOICES)
     players = models.IntegerField(default=0)
     max_players = models.IntegerField()
     ingame = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
+
+    def get_game_type(self):
+        return dict(Room.GAMECHOICES)[int(self.game_type)].lower()
