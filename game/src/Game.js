@@ -75,6 +75,7 @@ class Game extends Component {
             const data = JSON.parse(e.data)
             switch(data.type){
                 case "room_message":
+                    alert(data.message);
                     that.setState(prevState => ({
                         chatLog: [...prevState.chatLog, data.message]
                     }));
@@ -87,6 +88,9 @@ class Game extends Component {
                     break;
                 case "results":
                     this.scoreBoard(data.results);
+                    break;
+                case "move_response":
+                    this.gameMove(data.card);
                     break;
                 case "game_frame":
                     this.gameFrame(data.players, data.current_card);
@@ -170,7 +174,26 @@ class Game extends Component {
     }
 
     gameMove(card){
-        
+        if("skip" == card){
+            return //dunno what to do yet
+        }
+        const cardCode = back2front(card);
+        let newCards = [...this.state.cards];
+        //search for index
+        let index;
+        for(let i = 0; i < newCards.length; i++){
+            if(cardCode == newCards[0]){
+                index = i;
+                break;
+            }
+        }
+        if(index){
+            newCards.splice(index,1);
+            alert(newCards);
+            this.setState({
+                cards: newCards
+            });
+        }
     }
 
     ready(){
@@ -231,7 +254,7 @@ class Game extends Component {
         return(
             <div className="gameField">
 
-                <button onClick={this.ready.bind(this)}>Start</button>
+                {!this.state.ready && <button onClick={this.ready.bind(this)}>Ready</button>}
 
                 
                 {this.state.otherPlayers.forEach(

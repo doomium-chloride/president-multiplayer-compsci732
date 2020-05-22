@@ -34,9 +34,6 @@ class Hand extends Component {
         this.playSelected = this.playSelected.bind(this);
         this.skip = this.skip.bind(this);
         
-        //testing
-        this.reset = this.reset.bind(this);
-        this.addCard = this.addCard.bind(this);
 
     }
 
@@ -49,6 +46,18 @@ class Hand extends Component {
         }
 
         let copy = [...this.state.selectedCards];
+
+        //This is to enforce only 1 can be selected
+        //check if any other except for index is selected
+        for(let i = 0; i < copy.length; i++){
+            if(i == index){
+                continue;
+            }
+            if(copy[i]){
+                copy[i] = false;
+            }
+        }
+
         //flip truth
         copy[index] = !selected;
 
@@ -99,32 +108,6 @@ class Hand extends Component {
         this.ws.send(JSON.stringify(msg));
     }
 
-    //Old testing method.
-    //Can remove it later.
-
-    addCard() {
-        let newCards = [...this.state.codes];
-        newCards.unshift("jr");
-
-        this.setState({
-            codes: newCards
-        }, this.updateCards);
-
-        
-    }
-
-    reset() {
-        //for testing
-        let cardlist = [];
-        for(let i = 13; i > 0; i--){
-            cardlist.push("c"+i);
-        }
-        cardlist.push("h4");
-        this.setState({
-            codes: cardlist,
-            selectedCards: arrayF(cardlist.length)
-        });
-    }
 
     skip(){
         const msg = {

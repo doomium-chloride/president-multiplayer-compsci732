@@ -49,13 +49,15 @@ export function front2back(card){
  * @return {string} code for card that is compatible with frontend
  */
 export function back2front(card){
+    if(card == "skip"){
+        return "skip";
+    }
     card = card.toLowerCase();
     const house = card.charAt(0);
     const number = card.slice(1);
     let rank = number;
     if(house == "x"){
-        const chance = Math.random() < 0.5;
-        return chance ? "jb" : "jr";
+        return "jb";
     }
     switch(number){
         case "a":

@@ -24,7 +24,7 @@ class Chat extends Component {
         const text = this.state.sendText;
         const oldLog = this.props.log;
         let msg = {
-            type: "char",
+            type: "chat",
             message: text
         }
         
