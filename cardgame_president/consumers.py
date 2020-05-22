@@ -179,20 +179,37 @@ class GameConsumer(WebsocketConsumer):
             
         elif message_type == "name":
             # Player name registration
-            player.name = text_data_json['name']
-            player.save()
-
-            # Send a message to the room of a player joining.
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_code,
-                {
+            name = text_data_json['name']
+            # Check if that name already exists in this room. No duplicates allowed.
+            try:
+                game = getGameByCode(self.room_code)
+                game.players.get(name=name)
+                self.send(text_data=json.dumps({
                     'type': 'room_message',
-                    'message': "{} has joined the game.".format(player.name)
-                }
-            )
+                    'message': 'This name is already chosen!'
+                }))
+            except Player.DoesNotExist:
 
-            # Redraw frame
-            self.draw_frame()
+                player.name = name
+                player.save()
+
+                # Send a response back to the client to close the name dialog box.
+                self.send(text_data=json.dumps({
+                    'type': 'name_response',
+                    'response': name,
+                }))
+
+                # Send a message to the room of a player joining.
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_code,
+                    {
+                        'type': 'room_message',
+                        'message': "{} has joined the game.".format(player.name)
+                    }
+                )
+
+                # Redraw frame
+                self.draw_frame()
 
         elif message_type == "ready":
             game = getGameByCode(self.room_code)
