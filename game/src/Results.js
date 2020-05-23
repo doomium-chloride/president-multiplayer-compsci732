@@ -1,6 +1,7 @@
 import React from "react";
+import './styles/Popup.css';
 
-function Results(data){
+function Results(data, ws){
     let roles = [];
     let players = [];
     for(let i = 0; i < data.length; i++){
@@ -14,6 +15,7 @@ function Results(data){
 
         <div className="results">
             {data.map( x => mapper(x))}
+            <button className="playAgainButton" onClick={() => playAgain(ws)}>Play Again?</button>
         </div>
     )
 }
@@ -24,6 +26,13 @@ function mapper(data){
             {data[0]} : {data[1]}
         </div>
     )
+}
+
+function playAgain(ws){
+    let msg = {
+        type: "ready"
+    }
+    ws.send(JSON.stringify(msg));
 }
 
 export default Results;

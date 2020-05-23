@@ -13,7 +13,6 @@ import {comparePresidentCard} from './utils/card-order';
 
 import './styles/PlayerNameForm.css';
 import './styles/Game.css';
-import './styles/Popup.css';
 import 'rodal/lib/rodal.css';
 
 //websockets
@@ -158,7 +157,7 @@ class Game extends Component {
     }
 
     scoreBoard(results){
-        const content = Results(results);
+        const content = Results(results, this.ws);
         this.setState({
             showResults: true,
             results: content
@@ -185,6 +184,9 @@ class Game extends Component {
         this.setState({
             cards: translatedCards
         });
+        if(this.state.showResults){
+            this.hideScoreBoard();
+        }
     }
 
     //move_response
