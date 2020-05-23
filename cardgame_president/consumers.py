@@ -226,6 +226,8 @@ class GameConsumer(WebsocketConsumer):
             players = game.players.all()
 
             if len(game.players.filter(ready=True)) == len(players) > 1:
+                game.room.ingame = True
+                game.room.save()
                 new_game(player.game)
                 handout = serve_cards(players, self.room_code)
                 for k, i in enumerate(players):
