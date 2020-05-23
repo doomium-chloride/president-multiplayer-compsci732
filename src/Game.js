@@ -298,7 +298,7 @@ function GetPlayerName(props){
     return(
         <div className="singleForm">
             Player Name: 
-            <input type="text" name="player-name" onChange={props.onNameChange}/>
+            <input type="text" maxlength={13} name="player-name" onChange={props.onNameChange}/>
             <button className="oldButton" onClick={props.submitName}>Enter</button>
         </div>
     );
