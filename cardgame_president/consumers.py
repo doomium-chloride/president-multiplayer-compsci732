@@ -160,15 +160,15 @@ class GameConsumer(WebsocketConsumer):
                             self.room_code,
                             {
                                 'type': 'room_message',
-                                'message': '{} has finished with the position of {}!'.format(player.name, player.role)
+                                'message': '{} has finished with the position of {}!'.format(player.name, player.get_role_display())
                             }
                         )
 
                         # Check if there are any more players. If not, end the game.
                         if game_winner(game):
                             results = []
-                            for p in player:
-                                results.append([player.role, player.name])
+                            for p in game.players.all():
+                                results.append([p.get_role_display(), p.name])
                             async_to_sync(self.channel_layer.group_send)(
                                 self.room_code,
                                 {
