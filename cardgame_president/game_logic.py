@@ -201,8 +201,8 @@ def serve_cards(players, code):
 
     # Assign the current player.
     try:
-        player = game.players.get(role="SC")
-        # There is a scum. They are the starting player.
+        player = game.players.get(role="PR")
+        # There is a president. They are the starting player.
         player.current_turn = True
         player.save()
     except Player.DoesNotExist:
