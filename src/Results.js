@@ -6,7 +6,7 @@ function Results(data, ws){
 
         <div className="results">
             {data.map( x => mapper(x))}
-            <button className="playAgainButton" onClick={() => playAgain(ws)}>Play Again?</button>
+            <button className="oldButton playAgainButton" onClick={() => playAgain(ws)}>Play Again?</button>
         </div>
     )
 }
