@@ -132,7 +132,7 @@ def play_move(move, player, game):
                 roles += ['NOR']
             roles += ['SC']
             player.skip_turn = True
-            player.role = roles[len(game.players.all().filter(card_num<1)) - 1]
+            player.role = roles[len(game.players.all().filter(num_cards<1)) - 1]
             player.save()
 
         remaining = game.players.all().filter(skip_turn=False)
