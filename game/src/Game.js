@@ -25,9 +25,11 @@ let serverBase = "http://localhost:8000/";
 //for testing
 var cardlist = [];
   for(let i = 13; i > 0; i--){
-    cardlist.push("c"+i);
+    cardlist.push("h"+i);
   }
-  cardlist.push("h4");
+  for(let i = 13; i > 0; i--){
+    cardlist.push("s"+i);
+  }
 
 class Game extends Component {
     constructor(props){
@@ -37,13 +39,26 @@ class Game extends Component {
         this.state = {
             gameType: type,
             gameCode: code,
-            cards: [],
-            otherPlayers: [],
+            cards: cardlist,
+            otherPlayers: [{
+                name: "bob the builder",
+                current_turn: true,
+                num_cards: 50
+            },
+            {
+                name: "spongebob",
+                current_turn: false,
+                num_cards: 5
+                }],
             chatLog: [],
             freeze: false,
             wsOpen: false,
             showResults: false,
-            results: ""
+            results: "",
+            currentCard: "jr",
+            chatLog: ["blah blah", "Please make this page pretty"],
+            playerName: "squarepants",//making this false will display the get name form
+            ready: true//making this false will display the ready button
         };
         this.wsURL = wsBase + type + "/" + code
 
@@ -53,109 +68,12 @@ class Game extends Component {
 
     componentDidMount(){
 
-        //Get request to join room
+        
 
-        axios.get(serverBase + this.state.gameCode)
-            .then(function (response) {
-                let message = response.data;
-                if(message.success){
-                    if(message.success != "president")
-                        alert("message should be president: " + message.success);
-                    //expect president
-                }else{
-                    alert(message.error);
-                }
-            })
-
-        //websocket part
-
-        this.ws = new WebSocket(this.wsURL);    
-        //cache this object into that
-        let that = this;
-
-        this.ws.onopen = () => {
-            //test line
-            that.setState({
-                wsOpen: true
-            })
-        }
-
-        this.ws.onConnect = e => {
-
-        }
-
-        this.ws.onmessage = e => {
-            // listen to data sent from the websocket server
-            const data = JSON.parse(e.data)
-            switch(data.type){
-                case "room_message":
-                    that.setState(prevState => ({
-                        chatLog: [...prevState.chatLog, data.message]
-                    }));
-                    break;
-                case "game_command":
-                    this.parseCommand(data.command);
-                    break;
-                case "handout":
-                    this.handout(data.handout);
-                    break;
-                case "results":
-                    this.scoreBoard(data.results);
-                    break;
-                case "move_response":
-                    this.gameMove(data.move);
-                    break;
-                case "game_frame":
-                    this.gameFrame(data.players, data.current_card);
-                    break;
-                case "name_response":
-                    this.nameAccepted();
-                    break;
-                case "player_join":
-                    console.log(data);
-                    break;
-                case "player_leave":
-                    console.log(data);
-                    break;
-                case "freeze_game":
-                    that.setState({freeze: true});
-                    break;
-                default:
-                    console.log(data);
-                    alert("Check console log");
-            }
-
-        }
-
-        this.ws.onDisconnect = e => {
-            alert("disconnect");
-        }
-
-        this.ws.onclose = e => {
-            //test line
-            alert("Websocket closed");
-            that.setState({
-                wsOpen: false
-            });
-        }
-
-        this.ws.onerror = err => {
-            //test line
-            alert("Websocket error: " + err.message);
-            console.error("WebSocket error observed:", err);
-            this.ws.close();
-        }
-
-        //this.getName()
+        
     }
 
-    parseCommand(command){
-        switch(command){
-            case "close":
-                this.ws.close();
-                break;
-        }
-    }
+
 
     scoreBoard(results){
         const content = Results(results);
@@ -215,7 +133,6 @@ class Game extends Component {
             type: "ready"
         }
         this.setState({ready: true});
-        this.ws.send(JSON.stringify(msg));
     }
 
     //test
@@ -246,7 +163,6 @@ class Game extends Component {
             type: "name",
             name: name
         }
-        this.ws.send(JSON.stringify(msg));
     }
 
     nameAccepted(){
@@ -283,11 +199,11 @@ class Game extends Component {
 
                 {this.state.currentCard && <Field card={this.state.currentCard}/>}
 
-                <Chat log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
+                <Chat log={this.state.chatLog} update={(msg, old) => this.newMessage(this, msg, old)}/>
 
                 {!this.state.playerName && <GetPlayerName onNameChange={this.onNameChangeHandler.bind(this)} submitName={this.getPlayerName.bind(this)}/>}
 
-                <Hand cards={this.state.cards} freeze={this.state.freeze} ws={this.ws}/>
+                <Hand cards={this.state.cards} freeze={this.state.freeze} />
 
                 <Rodal visible={this.state.showResults} onClose={this.hideScoreBoard.bind(this)}>
                     {this.state.results}

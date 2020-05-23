@@ -24,7 +24,6 @@ class Hand extends Component {
         let selected = arrayF(props.cards.length);
         this.cards = createRef();
 
-        this.ws = props.ws;
 
         this.state = {
             selectedCards: selected
@@ -113,7 +112,7 @@ class Hand extends Component {
             type: "game_move",
             move: front2back(card)
         }
-        this.props.ws.send(JSON.stringify(msg));
+
     }
 
 
@@ -125,7 +124,7 @@ class Hand extends Component {
             type: "game_move",
             move: "skip"
         }
-        this.props.ws.send(JSON.stringify(msg));
+        
     }
 
 
