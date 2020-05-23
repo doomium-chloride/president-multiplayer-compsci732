@@ -69,9 +69,6 @@ class Home extends Component {
         }
     }
 
-    //old code
-    //<input type="text" name="game_type" onChange={this.handleChangeGame}/>
-
 
     render(){
         return(

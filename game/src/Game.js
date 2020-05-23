@@ -220,12 +220,6 @@ class Game extends Component {
         this.ws.send(JSON.stringify(msg));
     }
 
-    //test
-
-    testChat(){
-        this.newMessage(this, "bob", this.state.chatLog);
-
-    }
     //called then child (the chat) sends a message so own message is recorded
     //that is to cache this object to keep context
     newMessage(that ,message, oldLog){
@@ -259,19 +253,6 @@ class Game extends Component {
 
     render(){
 
-        //<button onClick={this.connect}>Test websocket</button>
-        //
-        //<button onClick={this.testChat}>test chat</button>
-
-        //<Hand cards={this.state.cards} ws={this.ws}/>
-        //let testCards = ["c1","c2","jb","jr","h12"];
-
-        /*
-        <Player number={1} cards={20}/>
-        <Player number={2} cards={10}/>
-        <Player number={3} cards={30}/>
-        */
-        //<Player name={obj.name} cards={obj.num_cards}/>
         return(
             <div className="gameField">
 

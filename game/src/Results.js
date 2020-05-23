@@ -2,15 +2,6 @@ import React from "react";
 import './styles/Popup.css';
 
 function Results(data, ws){
-    let roles = [];
-    let players = [];
-    for(let i = 0; i < data.length; i++){
-        const info = data[i];
-        const role = info[0];
-        const player = info[1];
-        roles.push(role);
-        players.push(player);
-    }
     return(
 
         <div className="results">
