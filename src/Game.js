@@ -157,8 +157,6 @@ class Game extends Component {
             console.error("WebSocket error observed:", err);
             that.ws.close();
         }
-        alert("ws stuff initialised")
-        alert("freeze:"+this.state.freeze);
     }
 
     parseCommand(command){

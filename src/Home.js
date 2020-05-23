@@ -40,17 +40,26 @@ class Home extends Component {
         }
     }
 
-    joinGame(event) {
+    joinGame() {
         if(this.state.roomCode){
             window.open(this.getRoomLink(), "_blank");
         }
     }
 
-    makeGame(event){
+    makeGame(){
         if(this.state.maxPlayers){
+            //cache this into self
             var self = this;
+            //verify num of players is 2-4
+            const players = parseInt(this.state.maxPlayers);
+            if(players < 2 || players > 4){
+                alert("only 2 to 4 players allowed");
+                return null;//cancel make game
+            }
+
+            //create payload and send to server
             let payload = {
-                max_players: parseInt(this.state.maxPlayers),   
+                max_players: players,   
                 game_type: this.state.gameCode
             };
             axios.post(serverBase, payload)
