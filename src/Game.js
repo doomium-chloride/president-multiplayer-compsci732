@@ -253,7 +253,7 @@ class Game extends Component {
         return(
             <div className="gameField">
 
-                {this.state.playerName && !this.state.ready && <button onClick={this.ready.bind(this)}>Ready</button>}
+                {this.state.playerName && !this.state.ready && <button className="oldButton" onClick={this.ready.bind(this)}>Ready</button>}
 
                 
                 <div className="playerAndField">
@@ -299,7 +299,7 @@ function GetPlayerName(props){
         <div className="singleForm">
             Player Name: 
             <input type="text" name="player-name" onChange={props.onNameChange}/>
-            <button onClick={props.submitName}>Enter</button>
+            <button className="oldButton" onClick={props.submitName}>Enter</button>
         </div>
     );
 }

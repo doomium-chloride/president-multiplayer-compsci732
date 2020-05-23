@@ -42,11 +42,22 @@
     position: absolute;
     bottom: 0;
     transform-origin: center bottom;
-    transform: translate(0, -1200%);
+    transform: translate(0, -1400%);
 
-    margin-left: 50px;
+    margin-left: 5%;
 }
 
 .hand img{
     max-width: 180px;
+}
+
+.oldButton {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 120px;
+    width: 120px;
+    height: 30px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: bold;
+    color: black;
 }
