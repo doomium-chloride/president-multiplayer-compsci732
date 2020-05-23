@@ -218,6 +218,15 @@ class GameConsumer(WebsocketConsumer):
             if game.room.ingame:
                 # the player would like to player again.
                 player.ready = True
+
+                # Send a message to the chatbox that a player is ready.
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_code,
+                        {
+                            'type': 'room_message',
+                            'message': "{} would like to play again.".format(player.name)
+                        }
+                    )
             else:
                 # toggle the ready state of the player. Used in pre-game
                 player.ready = not player.ready
@@ -241,17 +250,8 @@ class GameConsumer(WebsocketConsumer):
 
                 # Reset roles of players
                 reset_roles(game)
-            
-            if game.room.ingame:
-                # Send a message to the chatbox that a player is ready.
-                async_to_sync(self.channel_layer.group_send)(
-                    self.room_code,
-                        {
-                            'type': 'room_message',
-                            'message': "{} would like to play again.".format(player.name)
-                        }
-                    )
-            else:
+                
+            if not game.room.ingame:
                 # Update frame
                 self.draw_frame()
 
