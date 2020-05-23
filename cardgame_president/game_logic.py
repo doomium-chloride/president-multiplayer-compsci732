@@ -104,9 +104,15 @@ def play_move(move, player, game):
             card_order.index(game.current_card[1])):
         game.current_card = move
         # Remove the card from the player's hand
-        if card_type in "HDCS":
-            cards[card_type] = cards[card_type].replace(card_num, "")
-        else:
+        if card_type == "H":
+            player.H = player.H.replace(card_num, "")
+        elif card_type == "D":
+            player.D = player.D.replace(card_num, "")
+        elif card_type == "C":
+            player.C = player.C.replace(card_num, "")
+        elif card_type == "S":
+            player.S = player.S.replace(card_num, "")
+        elif card_type == "X":
             player.X = player.X - 1
             game.jokers_remaining = game.jokers_remaining - 1
             game.save()
