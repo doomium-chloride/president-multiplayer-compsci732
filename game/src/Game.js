@@ -118,6 +118,7 @@ class Game extends Component {
                     console.log(data);
                     break;
                 case "freeze_game":
+                    alert("fronzen!!!");
                     that.setState({freeze: true});
                     break;
                 default:
