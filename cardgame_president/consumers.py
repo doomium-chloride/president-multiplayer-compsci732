@@ -117,7 +117,7 @@ class GameConsumer(WebsocketConsumer):
                     self.room_code,
                     {
                         'type': 'room_message',
-                        'message': '{} has skipped their turn'.format(winner.name)
+                        'message': '{} has skipped their turn'.format(player.name)
                     }
                 )
 
