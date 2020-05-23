@@ -8,5 +8,39 @@
 
 .handButtons{
     position: relative;
-    top: 300px;
+    top: 290px;
+    margin-left: 350px;
+
 }
+
+.skipButton{
+    border-width: 0px; /* 边框宽度 */
+    border-radius: 3px; /* 边框半径 */
+    background: lightgray; /* 背景颜色 */
+    cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+    outline: none; /* 不显示轮廓线 */
+    font-family: serif;
+    color: black; /* 字体颜色 */
+    font-size: 17px; /* 字体大小 */
+
+    width: 80px;
+    margin-left: 20px;
+}
+
+.playButton{
+    border-width: 0px; /* 边框宽度 */
+    border-radius: 3px; /* 边框半径 */
+    background: lime; /* 背景颜色 */
+    cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+    outline: none; /* 不显示轮廓线 */
+    font-family: serif;
+    color: black; /* 字体颜色 */
+    font-size: 17px; /* 字体大小 */
+
+    width: 80px;
+    margin-right: 20px;
+
+}
+
+
+

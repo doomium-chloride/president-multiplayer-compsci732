@@ -29,31 +29,44 @@ body {
     font-size: 16px;
 }
 
-input {
+.joinGame > label > input {
     margin-left: 10px;
     margin-right: 10px;
     width: 150px;
     height: 20px;
 }
 
-button {
-    margin-left: 10px;
-    margin-right: 10px;
+.joinGame > button {
     width: 120px;
-    height: 30px;
-
+    height: 28px;
+    border-width: 0px;
+    border-radius: 3px;
+    background: #1E90FF;
+    cursor: pointer;
+    outline: none;
     font-family: Verdana, Geneva, sans-serif;
     font-weight: bold;
     color: black;
-
-    background-color: limegreen;
+    font-size: 15px;
 }
 
-.playerNum{
+.startGame > button {
+    width: 120px;
+    height: 28px;
+    border-width: 0px;
+    border-radius: 3px;
+    background: limegreen;
+    cursor: pointer;
+    outline: none;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: bold;
+    color: black;
+    font-size: 15px;
+}
+
+.startGame > label > input {
+    margin-left: 10px;
+    margin-right: 10px;
     width: 85px;
     height: 24px;
-}
-
-.joinGameBtn {
-    background-color: lightcoral;
 }
