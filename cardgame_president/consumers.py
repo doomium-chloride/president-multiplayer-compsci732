@@ -251,9 +251,8 @@ class GameConsumer(WebsocketConsumer):
                 # Reset roles of players
                 reset_roles(game)
                 
-            if not game.room.ingame:
-                # Update frame
-                self.draw_frame()
+            # Update frame
+            self.draw_frame()
 
         elif message_type == "chat":
             # Get the player name to append to the beginning of the message.
