@@ -6,7 +6,7 @@ from room_manager.models import Room
 
 class Game(models.Model):
     room = models.OneToOneField(
-        Room, on_delete=models.CASCADE, related_name="room")
+        Room, on_delete=models.CASCADE, related_name="game")
     current_card = models.CharField(max_length=2, default="", blank=True)
     jokers_remaining = models.IntegerField(default=0)
     round_num = models.IntegerField(default=0)
