@@ -84,13 +84,17 @@ def play_move(move, player, game):
     card_type = move[0].upper()
     card_num = move[1].upper()
     if card_type == "H":
-        if card_num not in player.H: return -1
+        if card_num not in player.H:
+            return -1
     elif card_type == "D":
-        if card_num not in player.D: return -1
+        if card_num not in player.D:
+            return -1
     elif card_type == "C":
-        if card_num not in player.C: return -1
+        if card_num not in player.C:
+            return -1
     elif card_type == "S":
-        if card_num not in player.S: return -1
+        if card_num not in player.S:
+            return -1
     elif card_type == "X":
         if player.X < 1: return -1
 

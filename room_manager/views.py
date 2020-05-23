@@ -12,8 +12,8 @@ class CreateRoomView(APIView):
 
     # Create room
     def post(self, request):
-        game_type = request.data.get("game_type")
-        max_players = request.data.get("max_players")
+        game_type = int(request.data.get("game_type"))
+        max_players = int(request.data.get("max_players"))
         while True:
             # Generate a new random code and see if it exists already. If not, break loop
             code = ''.join(random.choice(string.ascii_uppercase) for _ in range(5))
