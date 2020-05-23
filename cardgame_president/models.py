@@ -23,7 +23,7 @@ class Player(models.Model):
     name = models.CharField(max_length=12, default="...", blank=True)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="players")
     channel_name = models.CharField(max_length=30)
-    score = models.BooleanField(default=0)
+    score = models.IntegerField(default=0)
     ready = models.BooleanField(default=False)
     current_turn = models.BooleanField(default=False)
     skip_turn = models.BooleanField(default=False)
