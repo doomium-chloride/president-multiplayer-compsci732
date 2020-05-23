@@ -1,48 +1,37 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route
+    BrowserRouter as Router,
+    Switch,
+    Route
 } from "react-router-dom";
 import Home from './Home';
 import Game from './Game';
-import Chat from './Chat';
 
 
 
 
 
 function App() {
-  
-  return (
-    <Router>
-      <div>
-        
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/chat">
-            <Chat log={[]}/>
-          </Route>
-          <Route path="/game">
-          <div>
-            <Game/>
-          </div>
-          </Route>
-          <Route path="/:room" component={room}>
-          </Route>
-          
-        </Switch>
-      </div>
-    </Router>
-    
-  );
+
+    return (
+        <Router>
+            <div>
+
+                <Switch>
+                    <Route exact path="/">
+                        <Home />
+                    </Route>
+                    <Route path="/:room" component={room}>
+                    </Route>
+                </Switch>
+            </div>
+        </Router>
+    );
 }
 
 const room = ({ match }) => (
 
-  <Game gameType="PRES" gameCode={match.params.room}/>
+    <Game gameType="PRES" gameCode={match.params.room}/>
 
 )
 
