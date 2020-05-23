@@ -33,7 +33,7 @@ def skip_turn(player, game):
     next_player(player, game)
 
     # Sees if there are any more skippable players.
-    remaining = game.players.all().filter(skip_turn=False)
+    remaining = game.players.filter(skip_turn=False)
     if len(remaining) > 1:
         # There are still more players in the round
         return False
@@ -132,10 +132,10 @@ def play_move(move, player, game):
                 roles += ['NOR']
             roles += ['SC']
             player.skip_turn = True
-            player.role = roles[len(game.players.all().filter(num_cards<1)) - 1]
+            player.role = roles[len(game.players.filter(num_cards<1)) - 1]
             player.save()
 
-        remaining = game.players.all().filter(skip_turn=False)
+        remaining = game.players.filter(skip_turn=False)
         if len(remaining) < 2 or (card_type == "X" or (card_num == 2 and game.jokers_remaining == 0)):
             # There is just one more non-skipped player. OR the highest card was played.
             reset_round(game)
@@ -151,7 +151,7 @@ def play_move(move, player, game):
     return -1
 
 def game_winner(game):
-    remaining = game.players.all().filter(card_num>0)
+    remaining = game.players.filter(card_num>0)
     if len(remaining) < 2:
         # Set the last player's role to Scum
         remaining[0].role = 'SC'
@@ -199,7 +199,7 @@ def serve_cards(players, code):
 
     # Assign the current player.
     try:
-        player = game.players.all().get(role="SC")
+        player = game.players.get(role="SC")
         # There is a scum. They are the starting player.
         player.current_turn = True
         player.save()
