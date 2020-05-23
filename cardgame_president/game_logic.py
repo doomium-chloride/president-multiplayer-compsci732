@@ -132,7 +132,8 @@ def play_move(move, player, game):
                 roles += ['NOR']
             roles += ['SC']
             player.skip_turn = True
-            player.role = roles[len(game.players.filter(num_cards<1)) - 1]
+            num_winners = game.players.filter(num_cards=0)
+            player.role = roles[len(num_winners) - 1]
             player.save()
 
         remaining = game.players.filter(skip_turn=False)
@@ -140,7 +141,7 @@ def play_move(move, player, game):
             # There is just one more non-skipped player. OR the highest card was played.
             reset_round(game)
             if player.num_cards == 0:
-                next_player(player.game)
+                next_player(player, game)
             else:
                 player.current_turn = True
                 player.save()
@@ -151,7 +152,7 @@ def play_move(move, player, game):
     return -1
 
 def game_winner(game):
-    remaining = game.players.filter(card_num>0)
+    remaining = game.players.exclude(num_cards=0)
     if len(remaining) < 2:
         # Set the last player's role to Scum
         remaining[0].role = 'SC'
