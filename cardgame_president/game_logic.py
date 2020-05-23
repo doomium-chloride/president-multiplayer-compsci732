@@ -30,7 +30,7 @@ def skip_turn(player, game):
     player.save()
 
     # Find the next player
-    next_player(player.game)
+    next_player(player, game)
 
     # Sees if there are any more skippable players.
     remaining = game.players.all().filter(skip_turn=False)
@@ -126,9 +126,9 @@ def play_move(move, player, game):
             # Game only allows a maximum of 4 players.
             # Roles depend on the number of players.
             roles = ['PR']
-            if len(players) == 4:
+            if len(game.players.all()) == 4:
                 roles += ['VPR', 'VSC']
-            elif len(players) == 3:
+            elif len(game.players.all()) == 3:
                 roles += ['NOR']
             roles += ['SC']
             player.skip_turn = True
