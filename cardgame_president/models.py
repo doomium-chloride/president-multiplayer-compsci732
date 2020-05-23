@@ -12,13 +12,11 @@ class Game(models.Model):
 class Player(models.Model):
     PRESIDENT = 'PR'
     VICE_PRESIDENT = 'VPR'
-    NORMAL = 'NOR'
     VICE_SCUM = 'VSC'
     SCUM = 'SC'
     ROLE_CHOICES = (
         (PRESIDENT, 'President'),
         (VICE_PRESIDENT, 'Vice President'),
-        (NORMAL, 'Normal'),
         (VICE_SCUM, 'Vice Scum'),
         (SCUM, 'Scum'),
     )

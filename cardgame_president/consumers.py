@@ -81,7 +81,7 @@ class GameConsumer(WebsocketConsumer):
             async_to_sync(self.channel_layer.group_send)(
                 self.room_code,
                 {
-                    'type': 'freeze'
+                    'type': 'freeze_game'
                 }
             )
 
@@ -166,9 +166,10 @@ class GameConsumer(WebsocketConsumer):
 
                         # Check if there are any more players. If not, end the game.
                         if game_winner(game):
-                            results = []
+                            results = [None] * len(game.players.all())
+                            position = {"PR": 0, "VPR": 1, "VSC": -2, "SC": -1}
                             for p in game.players.all():
-                                results.append([p.get_role_display(), p.name])
+                                results[position[p.role]] = [p.get_role_display(), p.name]
                             async_to_sync(self.channel_layer.group_send)(
                                 self.room_code,
                                 {

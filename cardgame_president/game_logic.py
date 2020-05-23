@@ -129,7 +129,7 @@ def play_move(move, player, game):
             if len(game.players.all()) == 4:
                 roles += ['VPR', 'VSC']
             elif len(game.players.all()) == 3:
-                roles += ['NOR']
+                roles += ['VPR']
             roles += ['SC']
             player.skip_turn = True
             num_winners = game.players.filter(num_cards=0)
