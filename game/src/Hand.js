@@ -70,7 +70,6 @@ class Hand extends Component {
 
     playSelected() {
         if(this.props.freeze){
-            alert("frozen");
             return
         }
         let length = this.props.cards.length;
@@ -120,7 +119,6 @@ class Hand extends Component {
 
     skip(){
         if(this.props.freeze){
-            alert("frozen")
             return
         }
         const msg = {

@@ -118,7 +118,6 @@ class Game extends Component {
                     console.log(data);
                     break;
                 case "freeze_game":
-                    alert("fronzen!!!");
                     that.setState({freeze: true});
                     break;
                 default:
@@ -284,7 +283,7 @@ class Game extends Component {
 
                 {this.state.currentCard && <Field card={this.state.currentCard}/>}
 
-                <Chat log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
+                <Chat freeze={this.state.freeze} log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
 
                 {!this.state.playerName && <GetPlayerName onNameChange={this.onNameChangeHandler.bind(this)} submitName={this.getPlayerName.bind(this)}/>}
 

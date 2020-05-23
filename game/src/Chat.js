@@ -21,6 +21,10 @@ class Chat extends Component {
     }
 
     sendMessage(){
+        if(this.props.freeze){
+            //don't do anything if frozen
+            return
+        }
         const text = this.state.sendText;
         const oldLog = this.props.log;
         let msg = {
