@@ -167,7 +167,7 @@ class GameConsumer(WebsocketConsumer):
                         # Check if there are any more players. If not, end the game.
                         if game_winner(game):
                             results = []
-                            for p in game.players.all().order_by('score'):
+                            for p in game.players.all().order_by('-score'):
                                 results.append([p.name, p.score])
                             async_to_sync(self.channel_layer.group_send)(
                                 self.room_code,
