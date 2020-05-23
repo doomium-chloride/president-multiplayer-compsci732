@@ -49,31 +49,47 @@ class Game extends Component {
 
     componentDidMount(){
 
+        //cache this object into that
+        let that = this;
+
         //Get request to join room
 
         axios.get(serverBase + this.state.gameCode)
             .then(function (response) {
                 let message = response.data;
                 if(message.success){
-                    if(message.success != "president")
+                    if(message.success = "president")
+                        that.connect();
+                    else{
+                        that.setState({
+                            freeze: true
+                        });
                         alert("message should be president: " + message.success);
-                    //expect president
+                    }
+                        
                 }else{
+                    that.setState({
+                        freeze: true
+                    });
                     alert(message.error);
                 }
             })
+    }
+
+    connect(){
+        // cache this object into that
+        let that = this;
 
         //websocket part
 
         this.ws = new WebSocket(this.wsURL);    
-        //cache this object into that
-        let that = this;
 
         this.ws.onopen = () => {
             //test line
             that.setState({
                 wsOpen: true
             })
+            that.forceUpdate();
         }
 
         this.ws.onConnect = e => {
@@ -85,27 +101,27 @@ class Game extends Component {
             const data = JSON.parse(e.data)
             switch(data.type){
                 case "room_message":
-                    that.setState(prevState => ({
+                that.setState(prevState => ({
                         chatLog: [...prevState.chatLog, data.message]
                     }));
                     break;
                 case "game_command":
-                    this.parseCommand(data.command);
+                    that.parseCommand(data.command);
                     break;
                 case "handout":
-                    this.handout(data.handout);
+                    that.handout(data.handout);
                     break;
                 case "results":
-                    this.scoreBoard(data.results);
+                    that.scoreBoard(data.results);
                     break;
                 case "move_response":
-                    this.gameMove(data.move);
+                    that.gameMove(data.move);
                     break;
                 case "game_frame":
-                    this.gameFrame(data.players, data.current_card);
+                    that.gameFrame(data.players, data.current_card);
                     break;
                 case "name_response":
-                    this.nameAccepted();
+                    that.nameAccepted();
                     break;
                 case "player_join":
                     console.log(data);
@@ -139,10 +155,10 @@ class Game extends Component {
             //test line
             alert("Websocket error: " + err.message);
             console.error("WebSocket error observed:", err);
-            this.ws.close();
+            that.ws.close();
         }
-
-        //this.getName()
+        alert("ws stuff initialised")
+        alert("freeze:"+this.state.freeze);
     }
 
     parseCommand(command){
