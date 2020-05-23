@@ -9,7 +9,6 @@ class Room(models.Model):
     players = models.IntegerField(default=0)
     max_players = models.IntegerField()
     ingame = models.BooleanField(default=False)
-    date_created = models.DateTimeField(auto_now_add=True)
 
     def get_game_type(self):
         return dict(Room.GAMECHOICES)[int(self.game_type)].lower()

@@ -37,23 +37,11 @@ def skip_turn(player, game):
     if len(remaining) > 1:
         # There are still more players in the round
         return False
-
+    reset_round(game)
     # Return the winner
     return remaining[0]
 
 def new_game(game):
-    # Reset player states.
-    for p in game.players.all():
-        p.skip_turn = False
-        p.ready = False
-        p.current_turn = False
-        p.num_cards = -1
-        p.H = ""
-        p.D = ""
-        p.C = ""
-        p.S = ""
-        p.X = 0
-        p.save()
 
     # Reset game state
     game.current_card = ""
@@ -65,6 +53,7 @@ def reset_roles(game):
     for p in game.players.all():
         p.role = ""
         p.ready = False
+        p.skip_turn = False
         p.save()
 
 def reset_round(game):
@@ -134,6 +123,7 @@ def play_move(move, player, game):
             player.skip_turn = True
             num_winners = game.players.filter(num_cards=0)
             player.role = roles[len(num_winners) - 1]
+            player.score = player.score + len(game.players.all()) - len(num_winners)
             player.save()
 
         remaining = game.players.filter(skip_turn=False)
@@ -168,12 +158,23 @@ def serve_cards(players, code):
             deck.append(i+j)
     deck += ["XX", "XX"]
     random.shuffle(deck)
-    
+
     # Create handouts per player.
     handouts = []
     for j, i in enumerate(players):
         handout = []
         offset = 0
+
+        # Reset player states
+        i.skip_turn = False
+        i.ready = False
+        i.current_turn = False
+        i.H = ""
+        i.D = ""
+        i.C = ""
+        i.S = ""
+        i.X = 0
+
         if j < 54 % len(players):
             offset = 1
         for k in range(54//len(players) + offset):

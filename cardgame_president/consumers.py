@@ -166,10 +166,9 @@ class GameConsumer(WebsocketConsumer):
 
                         # Check if there are any more players. If not, end the game.
                         if game_winner(game):
-                            results = [None] * len(game.players.all())
-                            position = {"PR": 0, "VPR": 1, "VSC": -2, "SC": -1}
-                            for p in game.players.all():
-                                results[position[p.role]] = [p.get_role_display(), p.name]
+                            results = []
+                            for p in game.players.all().order_by('score'):
+                                results.append([p.name, p.score])
                             async_to_sync(self.channel_layer.group_send)(
                                 self.room_code,
                                 {
@@ -177,6 +176,15 @@ class GameConsumer(WebsocketConsumer):
                                     'results': results
                                 }
                             )
+                    elif move.upper() == "XX" or (move[1] == "2" and game.jokers_remaining == 0):
+                        async_to_sync(self.channel_layer.group_send)(
+                            self.room_code,
+                            {
+                                'type': 'room_message',
+                                'message': '{} has won the round!'.format(player.name)
+                            }
+                        )
+
                     self.draw_frame()
             
         elif message_type == "name":
@@ -237,7 +245,7 @@ class GameConsumer(WebsocketConsumer):
             if len(game.players.filter(ready=True)) == len(players) > 1:
                 game.room.ingame = True
                 game.room.save()
-                new_game(player.game)
+                new_game(game)
                 handout = serve_cards(players, self.room_code)
                 for k, i in enumerate(players):
                     async_to_sync(self.channel_layer.send)(

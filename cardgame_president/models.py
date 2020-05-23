@@ -6,7 +6,7 @@ from room_manager.models import Room
 class Game(models.Model):
     room = models.OneToOneField(Room, on_delete=models.CASCADE, related_name="room")
     current_card = models.CharField(max_length=2, default="", blank=True)
-    jokers_remaining = models.IntegerField(default=-1)
+    jokers_remaining = models.IntegerField(default=0)
     round_num = models.IntegerField(default=0)
 
 class Player(models.Model):
@@ -23,12 +23,13 @@ class Player(models.Model):
     name = models.CharField(max_length=12, default="...", blank=True)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="players")
     channel_name = models.CharField(max_length=30)
+    score = models.BooleanField(default=0)
     ready = models.BooleanField(default=False)
     current_turn = models.BooleanField(default=False)
     skip_turn = models.BooleanField(default=False)
     role = models.CharField(choices=ROLE_CHOICES, max_length=3, default='', blank=True)
     # Number of cards a player has left
-    num_cards = models.IntegerField(default=-1)
+    num_cards = models.IntegerField(default=0)
     # Hearts
     H = models.CharField(max_length=13, default="")
     # Diamonds
