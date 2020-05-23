@@ -167,8 +167,7 @@ class GameConsumer(WebsocketConsumer):
                                     'results': results
                                 }
                             )
-                    elif (move.upper() == "XX" or
-                            (move[1] == "2" and game.jokers_remaining == 0)):
+                    elif move.upper() == "XX":
                         message = '{} has won the round!'.format(player.name)
                         self.send_message(message)
                     self.draw_frame()

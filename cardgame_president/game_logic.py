@@ -96,7 +96,8 @@ def play_move(move, player, game):
         if card_num not in player.S:
             return -1
     elif card_type == "X":
-        if player.X < 1: return -1
+        if player.X < 1:
+            return -1
 
     # Check if this is the very first card of the very first round.
     # This should always be the 3 of clubs
@@ -142,9 +143,7 @@ def play_move(move, player, game):
             player.save()
 
         remaining = game.players.filter(skip_turn=False)
-        if (len(remaining) < 2 or
-                (card_type == "X" or
-                    (card_num == 2 and game.jokers_remaining == 0))):
+        if len(remaining) < 2 or card_type == "X":
             # There is just one more non-skipped player.
             # OR the highest card was played.
             reset_round(game)
