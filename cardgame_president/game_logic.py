@@ -83,18 +83,16 @@ def play_move(move, player, game):
     # Also acts as a cheat guard.
     card_type = move[0].upper()
     card_num = move[1].upper()
-    cards = {
-        "H": player.H,
-        "D": player.D,
-        "C": player.C,
-        "S": player.S}
-
-    if card_type in "HDCS":
-        if card_num not in cards[card_type]:
-            return -1
-    else:
-        if player.X < 1:
-            return -1
+    if card_type == "H":
+        if card_num not in player.H: return -1
+    elif card_type == "D":
+        if card_num not in player.D: return -1
+    elif card_type == "C":
+        if card_num not in player.C: return -1
+    elif card_type == "S":
+        if card_num not in player.S: return -1
+    elif card_type == "X":
+        if player.X < 1: return -1
 
     # Check if this is the very first card of the very first round.
     # This should always be the 3 of clubs
