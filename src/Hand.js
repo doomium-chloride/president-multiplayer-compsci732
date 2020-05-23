@@ -146,7 +146,7 @@ class Hand extends Component {
                 </div>
                 <div className="handButtons">
                     <PlayButton activate={this.playSelected}/>
-                    <button onClick={this.skip} type="button">Skip</button>
+                    <button className="skipButton" onClick={this.skip} type="button">Skip</button>
                 </div>
             </div>
           );
@@ -163,7 +163,7 @@ class PlayButton extends Component {
 
     render(){
         return(
-            <button onClick={this.func} type="button">Play</button>
+            <button className="playButton" onClick={this.func} type="button">Play</button>
         );
     }
 }

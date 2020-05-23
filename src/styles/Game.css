@@ -1,26 +1,50 @@
-.gameField > {
-    position: absolute;
+.gameField{
+    background-color: forestgreen;
+    width: calc(100vw);
+    height: calc(100vh);
+
+    margin-left: -20px;
+    margin-top: -100px;
+}
+
+.playerAndField {
+    position: relative;
+    display: flex;
+}
+
+.playerDiv {
+    margin-top: 10px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+
 }
 
 .singleCard{
-    position: relative;
+    position: absolute;
     display: inline-block;
     width: 10%;
+    margin-top: 100px;
+    margin-left: 200px;
+
 }
+
 .singleCard > div{
     position: absolute;
     max-width: 100%;
+
 }
 .singleCard img{
     max-width: 100%;
 }
-
 
 .hand{
     position: absolute;
     bottom: 0;
     transform-origin: center bottom;
     transform: translate(0, -1200%);
+
+    margin-left: 50px;
 }
 
 .hand img{

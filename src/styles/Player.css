@@ -1,15 +1,18 @@
 .player{
     border-style: solid;
-    border-width: 1px;
+    border-width: 2px;
     width: 150px;
-    height: 245px;
+    height: 234px;
     display: inline-block;
     margin: 1%;
+    background-color: darkgoldenrod;
+    font-weight: bold;
 }
 .number{
     width: 50%;
-    margin: 1% auto 1% auto;
-    text-align: center;
+    margin-top: 5%;
+    margin-left: 21%;
+
 }
 
 .cardback{
@@ -19,8 +22,11 @@
 }
 
 .cardback img{
-    position: absolute;
-    width: 100%;
+    position: relative;
+    width: 95%;
+    height: 96%;
+    margin-top: 16px;
+
 }
 .cardback > div{
     position: absolute;

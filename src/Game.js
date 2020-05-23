@@ -256,12 +256,16 @@ class Game extends Component {
                 {this.state.playerName && !this.state.ready && <button onClick={this.ready.bind(this)}>Ready</button>}
 
                 
-                {this.state.playerName && this.state.otherPlayers.map(
-                    (obj,i) => <Player key={"player" + i} currentTurn={obj.current_turn} name={obj.name} cards={obj.num_cards}/>
-                )}
-                
-
-                {this.state.currentCard && <Field card={this.state.currentCard}/>}
+                <div className="playerAndField">
+                    <div className="playerDiv">
+                        {this.state.playerName && this.state.otherPlayers.map(
+                            (obj,i) => <Player key={"player" + i} currentTurn={obj.current_turn} name={obj.name} cards={obj.num_cards}/>
+                        )}
+                    </div>
+                    <div className="fieldDiv">
+                        {this.state.currentCard && <Field card={this.state.currentCard}/>}
+                    </div>
+                </div>
 
                 <Chat freeze={this.state.freeze} log={this.state.chatLog} ws={this.ws} update={(msg, old) => this.newMessage(this, msg, old)}/>
 
