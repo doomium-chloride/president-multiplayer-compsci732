@@ -77,14 +77,6 @@ class Hand extends Component {
         let codes = [...this.props.cards];
         let selected = [...this.state.selectedCards];
 
-        //If no card has been selected do nothing
-        if(selected.length <= 0){
-            return
-        }
-        if(selected[0] == ""){
-            return
-        }
-
         let newCodes = [];
         let sendArray = [];
 
@@ -94,6 +86,14 @@ class Hand extends Component {
             } else {
                 newCodes.push(codes[i]);
             }
+        }
+
+        //If no card has been selected do nothing
+        if(sendArray.length <= 0){
+            return
+        }
+        if(sendArray[0] == ""){
+            return
         }
 
 
