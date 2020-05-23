@@ -192,14 +192,14 @@ class Game extends Component {
         console.log("move response: " + cardCode);
         let newCards = [...this.state.cards];
         //search for index
-        let index;
+        let index = undefined;
         for(let i = 0; i < newCards.length; i++){
             if(cardCode == newCards[i]){
                 index = i;
                 break;
             }
         }
-        if(index){
+        if(index != undefined){
             newCards.splice(index,1);
             this.setState({
                 cards: newCards
