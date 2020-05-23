@@ -1,0 +1,59 @@
+body {
+    padding-top: 100px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.homePage{
+    width: 700px;
+    height: 400px;
+    margin: 0 auto;
+    background-color: cadetblue;
+
+}
+.joinGame{
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: bold;
+    color: black;
+    font-size: 16px;
+    padding-top: 20%;
+    margin-left: 20%;
+}
+.startGame{
+    padding-top: 30px;
+    margin-left: 20%;
+
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: bold;
+    color: black;
+    font-size: 16px;
+}
+
+input {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 150px;
+    height: 20px;
+}
+
+button {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 120px;
+    height: 30px;
+
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: bold;
+    color: black;
+
+    background-color: limegreen;
+}
+
+.playerNum{
+    width: 85px;
+    height: 24px;
+}
+
+.joinGameBtn {
+    background-color: lightcoral;
+}

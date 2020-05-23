@@ -1,0 +1,12 @@
+.selected{
+    top: -30px
+}
+
+.unselected{
+    top: 0
+}
+
+.handButtons{
+    position: relative;
+    top: 300px;
+}

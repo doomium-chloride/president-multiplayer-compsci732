@@ -1,0 +1,40 @@
+.player{
+    border-style: solid;
+    border-width: 1px;
+    width: 150px;
+    height: 245px;
+    display: inline-block;
+    margin: 1%;
+}
+.number{
+    width: 50%;
+    margin: 1% auto 1% auto;
+    text-align: center;
+}
+
+.cardback{
+    position: absolute;
+    width: 150px;
+    height: 200px;
+}
+
+.cardback img{
+    position: absolute;
+    width: 100%;
+}
+.cardback > div{
+    position: absolute;
+    display: inline-block;  
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+    margin: 1% auto 1% auto;
+    font-size: 50px;
+}
+.notThisTurn > div{
+    color: whitesmoke;
+}
+.thisTurn > div{
+    color: crimson;
+}

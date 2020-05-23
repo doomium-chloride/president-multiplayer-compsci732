@@ -1,0 +1,28 @@
+.gameField > {
+    position: absolute;
+}
+
+.singleCard{
+    position: relative;
+    display: inline-block;
+    width: 10%;
+}
+.singleCard > div{
+    position: absolute;
+    max-width: 100%;
+}
+.singleCard img{
+    max-width: 100%;
+}
+
+
+.hand{
+    position: absolute;
+    bottom: 0;
+    transform-origin: center bottom;
+    transform: translate(0, -1200%);
+}
+
+.hand img{
+    max-width: 180px;
+}
