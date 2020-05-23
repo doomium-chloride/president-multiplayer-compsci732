@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import {render} from 'react-dom';
+import React from "react";
 
 import jr from './red_joker.svg';
 import jb from './black_joker.svg';
@@ -90,7 +89,7 @@ function Card(props) {
 
     return(
     <div className="card" style={style} id={props.id} onClick={() => {props.onClick(0,props.selected,props.position)}}>
-        <img className={props.card} src={pic}/>
+        <img src={pic} alt={props.card}/>
     </div>
     );
 }
@@ -101,7 +100,7 @@ export function FieldCard({card}){
     let pic = decider(card);
     return(
         <div className="card">
-            <img className={card} src={pic}/>
+            <img alt={card} src={pic}/>
         </div>
     );
 }
@@ -272,6 +271,8 @@ function decider(code){
         case "jb":
             pic = jb;
             break;
+        default:
+            pic = "";
     }
     return pic;
 }

@@ -1,12 +1,15 @@
 import React, {Component} from "react";
+import Rodal from 'rodal';
+
 import Player from './Player';
 import Hand from './Hand';
 import axios from 'axios';
-import {FieldCard} from './cards/Card';
 import Chat from './Chat';
-import {back2front} from './utils/card-code-translator';
 import Results from './Results';
-import Rodal from 'rodal';
+
+import {FieldCard} from './cards/Card';
+import {back2front} from './utils/card-code-translator';
+import {comparePresidentCard} from './utils/card-order';
 
 import './styles/PlayerNameForm.css';
 import './styles/Game.css';
@@ -55,9 +58,9 @@ class Game extends Component {
         axios.get(serverBase + this.state.gameCode)
             .then(function (response) {
                 let message = response.data;
-                console.log(message);
                 if(message.success){
-                    console.log("everything seems fine");
+                    if(message.success != "president")
+                        alert("message should be president: " + message.success);
                     //expect president
                 }else{
                     alert(message.error);
@@ -177,7 +180,8 @@ class Game extends Component {
     }
 
     handout(playerCards){
-        const translatedCards = playerCards.map((x) => back2front(x));
+        let translatedCards = playerCards.map((x) => back2front(x));
+        translatedCards.sort(comparePresidentCard);
         this.setState({
             cards: translatedCards
         });
@@ -189,7 +193,6 @@ class Game extends Component {
             return //dunno what to do yet
         }
         const cardCode = back2front(card);
-        console.log("move response: " + cardCode);
         let newCards = [...this.state.cards];
         //search for index
         let index = undefined;
