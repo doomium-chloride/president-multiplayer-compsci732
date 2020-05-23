@@ -191,14 +191,15 @@ def serve_cards(players, code):
             offset = 1
         for _ in range(54//len(players) + offset):
             card = deck.pop()
-            cards = {
-                "H": i.H,
-                "D": i.D,
-                "C": i.C,
-                "S": i.S}
             # Add the card to the Player object.
-            if card[0] in "HDCS":
-                cards[card[0]] = cards[card[0]] + card[1]
+            if card[0] == "H":
+                i.H += card[1]
+            elif card[0] == "D":
+                i.D += card[1]
+            elif card[0] == "C":
+                i.C += card[1]
+            elif card[0] == "S":
+                i.S += card[1]
             else:
                 i.X = i.X + 1
             handout.append(card)
