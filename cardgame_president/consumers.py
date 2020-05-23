@@ -167,8 +167,8 @@ class GameConsumer(WebsocketConsumer):
                                     'results': results
                                 }
                             )
-                    elif move.upper() == "XX":
-                        message = '{} has won the round with the card: {}'.format(player.name, move)
+                    elif move.upper() == "XX:
+                        message = '{} has won the round with a Joker!'.format(player.name)
                         self.send_message(message)
                     self.draw_frame()
 
