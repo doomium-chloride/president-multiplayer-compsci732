@@ -45,9 +45,6 @@ class Game extends Component {
             results: ""
         };
         this.wsURL = wsBase + type + "/" + code
-
-        //test
-        this.testChat = this.testChat.bind(this);
     }
 
     componentDidMount(){
