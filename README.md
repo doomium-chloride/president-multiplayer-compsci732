@@ -13,14 +13,14 @@ The frontend is built using React.
 
 ### Backend
 
-You need redis-server, so assuming you have it installed...
+You need redis-server, so assuming you have it installed,
 
 run 
 ```
 sudo service redis-server start
 ```
 
-after than run
+after that run
 
 ```
 py manage.py migrate --run-syncdb
