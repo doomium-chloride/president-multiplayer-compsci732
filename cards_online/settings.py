@@ -26,8 +26,7 @@ SECRET_KEY = '*ri$c_yfa=9k8^&1f%(a7b&_!trg5-k)7fh%!m_0w&c2+zf$n&'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000',
+    'localhost',
     ]
 
 
