@@ -16,7 +16,7 @@ This is a multiplayer implementation of the card game President.
 
 ## What is it built on
 
-The backend is built using Django.
+The backend is built using Django and Python 3.7.6
 The frontend is built using React.
 
 ## How do you run it locally
@@ -33,8 +33,9 @@ sudo service redis-server start
 after that run
 
 ```
-py manage.py migrate --run-syncdb
-py manage.py runserver
+pip install -r requirements.txt
+python manage.py migrate --run-syncdb
+python manage.py runserver
 ```
 
 ### Frontend
