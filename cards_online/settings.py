@@ -64,6 +64,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:3000',
     'http://localhost:3000',
+    'http://111.69.91.103',
+    'http://111.69.91.103:3000',
 )
 
 TEMPLATES = [

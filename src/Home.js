@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import axios from 'axios';
 import './styles/Home.css';
 
-let serverBase = "http://localhost:8000/";
+const address = "111.69.91.103"
+
+let serverBase = "http://" + address + ":8000/";
 
 class Home extends Component {
     constructor() {

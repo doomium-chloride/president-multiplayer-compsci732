@@ -17,9 +17,11 @@ import 'rodal/lib/rodal.css';
 
 //websockets
 
-let wsBase = "ws://localhost:8000/";
+const address = "111.69.91.103"
 
-let serverBase = "http://localhost:8000/";
+let wsBase = "ws://" + address + ":8000/";
+
+let serverBase = "http://" + address + ":8000/";
 
 //for testing
 var cardlist = [];
