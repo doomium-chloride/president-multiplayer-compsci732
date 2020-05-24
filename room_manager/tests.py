@@ -10,6 +10,7 @@ class RequestsTestCase(TestCase):
     def setUp(self):
         self.client = Client(HTTP_USER_AGENT='Mozilla/5.0')
         self.room = Room(game_type=0, max_players=4, code="AAAAA")
+        self.room.save()
 
     def test_create_room(self):
         # Test for if the room is created properly.
