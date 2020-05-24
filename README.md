@@ -93,7 +93,7 @@ If no card is already placed down, you can place any card unless it’s the firs
 If you do not have a card of higher rank to play, you must skip your turns for the round. 
 Even if you do have a playable card, you can skip anytime but you will forfeit that entire round.
 
-If everyone except one player “skips”, the player that didn’t skip wins the round and gets to place a new card down (up to them which 1). This continues until everyone except one has emptied their hand.
+If everyone except one player “skips”, the player that didn’t skip wins the round and gets to place a new card down (any card in their hand). This continues until everyone except one has emptied their hand.
 
 After one round has ended a scoreboard will popup, the one that empties their hand first will get the highest score.
 
