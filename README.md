@@ -1,6 +1,14 @@
 # Multiplayer Browser Game
 
+## Github pages
+
 https://ben-cheng565.github.io/COMPSCI732-Group25/
+
+## Deployed version
+
+I'm not sure how to deploy the backend, but here is the frontend without the backend.
+
+https://president-multiplayer.herokuapp.com/
 
 ## What this is
 
