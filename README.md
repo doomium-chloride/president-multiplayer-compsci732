@@ -10,7 +10,7 @@ https://ben-cheng565.github.io/COMPSCI732-Group25/
 
 This costed one of our members $$ but it's now successfully hosted!
 
-http://35.244.87.252:3000/
+http://35.244.87.252/
 
 ### Non-working version
 
