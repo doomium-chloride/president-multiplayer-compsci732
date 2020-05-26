@@ -8,7 +8,7 @@ https://ben-cheng565.github.io/COMPSCI732-Group25/
 
 ### Edit after 24 May 2020:
 
-This costed one of our members $$ but it's not successfully hosted!
+This costed one of our members $$ but it's now successfully hosted!
 
 http://35.244.87.252:3000/
 
