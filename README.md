@@ -6,7 +6,15 @@ https://ben-cheng565.github.io/COMPSCI732-Group25/
 
 ## Deployed version
 
-I'm not sure how to deploy the backend, but here is the frontend without the backend.
+### Edit after 24 May 2020:
+
+This costed one of our members $$ but it's not successfully hosted!
+
+http://35.244.87.252:3000/
+
+### Non-working version
+
+This one doesn't cost anything but it also doesn't have a backend so it doesn't work anyway.
 
 https://president-multiplayer.herokuapp.com/
 
