@@ -1,9 +1,5 @@
 # Multiplayer Browser Game
 
-## Github pages
-
-https://ben-cheng565.github.io/COMPSCI732-Group25/
-
 ## Deployed version
 
 ### Edit after 24 May 2020:
